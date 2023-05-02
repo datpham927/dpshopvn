@@ -5,9 +5,9 @@ const { verifyAccessToken, verifyAdmin } = require("../middlewares/verifyToken")
 
 router.put("/update", [verifyAccessToken], userController.updateUser)
 router.put("/update/:id", [verifyAdmin], userController.updateUserByAdmin)
-// router.get("/confirm/token", userController.confirmVerificationEmail)
-// router.delete("/delete/account", userController.deleteUnconfirmedUser)
-// router.put("/register", userController.register)
-// router.post("/login", userController.login)
+router.get("/detail/:id", [verifyAccessToken, verifyAdmin], userController.detailUser)
+router.delete("/delete/:id", [verifyAdmin], userController.deleteUser)
+//------------------
+router.put("/follow/:id", [verifyAccessToken], userController.following)
 
 module.exports = router

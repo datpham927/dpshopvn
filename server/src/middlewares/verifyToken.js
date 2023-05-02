@@ -51,6 +51,7 @@ const verifyAdmin = async (req, res, next) => {
                     message: "Invalid access token"
                 });
             }
+            req.userId = user._id
             next(); // Cho phép request đi tiếp
         } else {
             return res.status(401).json({
