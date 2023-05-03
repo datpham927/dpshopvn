@@ -38,12 +38,12 @@ const sendVerificationEmail = async (req, res) => {
             </div>`, fullName: "yeeu em "
         })
         res.status(200).json({
-            err: true,
+            success: true,
             message: "Sent successful"
         })
     } catch (error) {
         res.status(500).json({
-            err: false,
+            success: false,
             message: error.message
         })
     }
@@ -64,12 +64,12 @@ const confirmVerificationEmail = async (req, res) => {
         user.confirm = true
         user.save()
         res.status(200).json({
-            err: true,
+            success: true,
             message: "Confirm successful!"
         })
     } catch (error) {
         res.status(500).json({
-            err: false,
+            success: false,
             message: error.message
         })
     }
@@ -82,17 +82,17 @@ const deleteUnconfirmedUser = async (req, res) => {
         const response = await User.findOneAndDelete({ email })
         if (response) {
             res.status(204).json({
-                err: true,
+                success: true,
                 message: "Delete successfully!"
             })
         }
         res.status(400).json({
-            err: false,
+            success: false,
             message: "Delete failed!"
         })
     } catch (error) {
         res.status(500).json({
-            err: false,
+            success: false,
             message: error.message
         })
     }
@@ -114,13 +114,13 @@ const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         res.status(500).json({
-            err: true,
+            success: true,
             message: "Register successfully!",
             access_token: `Bearer ${access_token}`
         })
     } catch (error) {
         res.status(500).json({
-            err: false,
+            success: false,
             message: error.message
         })
     }
@@ -141,13 +141,13 @@ const login = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         res.status(500).json({
-            err: true,
+            success: true,
             message: "Register successfully!",
             access_token: `Bearer ${access_token}`
         })
     } catch (error) {
         res.status(500).json({
-            err: false,
+            success: false,
             message: error.message
         })
     }

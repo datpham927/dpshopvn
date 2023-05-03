@@ -14,7 +14,7 @@ const verifyAccessToken = async (req, res, next) => {
             const user = await User.findById(decodedToken._id);
             if (!user) {
                 return res.status(401).json({
-                    err: true,
+                    success: true,
                     message: "Invalid access token"
                 });
             }
@@ -23,13 +23,13 @@ const verifyAccessToken = async (req, res, next) => {
             next(); // Cho phép request đi tiếp
         } else {
             return res.status(401).json({
-                err: false,
+                success: false,
                 message: "Require authentication"
             });
         }
     } catch (error) {
         res.status(500).json({
-            err: false,
+            success: false,
             message: error.message
         })
     }
@@ -47,7 +47,7 @@ const verifyAdmin = async (req, res, next) => {
             const user = await User.findById(decodedToken._id);
             if (!user.isAdmin) {
                 return res.status(401).json({
-                    err: true,
+                    success: true,
                     message: "Invalid access token"
                 });
             }
@@ -55,13 +55,13 @@ const verifyAdmin = async (req, res, next) => {
             next(); // Cho phép request đi tiếp
         } else {
             return res.status(401).json({
-                err: false,
+                success: false,
                 message: "Require authentication"
             });
         }
     } catch (error) {
         res.status(500).json({
-            err: false,
+            success: false,
             message: error.message
         })
     }

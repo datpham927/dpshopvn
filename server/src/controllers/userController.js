@@ -6,24 +6,24 @@ const updateUser = async (req, res) => {
         const userId = req.userId
         if (!userId || Object.keys(req.body).length === 0) {
             return res.status(400).json({
-                err: false,
+                success: false,
                 message: "Missing inputs"
             })
         }
         const user = await User.findByIdAndUpdate({ _id: userId }, req.body)
         if (!user) {
             return res.status(401).json({
-                err: false,
+                success: false,
                 message: "The user is not defined",
             })
         }
         return res.status(200).json({
-            err: true,
+            success: true,
             message: "Update successful",
         })
     } catch (error) {
         return res.status(500).json({
-            err: false,
+            success: false,
             message: error.message,
         })
     }
@@ -35,7 +35,7 @@ const updateUserByAdmin = async (req, res) => {
         console.log("id", id)
         if (!id || Object.keys(req.body).length === 0) {
             return res.status(400).json({
-                err: false,
+                success: false,
                 message: "Missing inputs"
             })
         }
@@ -43,17 +43,17 @@ const updateUserByAdmin = async (req, res) => {
         console.log("user", user)
         if (!user) {
             return res.status(401).json({
-                err: false,
+                success: false,
                 message: "The user is not defined",
             })
         }
         return res.status(200).json({
-            err: true,
+            success: true,
             message: "Update successful",
         })
     } catch (error) {
         return res.status(500).json({
-            err: false,
+            success: false,
             message: error.message,
         })
     }
@@ -62,23 +62,23 @@ const detailUser = async (req, res) => {
     try {
         const { id } = req.params
         if (!id) return res.status(401).json({
-            err: false,
+            success: false,
             message: "id not found"
         })
         const user = await User.findById(id)
         if (!user) return res.status(401).json({
-            err: false,
+            success: false,
             message: "User not found"
         })
         const { password, verificationEmailToken, ...dataUser } = user.toObject()
         return res.status(200).json({
-            err: true,
+            success: true,
             message: "successful",
             data: dataUser
         })
     } catch (error) {
         return res.status(500).json({
-            err: false,
+            success: false,
             message: error.message,
         })
     }
@@ -87,21 +87,21 @@ const deleteUser = async (req, res) => {
     try {
         const { id } = req.params
         if (id === req.userId) return res.status(401).json({
-            err: false,
+            success: false,
             message: "You can not delete your account"
         })
         const user = await User.findByIdAndDelete(id)
         if (!user) return res.status(401).json({
-            err: false,
+            success: false,
             message: "User not found"
         })
         return res.status(200).json({
-            err: true,
+            success: true,
             message: "Account has been deleted",
         })
     } catch (error) {
         return res.status(500).json({
-            err: false,
+            success: false,
             message: error.message,
         })
     }
@@ -115,20 +115,20 @@ const following = async (req, res) => {
             await user.updateOne({ $pull: { followers: req.userId } })
             await currentUser.updateOne({ $pull: { followings: req.params.id } });
             res.status(200).json({
-                err: true,
+                success: true,
                 message: "user has been unfollowed",
             })
         } else {
             await user.updateOne({ $push: { followers: req.userId } })
             await currentUser.updateOne({ $push: { followings: req.params.id } });
             res.status(200).json({
-                err: true,
+                success: true,
                 message: "user has been followed",
             })
         }
     } catch (error) {
         res.status(500).json({
-            err: false,
+            success: false,
             message: error.message,
         })
     }
