@@ -1,4 +1,5 @@
 const Product = require("../models/Product")
+const slugify = require("slugify")
 
 
 const createProduct = async (req, res) => {
@@ -9,7 +10,7 @@ const createProduct = async (req, res) => {
                 message: "Input required!"
             })
         }
-        const newProduct = await Product.create({ userId: req.userId, ...req.body })
+        const newProduct = await Product.create({ userId: req.userId, slug: slugify(req.body.title), ...req.body })
         return res.status(201).json({
             success: newProduct ? true : false,
             message: newProduct ? "Create success!" : 'Cannot create new product',
