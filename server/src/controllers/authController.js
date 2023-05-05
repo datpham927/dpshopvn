@@ -1,5 +1,5 @@
 const { randomTokenByCrypto, hashTokenByCrypto } = require("../middlewares/cryptoToken")
-const { generateRefreshToken, generateAccessToken } = require("../middlewares/jwt")
+const { generateRefreshToken, generateAccessToken, verifyRefreshToken } = require("../middlewares/jwt")
 const User = require("../models/User")
 const sendMail = require("../ulits/sendMail")
 const bcrypt = require("bcrypt")
@@ -153,4 +153,28 @@ const login = async (req, res) => {
     }
 }
 
-module.exports = { sendVerificationEmail, confirmVerificationEmail, deleteUnconfirmedUser, register, login }
+const refreshToken = async (req, res) => {
+    try {
+        const cookie = req.cookies
+        const refresh_token = cookie.refresh_token.split(" ")[1]
+        const response = verifyRefreshToken(refresh_token)
+        if (!response) {
+            res.status(403).json({
+                success: false,
+                message: "Verification failed"
+            })
+        }
+        const user = await User.findById(response._id)
+        const access_token = generateAccessToken({ _id: user.id, admin: user.admin })
+        res.status(200).json({
+            success: true,
+            access_token
+        })
+    } catch (error) {
+
+    }
+}
+module.exports = {
+    sendVerificationEmail, confirmVerificationEmail,
+    deleteUnconfirmedUser, register, login, refreshToken
+}

@@ -37,5 +37,56 @@ const getComment = async (req, res) => {
 }
 
 
+const editComment = async (req, res) => {
+    try {
+        const { id } = req.params
+        console.log(req.body)
+        if (Object.keys(req.body).length === 0) return res.status(401).json({ success: false, message: "Input required!" })
+        const comment = await Reviews.findByIdAndUpdate(id, req.body, { new: true })
+        console.log(comment)
+        return res.status(201).json({
+            success: comment ? true : false,
+            message: comment ? "Update successfully" : "Update failed",
+            data: comment ? comment : null
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
-module.exports = { createComment, getComment }
+const likeComment = async (req, res) => {
+    try {
+        const comment = await Reviews.findById(req.params.id)
+        comment.like++
+        comment.save()
+        res.status(200).json({
+            success: true,
+            message: "Comment has been like",
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+const unlikeComment = async (req, res) => {
+    try {
+        const comment = await Reviews.findById(req.params.id)
+        comment.like--
+        comment.save()
+        res.status(200).json({
+            success: true,
+            message: "Comment has been unlike",
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+module.exports = { createComment, getComment, editComment, likeComment, unlikeComment }

@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
     confirm: { type: Boolean, default: false },
     verificationEmailToken: { type: String },
     passwordResetToken: { type: String },
+    totalProduct: { type: Number, default: 0 },
     passwordTokenExpires: { type: String },
 }, {
     timestamps: true

@@ -3,6 +3,7 @@ const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
 const productRoutes = require('./productRoutes');
 const reviewsRoutes = require('./reviewsRoutes');
+const cartRoutes = require('./cartRoutes');
 const notFound = require("../middlewares/notFound");
 
 const routes = (app) => {
@@ -10,6 +11,7 @@ const routes = (app) => {
     app.use("/api/user", userRoutes)
     app.use("/api/product", productRoutes)
     app.use("/api/reviews", reviewsRoutes)
+    app.use("/api/cart", cartRoutes)
     app.use(notFound)
 }
 module.exports = routes

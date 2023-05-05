@@ -1,5 +1,6 @@
 const Product = require("../models/Product")
 const slugify = require("slugify")
+const User = require("../models/User")
 
 
 const createProduct = async (req, res) => {
@@ -11,6 +12,11 @@ const createProduct = async (req, res) => {
             })
         }
         const newProduct = await Product.create({ userId: req.userId, slug: slugify(req.body.title), ...req.body })
+        if (newProduct) {
+            const user = await User.findById(req.userId)
+            user.totalProduct++
+            user.save()
+        }
         return res.status(201).json({
             success: newProduct ? true : false,
             message: newProduct ? "Create success!" : 'Cannot create new product',
@@ -54,6 +60,11 @@ const deleteProduct = async (req, res) => {
             })
         }
         const product = await Product.findByIdAndDelete(req.params.id)
+        if (product) {
+            const user = await User.findById(product.userId)
+            user.totalProduct--
+            user.save()
+        }
         return res.status(201).json({
             success: product ? true : false,
             message: product ? "Delete success!" : `Id:${req.params.id} not exists!`,

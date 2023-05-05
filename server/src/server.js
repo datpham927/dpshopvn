@@ -1,5 +1,6 @@
 const express = require("express")
 const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
 const core = require("cors")
 require("dotenv").config()
 const mongoose = require("mongoose")
@@ -9,7 +10,7 @@ const app = express()
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }))
 // app.use(core());
-
+app.use(cookieParser())
 routes(app)
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => console.log("connected successfully!"))

@@ -7,6 +7,8 @@ const reviewsSchema = new mongoose.Schema({
     image: { type: Array, default: [] },
     like: { type: Number, default: 0 },
     productID: { type: String, require: true },
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('Reviews', reviewsSchema);

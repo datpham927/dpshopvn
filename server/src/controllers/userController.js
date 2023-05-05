@@ -29,35 +29,6 @@ const updateUser = async (req, res) => {
     }
 }
 
-const updateUserByAdmin = async (req, res) => {
-    try {
-        const { id } = req.params
-        console.log("id", id)
-        if (!id || Object.keys(req.body).length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Missing inputs"
-            })
-        }
-        const user = await User.findByIdAndUpdate({ _id: id }, req.body, { new: true })
-        console.log("user", user)
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: "The user is not defined",
-            })
-        }
-        return res.status(200).json({
-            success: true,
-            message: "Update successful",
-        })
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message,
-        })
-    }
-}
 const detailUser = async (req, res) => {
     try {
         const { id } = req.params
@@ -83,29 +54,7 @@ const detailUser = async (req, res) => {
         })
     }
 }
-const deleteUser = async (req, res) => {
-    try {
-        const { id } = req.params
-        if (id === req.userId) return res.status(401).json({
-            success: false,
-            message: "You can not delete your account"
-        })
-        const user = await User.findByIdAndDelete(id)
-        if (!user) return res.status(401).json({
-            success: false,
-            message: "User not found"
-        })
-        return res.status(200).json({
-            success: true,
-            message: "Account has been deleted",
-        })
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message,
-        })
-    }
-}
+
 //following
 const following = async (req, res) => {
     try {
@@ -133,5 +82,72 @@ const following = async (req, res) => {
         })
     }
 }
+//   admin
+const updateUserByAdmin = async (req, res) => {
+    try {
+        const { userId } = req.body
+        if (!userId || Object.keys(req.body).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing inputs"
+            })
+        }
+        const user = await User.findByIdAndUpdate({ _id: userId }, req.body, { new: true })
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "The user is not defined",
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Update successful",
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+// get all users
 
-module.exports = { updateUser, updateUserByAdmin, detailUser, deleteUser, following }
+const getAllUsers = async (req, res) => {
+    try {
+        const option = "-passwordTokenExpires -password -verificationEmailToken"
+        const allUser = await User.findOne().select(option)
+        res.status(200).json({
+            success: allUser ? true : false,
+            data: allUser ? allUser : null
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+const deleteUser = async (req, res) => {
+    try {
+        const { userId } = req.body
+        if (userId === req.userId) return res.status(401).json({
+            success: false,
+            message: "You can not delete your account"
+        })
+        const user = await User.findByIdAndDelete(userId)
+        if (!user) return res.status(401).json({
+            success: false,
+            message: "User not found"
+        })
+        return res.status(200).json({
+            success: true,
+            message: "Account has been deleted",
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+module.exports = { updateUser, updateUserByAdmin, detailUser, deleteUser, following, getAllUsers }

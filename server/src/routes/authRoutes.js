@@ -7,5 +7,6 @@ router.get("/confirm/token", authController.confirmVerificationEmail)
 router.delete("/delete/account", authController.deleteUnconfirmedUser)
 router.put("/register", authController.register)
 router.post("/login", authController.login)
+router.get("/refresh_token", authController.refreshToken)
 
 module.exports = router
