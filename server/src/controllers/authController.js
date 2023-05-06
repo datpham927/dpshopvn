@@ -3,6 +3,7 @@ const { generateRefreshToken, generateAccessToken, verifyRefreshToken } = requir
 const User = require("../models/User")
 const sendMail = require("../ulits/sendMail")
 const bcrypt = require("bcrypt")
+const crypto = require("crypto")
 
 
 //gửi email xác nhận mật khẩu,và thêm tokenConfirm vào database
@@ -174,7 +175,65 @@ const refreshToken = async (req, res) => {
 
     }
 }
+//-------------
+const sendGmailForgetPassword = async (req, res) => {
+    try {
+        const { email } = req.body
+        if (!email) throw new Error("Input required!")
+        // create a random token string
+        const token = randomTokenByCrypto(30)
+        const hashToken = hashTokenByCrypto(token)
+        const response = await User.findOne({ email })
+        if (!response) throw new Error("Account not exists!")
+        const user = await User.findOne({ email })
+        user.passwordResetToken = hashToken;
+        user.passwordTokenExpires = Date.now() + 5 * 60 * 1000
+        user.save()
+        sendMail({
+            email, html: `<div >
+            <p >Để thay đổi mật khẩu cho tài khoản ${email} của bạn vui lòng bấm vào link bên dưới, đường link có hiệu lực trong vòng 5 phút
+             </p>
+             <a href='${token}' >Click vào đây!</a>
+            </div>`,
+            fullName: user.lastName + " " + user.firstName
+        })
+        res.status(200).json({
+            success: true,
+            message: "Sent successful",
+            user
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params
+        const hashToken = crypto.createHash('sha256').update(token).digest('hex');
+        const user = await User.findOne({ passwordResetToken: hashToken, passwordTokenExpires: { $gt: Date.now() } })
+        if (user) {
+            user.password = bcrypt.hashSync(req.body.password, 10)
+            user.passwordResetToken = null
+            user.passwordTokenExpires = null
+            user.save()
+        }
+        res.status(200).json({
+            success: user ? true : false,
+            message: user ? 'Changer password successfully' : 'Changer password failed',
+            user
+        })
+    } catch (error) {
+
+    }
+}
+
+
+
 module.exports = {
     sendVerificationEmail, confirmVerificationEmail,
-    deleteUnconfirmedUser, register, login, refreshToken
+    deleteUnconfirmedUser, register, login, refreshToken,
+    sendGmailForgetPassword, resetPassword
 }

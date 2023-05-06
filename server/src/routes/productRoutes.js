@@ -7,6 +7,6 @@ router.post("/add_to_product", [verifyAccessToken], productController.createProd
 router.put("/:id/update", [verifyAdmin, verifyAccessToken], productController.updateProduct)
 router.delete("/:id/delete", [verifyAdmin, verifyAccessToken], productController.deleteProduct)
 router.get("/:id/detail", [verifyAdmin, verifyAccessToken], productController.detailProduct)
-router.get("/all", productController.getAllProduct)
+router.get("/all", productController.getAllProducts)
 
 module.exports = router

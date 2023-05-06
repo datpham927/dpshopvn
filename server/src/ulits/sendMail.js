@@ -14,8 +14,8 @@ const sendMail = async ({ email, html, fullName }) => {
     const mailOptions = {
         from: 'datp927@gmail.com',
         to: email,
-        subject: `Hello ${fullName}`,
-        html
+        subject: `Xin chào ${fullName}`,
+        html,
     };
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {

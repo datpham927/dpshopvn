@@ -3,7 +3,7 @@ const slugify = require("slugify")
 const User = require("../models/User")
 
 
-const createProducts = async (req, res) => {
+const createProduct = async (req, res) => {
     try {
         if (Object.keys(req.body).length == 0) {
             return res.status(400).json({
@@ -29,7 +29,7 @@ const createProducts = async (req, res) => {
         })
     }
 }
-const updateProducts = async (req, res) => {
+const updateProduct = async (req, res) => {
     try {
         if (!req.params.id || Object.keys(req.body).length == 0) {
             return res.status(400).json({
@@ -51,7 +51,7 @@ const updateProducts = async (req, res) => {
     }
 }
 
-const deleteProducts = async (req, res) => {
+const deleteProduct = async (req, res) => {
     try {
         if (!req.params.id) {
             return res.status(400).json({
@@ -77,7 +77,7 @@ const deleteProducts = async (req, res) => {
     }
 }
 
-const detailProducts = async (req, res) => {
+const detailProduct = async (req, res) => {
     try {
         if (!req.params.id) {
             return res.status(400).json({
