@@ -1,6 +1,6 @@
-const Products = require("../models/Product")
 const slugify = require("slugify")
 const User = require("../models/User")
+const Product = require("../models/Product")
 
 
 const createProduct = async (req, res) => {
@@ -105,11 +105,14 @@ const getAllProducts = async (req, res) => {
         excludeFields.forEach(field => delete queries[field])
 
         let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
-        const newQueryString = JSON.parse(queriesString)
+        let newQueryString = JSON.parse(queriesString)
         if (req.query.title) {
             newQueryString.title = { $regex: req.query.title, $options: "i" }
         }
-        const products = Product.find(newQueryString)
+        if (req.query.category) {
+            newQueryString.category = { category }
+        }
+        let products = Product.find(newQueryString).select("_id image title slug price discount userId solid")
 
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
@@ -118,14 +121,16 @@ const getAllProducts = async (req, res) => {
             products = products.sort('-createdAt')
         }
         const limit = req.query.limit || 100
-        const page = req.query.page || 0
+        const page = req.query.page * 1 || 0
         const skip = page * limit
         products = products.limit(limit).skip(skip)
         const newProducts = await products
-        // const products = await Product.find().select("-description -reviews")
+        const totalProducts = await Product.count()
         return res.status(201).json({
             success: newProducts ? true : false,
-            products: newProducts ? newProducts : null
+            totalPage: Math.ceil(totalProducts / limit),
+            currentPage: page + 1,
+            products: newProducts ? newProducts : null,
         })
     } catch (error) {
         return res.status(500).json({
