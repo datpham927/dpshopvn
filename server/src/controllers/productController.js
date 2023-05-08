@@ -12,7 +12,7 @@ const createProduct = async (req, res) => {
             })
         }
         const newProducts = await Product.create({ userId: req.userId, slug: slugify(req.body.title), ...req.body })
-        if (newProduct) {
+        if (newProducts) {
             const user = await User.findById(req.userId)
             user.totalProduct++
             user.save()
@@ -31,13 +31,13 @@ const createProduct = async (req, res) => {
 }
 const updateProduct = async (req, res) => {
     try {
-        if (!req.params.id || Object.keys(req.body).length == 0) {
+        if (!req.params.pid || Object.keys(req.body).length == 0) {
             return res.status(400).json({
                 success: false,
                 message: "Input required!"
             })
         }
-        const newProducts = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        const newProducts = await Product.findByIdAndUpdate(req.params.pid, req.body, { new: true })
         return res.status(201).json({
             success: newProducts ? true : false,
             message: newProducts ? "Update success!" : 'Cannot update product',
@@ -53,21 +53,21 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     try {
-        if (!req.params.id) {
+        if (!req.params.pid) {
             return res.status(400).json({
                 success: false,
                 message: "Id required!"
             })
         }
-        const products = await Product.findByIdAndDelete(req.params.id)
+        const product = await Product.findByIdAndDelete(req.params.pid)
         if (product) {
             const user = await User.findById(product.userId)
             user.totalProduct--
             user.save()
         }
         return res.status(201).json({
-            success: products ? true : false,
-            message: products ? "Delete success!" : `Id:${req.params.id} not exists!`,
+            success: product ? true : false,
+            message: product ? "Delete success!" : `Id:${req.params.pid} not exists!`,
         })
     } catch (error) {
         return res.status(500).json({
@@ -79,16 +79,20 @@ const deleteProduct = async (req, res) => {
 
 const detailProduct = async (req, res) => {
     try {
-        if (!req.params.id) {
+        if (!req.params.pid) {
             return res.status(400).json({
                 success: false,
                 message: "Id required!"
             })
         }
-        const products = await Product.findById(req.params.id)
+        const product = await Product.findById(req.params.pid)
+        //cập nhật số lượng người truy cập
+        if (product && !product.views.includes(req.userId)) {
+            product.views.push(req.userId)
+        }
         return res.status(201).json({
-            success: products ? true : false,
-            message: products ? "Success!" : `Id:${req.params.id} not exists!`,
+            success: product ? true : false,
+            message: product ? "Success!" : `Id:${req.params.pid} not exists!`,
             product: product
         })
     } catch (error) {
@@ -103,7 +107,6 @@ const getAllProducts = async (req, res) => {
         const queries = { ...req.query }
         const excludeFields = ["limit", "sort", "page"]
         excludeFields.forEach(field => delete queries[field])
-
         let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
         let newQueryString = JSON.parse(queriesString)
         if (req.query.title) {
@@ -113,7 +116,6 @@ const getAllProducts = async (req, res) => {
             newQueryString.category = { category }
         }
         let products = Product.find(newQueryString).select("_id image title slug price discount userId solid")
-
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
             products = products.sort(sortBy)
@@ -139,6 +141,37 @@ const getAllProducts = async (req, res) => {
         })
     }
 }
+// get product all ready following
+const getAllProductFollowing = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.userId)
+        const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
+        const allProduct = await Promise.all(
+            currentUser.followings.map(e => {
+                return Product.findOne({ userId: e }).populate("userId", option)
+            })
+        )
+        res.status(200).json({
+            success: allProduct ? true : false,
+            message: allProduct ? "Success" : "Failed",
+            products: allProduct ? allProduct : null
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
 
-module.exports = { createProduct, updateProduct, deleteProduct, detailProduct, getAllProducts }
+
+module.exports = {
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    detailProduct,
+    getAllProducts,
+    getAllProductFollowing
+}

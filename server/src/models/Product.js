@@ -10,7 +10,8 @@ const productSchema = mongoose.Schema({
     Star: { type: Number },
     sold: { type: Number },
     userBought: { type: Array, default: [] },
-    price: { type: Number },
+    oldPrice: { type: Number },
+    newPrice: { type: Number },
     inStock: { type: String },
     discount: { type: Number },
     categoryCode: { type: String, default: "" },
@@ -19,8 +20,8 @@ const productSchema = mongoose.Schema({
         brandOrigin: { type: String },
         origin: { type: String },
     },
-    userId: { type: String },
-    view: { type: Array, default: [] },// số lượng người truy cập
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    views: { type: Array, default: [] },// số lượng người truy cập
     description: { type: Array, default: [] },
 }, {
     timestamps: true

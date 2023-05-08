@@ -98,7 +98,6 @@ const deleteUnconfirmedUser = async (req, res) => {
         })
     }
 }
-
 const register = async (req, res) => {
     try {
         const { email, password } = req.body
@@ -126,7 +125,6 @@ const register = async (req, res) => {
         })
     }
 }
-
 const login = async (req, res) => {
     try {
         const { email, password } = req.body
@@ -153,7 +151,6 @@ const login = async (req, res) => {
         })
     }
 }
-
 const refreshToken = async (req, res) => {
     try {
         const cookie = req.cookies

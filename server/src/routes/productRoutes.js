@@ -4,9 +4,10 @@ const { verifyAdmin, verifyAccessToken } = require("../middlewares/verifyToken")
 
 
 router.post("/add_to_product", [verifyAccessToken], productController.createProduct)
-router.put("/:id/update", [verifyAdmin, verifyAccessToken], productController.updateProduct)
-router.delete("/:id/delete", [verifyAdmin, verifyAccessToken], productController.deleteProduct)
-router.get("/:id/detail", [verifyAdmin, verifyAccessToken], productController.detailProduct)
+router.put("/:pid/update", [verifyAdmin, verifyAccessToken], productController.updateProduct)
+router.delete("/:pid/delete", [verifyAdmin, verifyAccessToken], productController.deleteProduct)
+router.get("/:pid/detail", [verifyAdmin, verifyAccessToken], productController.detailProduct)
 router.get("/all", productController.getAllProducts)
+router.get("/following", [verifyAccessToken], productController.getAllProductFollowing)
 
 module.exports = router
