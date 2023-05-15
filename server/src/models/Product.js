@@ -15,12 +15,11 @@ const productSchema = mongoose.Schema({
     newPrice: { type: Number, default: 0 },
     inStock: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
-    categoryCode: { type: String, default: "" },
-    details: {
-        brand: { type: String },
-        brandOrigin: { type: String },
-        origin: { type: String },
-    },
+    categoryCode: { type: String, default: "", require: true },
+    details: [{
+        name: String,
+        value: String
+    }],
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     views: { type: Array, default: [] },// số lượng người truy cập
     description: { type: Array, default: [] },

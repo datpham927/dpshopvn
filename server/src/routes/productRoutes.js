@@ -9,5 +9,7 @@ router.delete("/:pid/delete", [verifyAdmin, verifyAccessToken], productControlle
 router.get("/:pid/detail", [verifyAdmin, verifyAccessToken], productController.detailProduct)
 router.get("/all", productController.getAllProducts)
 router.get("/following", [verifyAccessToken], productController.getAllProductFollowing)
+//---------------
+router.post("/insert", productController.insertProductsData)
 
 module.exports = router
