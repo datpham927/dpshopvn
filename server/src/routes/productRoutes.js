@@ -10,6 +10,6 @@ router.get("/:pid/detail", [verifyAdmin, verifyAccessToken], productController.d
 router.get("/all", productController.getAllProducts)
 router.get("/following", [verifyAccessToken], productController.getAllProductFollowing)
 //---------------
-router.post("/insert", productController.insertProductsData)
+// router.post("/insert", productController.insertProductsData)
 
 module.exports = router
