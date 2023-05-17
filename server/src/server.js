@@ -9,7 +9,9 @@ const routes = require("./routes/index")
 const app = express()
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }))
-// app.use(core());
+app.use(core({
+    origin: "http://localhost:5173"
+}));
 app.use(cookieParser())
 routes(app)
 mongoose.connect(process.env.MONGODB_URL)
