@@ -6,7 +6,7 @@ const reviewsRoutes = require('./reviewsRoutes');
 const cartRoutes = require('./cartRoutes');
 const orderRoutes = require('./orderRoutes');
 const categoryRoutes = require('./categoryRoutes');
-const searchHistoryRoutes = require('./searchHistoryRoutes');
+const searchRoutes = require('./searchRoutes');
 const notFound = require("../middlewares/notFound");
 
 const routes = (app) => {
@@ -17,7 +17,7 @@ const routes = (app) => {
     app.use("/api/cart", cartRoutes)
     app.use("/api/order", orderRoutes)
     app.use("/api/category", categoryRoutes)
-    app.use("/api/search/", searchHistoryRoutes)
+    app.use("/api/search/", searchRoutes)
     app.use(notFound)
 }
 module.exports = routes

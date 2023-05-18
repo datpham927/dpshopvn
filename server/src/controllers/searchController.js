@@ -1,4 +1,5 @@
-const SearchHistory = require("../models/SearchHistory")
+const SearchHistory = require("../models/Search")
+const Product = require("../models/Product")
 
 
 
@@ -39,4 +40,18 @@ const searchHistory = async (req, res) => {
     }
 }
 
-module.exports = { searchHistory, addHistory }
+const suggestResult = async (req, res) => {
+    try {
+        const response = await Product.find({ title: { $regex: req.body.title } }).select("title _id").limit(10)
+        res.status(200).json({
+            success: response ? true : false,
+            data: response ? response : null
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+module.exports = { searchHistory, addHistory, suggestResult, suggestResult }
