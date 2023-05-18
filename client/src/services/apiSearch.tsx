@@ -18,4 +18,17 @@ const getSearchHistories = async () => {
     }
 };
 
-export { addSearchHistory, getSearchHistories };
+const getSuggestResult = async (title: string) => {
+    try {
+        const res = await httpRequest.get('search/suggest', {
+            params: {
+                title,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { addSearchHistory, getSearchHistories, getSuggestResult };

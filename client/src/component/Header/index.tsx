@@ -36,7 +36,12 @@ const Header: React.FC = () => {
             {/* content category */}
             <div className="flex item-center ml-[18%] gap-4">
                 {categories?.map(
-                    (c, i) => i < 5 && <a className="text-[13px] text-white cursor-pointer">{c.category}</a>,
+                    (c, i) =>
+                        i < 5 && (
+                            <a key={c.categoryCode} className="text-[13px] text-white cursor-pointer">
+                                {c.category}
+                            </a>
+                        ),
                 )}
             </div>
         </div>
