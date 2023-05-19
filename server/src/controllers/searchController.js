@@ -40,6 +40,22 @@ const searchHistory = async (req, res) => {
     }
 }
 
+const deleteHistory=async (req, res) => {
+    try {
+        const response = await SearchHistory.findByIdAndDelete(req.params.tid) 
+        res.status(200).json({
+            success: response ? true : false,
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
+
 const suggestResult = async (req, res) => {
     try {
         const response = await Product.find({ title: { $regex: `^${req.query.title}`, $options: 'i' } }).select("title _id").limit(10)
@@ -56,4 +72,4 @@ const suggestResult = async (req, res) => {
 }
 
 
-module.exports = { searchHistory, addHistory, suggestResult, suggestResult }
+module.exports = { searchHistory, addHistory, suggestResult, suggestResult ,deleteHistory}
