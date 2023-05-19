@@ -54,4 +54,6 @@ const suggestResult = async (req, res) => {
         })
     }
 }
+
+
 module.exports = { searchHistory, addHistory, suggestResult, suggestResult }
