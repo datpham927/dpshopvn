@@ -30,5 +30,12 @@ const getSuggestResult = async (title: string) => {
         console.log(error);
     }
 };
-
-export { addSearchHistory, getSearchHistories, getSuggestResult };
+const deleteSearchHistory = async (id: string) => {
+    try {
+        const res = await httpRequest.delete(`search/${id}/update`);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export { addSearchHistory, getSearchHistories, getSuggestResult ,deleteSearchHistory};

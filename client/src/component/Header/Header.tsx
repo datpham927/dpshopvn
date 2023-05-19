@@ -1,11 +1,13 @@
-import React from 'react';
+import React  from 'react';
 import { useEffect, useState } from 'react';
 import logo from '../../assets/logo1.png';
-import Search from './Search';
-import Cart from './Cart';
-import User from './User';
 import { getCategories } from '../../services/apiCategory';
 import { category } from '../../interfaces/interfaces';
+import Search from './Search';
+import User from './User';
+import Cart from './Cart';
+
+// eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {
     const [categories, setCategories] = useState<category[]>();
     useEffect(() => {
@@ -50,4 +52,5 @@ const Header: React.FC = () => {
     );
 };
 
-export default Header;
+// eslint-disable-next-line react-refresh/only-export-components
+export default React.memo(Header);
