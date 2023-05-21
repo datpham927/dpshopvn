@@ -1,14 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../store';
 // Define a type for the slice state
 
 // Define the initial state using that type
 interface actionInitial {
     openSearchResults: boolean;
+    openLogin:boolean
+    isLogin:boolean
 }
 const initialState: actionInitial = {
     openSearchResults: false,
+    openLogin:false,
+    isLogin:false
+    
 };
 
 export const actionSlice = createSlice({
@@ -19,9 +23,15 @@ export const actionSlice = createSlice({
         setOpenSearchResults: (state, action: PayloadAction<boolean>) => {
             state.openSearchResults = action.payload;
         },
+        setOpenLogin: (state, action: PayloadAction<boolean>) => {
+            state.openLogin = action.payload;
+        },
+        setIsLogin: (state, action: PayloadAction<boolean>) => {
+            state.isLogin = action.payload;
+        },
     },
 });
 
-export const { setOpenSearchResults } = actionSlice.actions;
+export const { setOpenSearchResults,setOpenLogin,setIsLogin } = actionSlice.actions;
 
 export default actionSlice.reducer;

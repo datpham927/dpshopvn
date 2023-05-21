@@ -2,14 +2,14 @@ import React  from 'react';
 import { useEffect, useState } from 'react';
 import logo from '../../assets/logo1.png';
 import { getCategories } from '../../services/apiCategory';
-import { category } from '../../interfaces/interfaces';
 import Search from './Search';
 import User from './User';
 import Cart from './Cart';
+import { Category } from '../../interfaces/interfaces';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {
-    const [categories, setCategories] = useState<category[]>();
+    const [categories, setCategories] = useState<Category[]>();
     useEffect(() => {
         const fetchCategory = async () => {
             const res = await getCategories();

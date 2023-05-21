@@ -29,10 +29,9 @@ const Search: React.FC = () => {
     const [limitHistory, setLimitHistory] = useState<number>(4);
     const { openSearchResults } = useAppSelector((state) => state.action);
     const [searchValue, setSearchValue] = useState<string>('');
-    const dispatch = useAppDispatch();
     const valueDebounce = useDebounce(searchValue, 200);
     const inputRef = useRef<HTMLInputElement>(null);
-
+    const dispatch = useAppDispatch();
     useEffect(() => {
         const fetchHistory = async () => {
             const res = await getSearchHistories();
@@ -198,6 +197,8 @@ const Search: React.FC = () => {
                 <button className="outline-none bg-[#0D5CB6] w-[150px] h-[40px] text-white rounded-r-[2px]">
                     <SearchIcon /> <span> Tìm kiếm </span>
                 </button>
+
+
             </div>
         </>
     );

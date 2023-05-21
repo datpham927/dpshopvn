@@ -1,6 +1,6 @@
-interface category {
+interface Category {
     category: string;
     categoryCode: string;
 }
 
-export type { category };
+export type { Category };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Login, Overlay } from '../component';
+import { Auth, Header,  Overlay } from '../component';
 
 interface DefaultLayoutProps {
     children: React.ReactNode;
@@ -10,7 +10,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
             <Header />
             <div className="flex flex-col mx-auto max-w-7xl">{children}</div>
             <Overlay />
-            <Login />
+            <Auth/>
         </div>
     );
 };

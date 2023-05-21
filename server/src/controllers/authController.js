@@ -10,7 +10,10 @@ const crypto = require("crypto")
 const sendVerificationEmail = async (req, res) => {
     try {
         const { email } = req.body
-        if (!email) throw new Error("Input required!")
+        if (!email) res.status(403).json({
+            success: false,
+            message: "Input required!"
+        })
         // create a random token string
         const token = randomTokenByCrypto(3)
         const hashToken = hashTokenByCrypto(token)
@@ -31,12 +34,12 @@ const sendVerificationEmail = async (req, res) => {
                 passwordTokenExpires: Date.now() + 20 * 60 * 1000
             }, { new: true })
         }
-        sendMail({
+        await sendMail({
             email, html: `<div >
             <p > Mã xác minh đăng ký tài khoản của bạn là
               <span style="color:blue;font-size:20px" >${token}</span> 
-              hiệu lực trong vào 5 phút, không chia sẽ mã này với người khác. </p>
-            </div>`, fullName: email.split("@")[0]
+              hiệu lực trong vào 5 phút, không chia sẽ mã này với người khác. Xin cảm ơn! </p>
+            </div>`, fullName: email?.split("@")[0]
         })
         res.status(200).json({
             success: true,

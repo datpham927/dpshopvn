@@ -1,9 +1,11 @@
 import actionReduce from './features/action/actionSlice';
+import userReduce from './features/user/userSlice';
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
     reducer: {
         action: actionReduce,
+        user:userReduce
     },
 });
 
