@@ -1,6 +1,6 @@
 import {Routes,Route} from "react-router-dom"
 import { path } from "../utils/const"
-import Home from "../pages/Home/Home"
+import Home from "../pages/homePage/HomePage"
 
 
 const RouterPage = () => {

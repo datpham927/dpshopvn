@@ -53,9 +53,6 @@ const deleteHistory=async (req, res) => {
         })
     }
 }
-
-
-
 const suggestResult = async (req, res) => {
     try {
         const response = await Product.find({ title: { $regex: `^${req.query.title}`, $options: 'i' } }).select("title _id").limit(10)

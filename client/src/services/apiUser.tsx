@@ -1,10 +1,8 @@
 import { httpRequest } from '../utils/httpRequest';
 
-const getAllProduct = async (params:object) => {
+const apiGetDetailUser = async () => {
     try {
-        const res = await httpRequest.get('product/all',{
-            params
-        });
+        const res = await httpRequest.get('user/user_detail');
         return res.data;
     } catch (error) {
         return {
@@ -13,5 +11,6 @@ const getAllProduct = async (params:object) => {
         }
     }
 };
+ 
 
-export { getAllProduct };
+export { apiGetDetailUser };

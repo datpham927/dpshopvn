@@ -16,3 +16,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.menu-user{
+   @apply text-base hover:bg-color_hover px-3 py-1 cursor-pointer    
+}

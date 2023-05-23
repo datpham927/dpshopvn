@@ -7,10 +7,15 @@ export const httpRequest = axios.create({
 // Add a request interceptor
 httpRequest.interceptors.request.use(
     function (config) {
-        // Do something before request is sent
-        config.headers.Authorization =
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDUwZDFmYjFkMTM5N2EyNTk1OWRjMTciLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODMyODgxNDIsImV4cCI6MTcxNDgyNDE0Mn0.w2Llt_QDXgQNGxi3D8fckDjm0OVhLXfydKvumABFIcE';
+            // Do something before request is sent
+        const access_token=localStorage.getItem("access_token")
+        if(!access_token){
+             return config;
+        }
+        config.headers.Authorization =JSON.parse(access_token)
+        // const user= 
         return config;
+
     },
     function (error) {
         // Do something with request error
