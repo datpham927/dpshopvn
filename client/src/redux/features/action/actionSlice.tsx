@@ -12,7 +12,6 @@ const initialState: actionInitial = {
     openSearchResults: false,
     openLogin:false,
     isLogin:false
-    
 };
 
 export const actionSlice = createSlice({

@@ -12,11 +12,10 @@ const Confirm: React.FC<ModeRegister> = (props) => {
     const [sentBack, setSentBack] = useState<boolean>(false);
     const [token, setToken] = useState<string>('');
     const [error, setError] = useState<string>('');
-    const { email } = useAppSelector((state) => state.user);
+    const { email } = useAppSelector((state) => state.auth);
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     useEffect(() => {
         let intervalId: number | undefined;
-
         if (waitingTime <= 30 && waitingTime >= 0) {
             intervalId = setInterval(() => {
                 setWaitingTime((prevWaitingTime) => prevWaitingTime - 1);
@@ -31,21 +30,22 @@ const Confirm: React.FC<ModeRegister> = (props) => {
     }, [waitingTime]);
 
     const handleSendBack = async () => {
+        
         const res = await apiSendEmail(email);
-        if (res.success) {
+        if (res?.success) {
             setSentBack(false);
             setWaitingTime(30);
             setError('');
             setToken('');
-        }
+        } 
     };
     const handleSummit = async () => {
-        const res = await apiConfirmEmail(email, token);
         if (!token) {
             setError('Vui lòng nhập mã xác minh(OTP)');
             return;
         }
-        if (!res.success) {
+        const res = await apiConfirmEmail(email, token);
+        if (!res?.success) {
             setError('Mã xác thực không hợp lệ.');
             return;
         }

@@ -1,28 +1,42 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { UserInterface } from '../../../interfaces/interfaces';
 // Define a type for the slice state
 
 // Define the initial state using that type
-interface actionInitial {
-    email: string;
-}
-const initialState: actionInitial = {
-    email: "",
-    
+
+const initialState: UserInterface = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    isAdmin: false,
+    address: '',
+    mobile: '',
+    avatar_url: '',
+    confirm: false,
+    totalProduct: 0,
 };
 
-export const actionSlice = createSlice({
-    name: 'action',
+export const userSlice = createSlice({
+    name: 'user',
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        setEmail: (state, action: PayloadAction<string>) => {
-            state.email = action.payload;
+        setDetailUser: (state, action) => {
+            const { firstName, lastName, email, isAdmin, address, mobile, avatar_url, confirm, totalProduct } =
+                action.payload;
+            (state.firstName = firstName),
+                (state.lastName = lastName),
+                (state.email = email),
+                (state.isAdmin = isAdmin),
+                (state.address = address),
+                (state.mobile = mobile),
+                (state.avatar_url = avatar_url),
+                (state.confirm = confirm),
+                (state.totalProduct = totalProduct);
         },
-     
     },
 });
 
-export const { setEmail } = actionSlice.actions;
+export const { setDetailUser } = userSlice.actions;
 
-export default actionSlice.reducer;
+export default userSlice.reducer;

@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import logoGoogle from '../../../assets/logoGoogle.png';
 import logoFb from '../../../assets/logoFb.png';
 import { apiSendEmail } from '../../../services/apiAuth';
-import { setIsLogin } from '../../../redux/features/action/actionSlice';
 import { useAppDispatch } from '../../../redux/hooks';
-import { setEmail } from '../../../redux/features/user/userSlice';
+import { setEmail } from '../../../redux/features/auth/authSlice';
+import { setIsLogin } from '../../../redux/features/action/actionSlice';
 
 
 interface ModeRegister{
     setModeRegister:React.Dispatch<React.SetStateAction<number>>,
-
 }
 const sendMail: React.FC<ModeRegister> = (props) => {
     const {  setModeRegister } = props;
@@ -32,14 +31,15 @@ const sendMail: React.FC<ModeRegister> = (props) => {
             return;
         }
         const res = await apiSendEmail(emailValue);
-        setError('');
-        if (!res.success) {
+        if (!res?.success) {
             setError('Tài khoản đã được đăng ký!');
             return;
         }
+        setError('');
         setModeRegister(1);
         dispatch(setEmail(emailValue));
     };
+
 
     return  <div className="flex flex-col gap-2 w-4/6 p-10 ">
                 <div className="flex flex-col gap-1">

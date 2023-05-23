@@ -28,8 +28,31 @@ const updateUser = async (req, res) => {
         })
     }
 }
+const currentUserDetail = async (req, res) => {
+    try {
+        if (!req.userId) return res.status(401).json({
+            success: false,
+            message: "id not found"
+        })
+        const user = await User.findById(req.userId).select("-password -verificationEmailToken -passwordTokenExpires -confirm")
+        if (!user) return res.status(401).json({
+            success: false,
+            message: "User not found"
+        })
+        return res.status(200).json({
+            success: true,
+            message: "successful",
+            data: user
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
 
-const detailUser = async (req, res) => {
+const adminUserDetail = async (req, res) => {
     try {
         const { id } = req.params
         if (!id) return res.status(401).json({
@@ -150,4 +173,7 @@ const deleteUser = async (req, res) => {
         })
     }
 }
-module.exports = { updateUser, updateUserByAdmin, detailUser, deleteUser, following, getAllUsers }
+
+
+module.exports = { updateUser, updateUserByAdmin, currentUserDetail,
+    adminUserDetail, deleteUser, following, getAllUsers }

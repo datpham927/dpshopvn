@@ -5,7 +5,10 @@ const getCategories = async () => {
         const res = await httpRequest.get('category/all_category');
         return res.data;
     } catch (error) {
-        console.log(error);
+        return {
+            success:false,
+            message:error
+        }
     }
 };
 

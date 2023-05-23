@@ -3,4 +3,16 @@ interface Category {
     categoryCode: string;
 }
 
-export type { Category };
+interface UserInterface {
+    firstName: string;
+    lastName: string;
+    email: string;
+    isAdmin: boolean;
+    address: string;
+    mobile: string;
+    avatar_url: string;
+    confirm: boolean;
+    totalProduct: number;
+}
+
+export type { Category ,UserInterface};

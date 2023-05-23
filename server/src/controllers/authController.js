@@ -10,7 +10,7 @@ const crypto = require("crypto")
 const sendVerificationEmail = async (req, res) => {
     try {
         const { email } = req.body
-        if (!email) res.status(403).json({
+        if (!email) return res.status(403).json({
             success: false,
             message: "Input required!"
         })
@@ -23,18 +23,22 @@ const sendVerificationEmail = async (req, res) => {
             // update token xác minh vào database (trường hợp muốn gửi lại token đến email khi token hết hạn)
             await User.findOneAndUpdate({ email, password: { $exists: false } }, {
                 verificationEmailToken: hashToken,
-                passwordTokenExpires: Date.now() + 30 * 1000
-            }, { new: true })
+                passwordTokenExpires: Date.now() + 5*60 * 1000
+            })
         } else {
             //kiểm tra account tồn tại chưa, nếu chưa thì create
             const user = await User.findOne({ email })
-            if (user) throw new Error("Account already exists!")
+            if (user) return res.status(200).json({
+                success: false,
+                message: "Account already exists!"
+            })
+
             await User.create({
                 email, verificationEmailToken: hashToken,
-                passwordTokenExpires: Date.now() + 20 * 60 * 1000
+                passwordTokenExpires: Date.now() + 5*60 * 1000
             }, { new: true })
         }
-        await sendMail({
+        sendMail({
             email, html: `<div >
             <p > Mã xác minh đăng ký tài khoản của bạn là
               <span style="color:blue;font-size:20px" >${token}</span> 
@@ -61,7 +65,10 @@ const confirmVerificationEmail = async (req, res) => {
         const user = await User.findOne({ email, passwordTokenExpires: { $gt: Date.now() } })
         const hashToken = hashTokenByCrypto(token)
         if (hashToken !== user?.verificationEmailToken) {
-            throw new Error("Confirm failed!")
+            res.status(403).json({
+                success: false,
+                message: "Confirm failed!"
+            })
         }
         user.passwordTokenExpires = null
         user.verificationEmailToken = null
@@ -116,7 +123,7 @@ const register = async (req, res) => {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        res.status(500).json({
+        res.status(200).json({
             success: true,
             message: "Register successfully!",
             access_token: `Bearer ${access_token}`
@@ -142,7 +149,7 @@ const login = async (req, res) => {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        res.status(500).json({
+        res.status(200).json({
             success: true,
             message: "Register successfully!",
             access_token: `Bearer ${access_token}`
@@ -231,9 +238,23 @@ const resetPassword = async (req, res) => {
 }
 
 
+const logOut = (req, res) => {
+    try {
+      res.clearCookie("refresh_token");
+      return res.status(200).json({
+        success: true,
+        message: "logout successfully",
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
 
 module.exports = {
     sendVerificationEmail, confirmVerificationEmail,
     deleteUnconfirmedUser, register, login, refreshToken,
-    sendGmailForgetPassword, resetPassword
+    sendGmailForgetPassword, resetPassword,logOut
 }

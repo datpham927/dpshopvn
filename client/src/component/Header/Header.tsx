@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import logo from '../../assets/logo1.png';
 import { getCategories } from '../../services/apiCategory';
@@ -6,6 +6,8 @@ import Search from './Search';
 import User from './User';
 import Cart from './Cart';
 import { Category } from '../../interfaces/interfaces';
+import { Link } from 'react-router-dom';
+import { path } from '../../utils/const';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {
@@ -13,7 +15,7 @@ const Header: React.FC = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             const res = await getCategories();
-            if (res.success) {
+            if (res?.success) {
                 setCategories(res.categories);
             }
         };
@@ -23,13 +25,16 @@ const Header: React.FC = () => {
     return (
         <div className="h-header w-full bg-primary z-[999]">
             <div className="w-full h-full flex flex-col max-w-7xl m-auto p-[10px] ">
-                <div className="flex w-full h-full items-center">
-                    <div className="flex-1">
-                        <img className="w-[150px] " src={logo} />
+                <div className="flex w-full h-full items-center ">
+                    <div className="flex justify-between w-9/12">
+                        <Link to={path.HOME}>
+                            {' '}
+                            <img className="w-[150px] " src={logo} />
+                        </Link>
+                        <Search />
                     </div>
-                    <Search />
-                    <div className="flex mx-5">
-                        <div className="flex text-white items-center gap-4">
+                    <div className="flex w-3/12 justify-end pr-2">
+                        <div className="flex text-white items-center gap-4 ">
                             <User />
                             <Cart />
                         </div>
@@ -37,7 +42,7 @@ const Header: React.FC = () => {
                     </div>
                 </div>
                 {/* content category */}
-                <div className="flex item-center ml-[18%] gap-4">
+                <div className="flex item-center ml-[16%] gap-4">
                     {categories?.map(
                         (c, i) =>
                             i < 5 && (
