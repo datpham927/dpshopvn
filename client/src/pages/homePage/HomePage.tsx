@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import Banners from './banners/Banners';
+const HomePage: React.FC = () => {
+    return (
+        <div>
+            <Banners />
+        </div>
+    );
+};
 
-const HomePage:React.FC = () => {
-  return (
-    <div>HomePage</div>
-  )
-}
-
-export default HomePage
+export default HomePage;

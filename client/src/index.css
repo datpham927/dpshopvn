@@ -17,6 +17,19 @@ body {
     padding: 0;
 }
 
-.menu-user{
-   @apply text-base hover:bg-color_hover px-3 py-1 cursor-pointer    
+.menu-user {
+    @apply text-base hover:bg-color_hover px-3 py-1 cursor-pointer;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: white;
+}
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after {
+    font-size: 30px;
+}
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 30px;
 }
