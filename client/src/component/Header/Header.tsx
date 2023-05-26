@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useEffect, useState } from 'react';
 import logo from '../../assets/logo1.png';
 import { getCategories } from '../../services/apiCategory';
@@ -28,7 +28,6 @@ const Header: React.FC = () => {
                 <div className="flex w-full h-full items-center ">
                     <div className="flex justify-between w-9/12">
                         <Link to={path.HOME}>
-                            {' '}
                             <img className="w-[150px] " src={logo} />
                         </Link>
                         <Search />
@@ -46,7 +45,7 @@ const Header: React.FC = () => {
                     {categories?.map(
                         (c, i) =>
                             i < 5 && (
-                                <a key={c.categoryCode} className="text-[13px] text-white cursor-pointer">
+                                <a key={c.category_code} className="text-[13px] text-white cursor-pointer">
                                     {c.category}
                                 </a>
                             ),
@@ -58,4 +57,4 @@ const Header: React.FC = () => {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export default React.memo(Header);
+export default memo(Header);

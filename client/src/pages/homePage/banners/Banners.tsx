@@ -38,7 +38,7 @@ const Banners: React.FC = () => {
                     })}
                 </Swiper>
             </div>
-            <div className="w-[26%] h-full   pl-4">
+            <div className=" w-[26%] h-full  pl-4">
                 <Swiper
                     autoplay={{
                         delay: 10000,
@@ -62,6 +62,7 @@ const Banners: React.FC = () => {
                         );
                     })}
                 </Swiper>
+              
             </div>
         </div>
     );
