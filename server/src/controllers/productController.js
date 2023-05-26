@@ -115,7 +115,7 @@ const getAllProducts = async (req, res) => {
         if (req.query.category) {
             newQueryString.category = { category }
         }
-        let products = Product.find(newQueryString).select("_id image title slug price discount userId solid")
+        let products = Product.find(newQueryString).select("-categoryCode -details -description -views -userId -userBought -size")
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
             products = products.sort(sortBy)

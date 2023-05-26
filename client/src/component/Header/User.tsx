@@ -4,9 +4,9 @@ import noUser from '../../assets/noUser.png';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setOpenLogin } from '../../redux/features/action/actionSlice';
 import { apiLogout } from '../../services/apiAuth';
-import { showNotification } from '../showNotification/showNotification';
 import { setDetailUser } from '../../redux/features/user/userSlice';
 import { setIsLoginSuccess } from '../../redux/features/auth/authSlice';
+import { showNotification } from '..';
 const User: React.FC = () => {
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);

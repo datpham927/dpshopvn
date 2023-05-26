@@ -1,6 +1,20 @@
 interface Category {
     category: string;
-    categoryCode: string;
+    category_code: string;
+    category_image: string;
+    category_slug: string;
+}
+interface CartProduct {
+    image: Array<string>;
+    slug: string;
+    title: string;
+    Star: number;
+    sold: number;
+    inStock: number;
+    discount: number;
+    oldPrice: number;
+    newPrice: number;
+    _id: string;
 }
 
 interface UserInterface {
@@ -15,4 +29,4 @@ interface UserInterface {
     totalProduct: number;
 }
 
-export type { Category ,UserInterface};
+export type { Category, UserInterface, CartProduct };

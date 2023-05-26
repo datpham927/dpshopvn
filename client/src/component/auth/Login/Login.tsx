@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { apiLogin } from '../../../services/apiAuth';
-import { showNotification } from '../../showNotification/showNotification';
 import { setOpenLogin } from '../../../redux/features/action/actionSlice';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setIsLoginSuccess } from '../../../redux/features/auth/authSlice';
+import { showNotification } from '../..';
 const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [email, setEmail] = useState<string>('');
