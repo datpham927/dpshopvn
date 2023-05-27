@@ -40,10 +40,8 @@ const getComment = async (req, res) => {
 const editComment = async (req, res) => {
     try {
         const { id } = req.params
-        console.log(req.body)
         if (Object.keys(req.body).length === 0) return res.status(401).json({ success: false, message: "Input required!" })
         const comment = await Reviews.findByIdAndUpdate(id, req.body, { new: true })
-        console.log(comment)
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Update successfully" : "Update failed",

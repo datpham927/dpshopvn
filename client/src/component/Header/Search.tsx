@@ -19,7 +19,7 @@ interface resultSuggest {
     _id: string;
 }
 interface products extends resultSuggest {
-    image: string[];
+    images: string[];
     slug: string;
 }
 const Search: React.FC = () => {
@@ -163,7 +163,7 @@ const Search: React.FC = () => {
                                 key={s?._id}
                                 className="flex flex-col w-full hover:shadow-search items-center py-1 px-3 cursor-pointer gap-2 "
                             >
-                                <img className="w-1/2 rounded-md" src={s?.image[0]} />
+                                <img className="w-1/2 rounded-md" src={s?.images[0]} />
                                 <span className="w-full text-xs  truncate ">{s?.title}</span>
                             </Link>
                         );

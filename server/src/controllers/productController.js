@@ -130,7 +130,7 @@ const getAllProducts = async (req, res) => {
         const totalProducts = await Product.count()
         return res.status(201).json({
             success: newProducts ? true : false,
-            totalPage: limit ? Math.ceil(totalProducts / limit) : 0,
+            totalPage: limit ? Math.ceil(totalProducts / limit)-1 : 0,
             currentPage: page,
             products: newProducts ? newProducts : null,
         })
@@ -164,7 +164,7 @@ const getAllProductFollowing = async (req, res) => {
         })
     }
 }
-//insert products data
+// // // insert products data    
 // const Bo_qua_tang = require("../../dataInsert/Bo-qua-tang.json")
 // const Cham_soc_thu_cung = require("../../dataInsert/Cham-soc-thu-cung.json")
 // const DJo_An_Vat = require("../../dataInsert/DJo-An-Vat.json")
@@ -186,14 +186,18 @@ const getAllProductFollowing = async (req, res) => {
 // const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82"]
 // const insertProductsData = async (req, res) => {
 //     try {
+//         const star = [3.5, 4, 4.5, 5]
+//         let indexStar = 0
 //         const response = await Promise.all(data.map(async (p, i) => {
 //             const categoryCode = await autoCode(categories[i].category)
 //             return p.map(async (item, i) => {
+//                 indexStar =  Math.floor(Math.random() * 3)
 //                 return await Product({
-//                     image: item.images,
+//                     images: item.images,
 //                     title: item.title,
+//                     brand: item.brand,
 //                     slug: slugify(item.title),
-//                     Star: item.star,
+//                     star: star[indexStar],
 //                     sold: item.solid?.replace(".", ""),
 //                     oldPrice: item.oldPrice?.replace(".", ""),
 //                     newPrice: item.newPrice?.replace(".", ""),

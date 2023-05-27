@@ -1,5 +1,5 @@
 import React from 'react';
-import dogcute from '../../../assets/dogcute.jpg';
+import {dogcute} from '../../../assets';
 
 const Right: React.FC = () => {
     return (

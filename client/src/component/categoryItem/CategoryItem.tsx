@@ -6,7 +6,7 @@ const CategoryItem:React.FC<{props:Category}> = ({props}) => {
     return (
         <a
             href={`/${category_slug}?category=${category_code}`}
-            className="flex flex-col gap-2 w-full h-full px-1  items-center cursor-pointer hover:translate-y-[-4px] duration-500"
+            className="flex flex-col gap-2 w-full h-full  px-3  items-center cursor-pointer hover:translate-y-[-4px] duration-500"
         >
             <div className="w-2/3">
                 <img className="w-full h-full  px-3 rounded-lg object-fill" src={category_image} />

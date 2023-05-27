@@ -27,9 +27,9 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
 
     return (
         <>
-            <div className="flex flex-col w-screen h-full mx-auto  bg-[#F5F5FA]">
+            <div className="flex flex-col w-screen h-full mx-auto  bg-background_primary">
                 <Header />
-                <main className="flex flex-col h-full max-w-7xl  px-5 py-3 mx-auto ">{children}</main>
+                <main className="flex flex-col h-full max-w-7xl  px-5 py-3 mx-auto mt-4">{children}</main>
                 <Overlay />
                 <Auth />
             </div>

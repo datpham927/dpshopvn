@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import noUser from '../../assets/noUser.png';
+import {noUser} from '../../assets';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setOpenLogin } from '../../redux/features/action/actionSlice';
 import { apiLogout } from '../../services/apiAuth';
