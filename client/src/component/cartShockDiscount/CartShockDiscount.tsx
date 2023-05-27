@@ -1,17 +1,14 @@
 import React from 'react';
-import fire_icon from '../../assets/fire_icon.svg';
+import {fire_icon} from '../../assets';
 import { CartProduct } from '../../interfaces/interfaces';
 import { formatMoney } from '../../utils/formatMoney';
 
 const CartShockDiscount: React.FC<{ product: CartProduct }> = ({ product }) => {
-    const { discount, image, newPrice, inStock, sold } = product;
-    // console.log(inStock*100/sold)
-    console.log(inStock, sold);
-    const percent = Math.floor((inStock * 100) / sold);
+    const { discount, images, newPrice} = product;
     return (
         <div className="flex flex-col w-full h-full gap-2 px-3  rounded-sm hover:shadow-cart cursor-pointer">
-            <div>
-                <img className="rounded-md" src={image[1]} />
+            <div className='px-4 rounded-md overflow-hidden'>
+                <img className="w-full h-full object-contain " src={images[1]} />
             </div>
             <div className="flex w-full gap-2 text-red_custom justify-center items-center">
                 <p className="text-base font-medium ">{formatMoney(newPrice)}</p>

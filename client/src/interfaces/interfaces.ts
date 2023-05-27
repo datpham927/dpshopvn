@@ -5,10 +5,10 @@ interface Category {
     category_slug: string;
 }
 interface CartProduct {
-    image: Array<string>;
+    images: Array<string>;
     slug: string;
     title: string;
-    Star: number;
+    star: number;
     sold: number;
     inStock: number;
     discount: number;

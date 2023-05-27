@@ -1,14 +1,15 @@
 const mongoose = require("mongoose")
 
 const productSchema = mongoose.Schema({
-    image: { type: Array, default: [], require: true },
+    images: { type: Array, default: [], require: true },
     title: { type: String, require: true },
+    brand: { type: String, require: true },
     slug: {
         type: String, require: true,
         lowercase: true
     },
     size: { type: Array, default: ["2XL,L,M,XL"] },
-    Star: { type: Number, default: 0 },
+    star: { type: Number, default: 0 },
     sold: { type: Number, default: 0 },
     userBought: { type: Array, default: [] },
     oldPrice: { type: Number, default: 0 },

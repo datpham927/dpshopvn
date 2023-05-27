@@ -16,7 +16,8 @@ export default {
         bgSecondary: "rgb(219, 238, 255)",
         "color_hover": "rgba(39, 39, 42, 0.12)",
         "red_custom":"rgb(255,66,78)",
-        "red_lighter_custom":"rgb(255, 170, 175)"
+        "red_lighter_custom":"rgb(255, 170, 175)",
+        "background_primary":"#F5F5FA"
       },
       height: {
         header: "100px",

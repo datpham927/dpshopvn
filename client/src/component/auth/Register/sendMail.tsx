@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import logoGoogle from '../../../assets/logoGoogle.png';
-import logoFb from '../../../assets/logoFb.png';
+import { logoFb,logoGoogle} from '../../../assets';
 import { apiSendEmail } from '../../../services/apiAuth';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setEmail } from '../../../redux/features/auth/authSlice';

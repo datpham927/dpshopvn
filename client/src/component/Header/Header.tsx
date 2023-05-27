@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { useEffect, useState } from 'react';
-import logo from '../../assets/logo1.png';
+import {logo} from '../../assets';
 import { getCategories } from '../../services/apiCategory';
 import Search from './Search';
 import User from './User';
