@@ -3,11 +3,11 @@ import {fire_icon} from '../../assets';
 import { CartProduct } from '../../interfaces/interfaces';
 import { formatMoney } from '../../utils/formatMoney';
 
-const CartShockDiscount: React.FC<{ product: CartProduct }> = ({ product }) => {
+const CardShockDiscount: React.FC<{ product: CartProduct }> = ({ product }) => {
     const { discount, images, newPrice} = product;
     return (
         <div className="flex flex-col w-full h-full gap-2 px-3  rounded-sm hover:shadow-cart cursor-pointer">
-            <div className='px-4 rounded-md overflow-hidden'>
+            <div className='w-2/3 rounded-md overflow-hidden mx-auto'>
                 <img className="w-full h-full object-contain " src={images[1]} />
             </div>
             <div className="flex w-full gap-2 text-red_custom justify-center items-center">
@@ -22,4 +22,4 @@ const CartShockDiscount: React.FC<{ product: CartProduct }> = ({ product }) => {
     );
 };
 
-export default CartShockDiscount;
+export default CardShockDiscount;

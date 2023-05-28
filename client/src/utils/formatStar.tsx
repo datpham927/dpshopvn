@@ -8,7 +8,6 @@ export const formatStar = (star: number) => {
         if (i <= star) {
             return <StarRateIcon style={{ fontSize: '14px', color: '#FDD835' }} />;
         } else {
-            console.log(i ,"<", star," && ",star,"<", i + 1)
             if (i-1 < star && star < i ) {
 
                 return <StarHalfIcon style={{ fontSize: '14px', color: '#FDD835' }} />;

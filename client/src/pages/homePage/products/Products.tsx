@@ -8,27 +8,50 @@ const Products: React.FC = () => {
     const [products, setProduct] = useState<CartProduct[]>([]);
     const [hiddenButton, setHiddenButton] = useState<boolean>(false);
     const [page, setPage] = useState<number>(0);
+    const [optionTab, setOptionTab] = useState<number>(1);
+
+    useEffect(() => {
+        setProduct([]);
+    }, [optionTab]);
     useEffect(() => {
         const fetchProducts = async () => {
-            const res = await getAllProduct({ limit:30, page });
+            const res =
+                optionTab === 1
+                    ? await getAllProduct({ limit: 30, page })
+                    : optionTab === 2
+                    ? await getAllProduct({ limit: 30, 'newPrice[lte]': 99000, page })
+                    : optionTab === 3
+                    ? await getAllProduct({ sort: '-createdAt', limit: 30, page })
+                    : optionTab === 4
+                    ? await getAllProduct({ sort: '-sold', limit: 30, page })
+                    : await getAllProduct({ 'newPrice[lte]': 50000, limit: 30, page });
             res.totalPage === page && setHiddenButton(true);
             res.success && setProduct((p) => [...p, ...res.products]);
         };
         fetchProducts();
-    }, [page]);
+    }, [page, optionTab]);
+
+    const header = (
+        <div className="flex flex-col gap-1 w-full h-full mt-[-15px]  sticky top-0 right-0 bg-background_primary pt-4 pb-1  z-100">
+            <div className="px-4 py-2 rounded-sm text-xl font-normal bg-white">Gợi ý hôm nay</div>
+            <div className="grid grid-cols-8 gap-4 ">
+                {searchUtility.map((e) => (
+                    <div
+                        onClick={() => setOptionTab(e.id)}
+                        className={`flex flex-col gap-1 p-1 ${
+                            optionTab == e.id ? 'bg-bgSecondary border-primary' : 'bg-white'
+                        }  rounded-[4px] justify-center items-center cursor-pointer border-[1px] border-transparent border-solid  hover:border-primary`}
+                    >
+                        <img className="w-[50px]" src={e.image} />
+                        <span className="text-sm text-primary">{e.title}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
     return (
         <div className="w-full h-full ">
-            <div className="flex flex-col gap-1 w-full h-full mt-[-15px]  sticky top-0 right-0 bg-background_primary pt-4 pb-1  z-100">
-                <div className="px-4 py-2 rounded-sm text-xl font-normal bg-white">Gợi ý hôm nay</div>
-                <div className="grid grid-cols-8 gap-4 ">
-                    {searchUtility.map((e) => (
-                        <div className="flex flex-col gap-1 p-1 bg-white rounded-[4px] justify-center items-center cursor-pointer border-[1px] border-transparent border-solid hover:border-primary">
-                            <img className="w-[50px]" src={e.image} />
-                            <span className="text-sm text-primary">{e.title}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            {header}
             <div className="flex flex-col bg-white pb-8 gap-10">
                 <div className="grid grid-cols-6 ">
                     {products.map((p) => (

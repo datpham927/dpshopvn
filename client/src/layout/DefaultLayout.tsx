@@ -12,19 +12,32 @@ interface DefaultLayoutProps {
 }
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     const dispatch = useAppDispatch();
-  // chi tiết user
+    // chi tiết user
     useEffect(() => {
         const fetchApiDetailUser = async () => {
             const res = await apiGetDetailUser();
             if (res.success) {
-                dispatch(setIsLoginSuccess(true))
+                dispatch(setIsLoginSuccess(true));
                 dispatch(setDetailUser(res.data));
             }
         };
         fetchApiDetailUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    const toastContainer = (
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+        />
+    );
     return (
         <>
             <div className="flex flex-col w-screen h-full mx-auto  bg-background_primary">
@@ -33,18 +46,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 <Overlay />
                 <Auth />
             </div>
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
+            {toastContainer}
         </>
     );
 };
