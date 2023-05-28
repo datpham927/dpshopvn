@@ -15,12 +15,12 @@ export const searchUtility = [
     {
         id: 2,
         image: bachhoa,
-        title: 'Bách hóa dưới 199k',
+        title: 'Bách hóa dưới 99k',
     },
     {
         id: 3,
         image: dealsieuhot,
-        title: 'Deal siêu hot',
+        title: 'Siêu hot',
     },
     {
         id: 4,
