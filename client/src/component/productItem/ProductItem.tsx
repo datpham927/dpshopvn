@@ -5,7 +5,6 @@ import { formatMoney } from '../../utils/formatMoney';
 
 const ProductItem: React.FC<{ props: CartProduct }> = ({ props }) => {
     const { star, discount, images, newPrice, title ,sold} = props;
-    console.log(newPrice)
     return (
         <div className=" w-full h-full  px-3 hover:shadow-cart cursor-pointer">
             <div className="flex w-2/3 h-[170px] mx-auto my-2">
