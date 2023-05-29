@@ -145,8 +145,9 @@ const login = async (req, res) => {
         if (!confirmPassword) throw new Error("Incorrect account or password!")
         const access_token = generateAccessToken(user._id, user.isAdmin)
         const refresh_token = generateRefreshToken(user._id)
-        res.cookie("refresh_token", `Bearer ${refresh_token}`, {
+        await res.cookie("refresh_token", `Bearer ${refresh_token}`, {
             httpOnly: true,
+            secure: false,
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         res.status(200).json({
@@ -164,10 +165,14 @@ const login = async (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         const cookie = req.cookies
-        const refresh_token = cookie.refresh_token.split(" ")[1]
-        const response = verifyRefreshToken(refresh_token)
+       
+        if (!cookie?.refresh_token) return res.status(401).json({
+            success: false,
+            message: "Cookie required!"
+        })
+        const response = verifyRefreshToken(cookie?.refresh_token)
         if (!response) {
-            res.status(403).json({
+            return res.status(403).json({
                 success: false,
                 message: "Verification failed"
             })
@@ -179,7 +184,10 @@ const refreshToken = async (req, res) => {
             access_token
         })
     } catch (error) {
-
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
     }
 }
 //-------------

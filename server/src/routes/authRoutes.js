@@ -8,7 +8,7 @@ router.put("/confirm", authController.confirmVerificationEmail)
 router.delete("/delete/account", authController.deleteUnconfirmedUser)
 router.put("/register", authController.register)
 router.post("/login", authController.login)
-router.get("/refresh_token", authController.refreshToken)
+router.post("/refresh_token", authController.refreshToken)
 router.post("/logout", [verifyAccessToken], authController.logOut)
 
 //----- Forgot password

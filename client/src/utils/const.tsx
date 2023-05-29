@@ -1,9 +1,10 @@
 import { bachhoa, danhchoban, dealsieuhot, hangmoi, revodoi } from '../assets';
 
 export const path = {
-    HOME: '/',
-    REGISTER: '/register',
     LOGIN: '/login',
+    REGISTER: '/register',
+    HOME: '/',
+    DETAILPRODUCT:"/:slug"
 };
 
 export const searchUtility = [

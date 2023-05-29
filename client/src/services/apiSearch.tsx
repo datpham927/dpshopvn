@@ -1,8 +1,8 @@
-import { httpRequest } from '../utils/httpRequest';
+import { httpRequest ,axiosJWT} from '../utils/httpRequest';
 
 const addSearchHistory = async (text: string) => {
     try {
-        const res = await httpRequest.post('search/add', { text });
+        const res = await axiosJWT.post('search/add', { text });
         return res.data;
     } catch (error) {
         return {
@@ -14,7 +14,7 @@ const addSearchHistory = async (text: string) => {
 
 const getSearchHistories = async () => {
     try {
-        const res = await httpRequest.get('search/all_histories');
+        const res = await axiosJWT.get('search/all_histories');
         return res.data;
     } catch (error) {
         return {
@@ -23,6 +23,18 @@ const getSearchHistories = async () => {
         }
     }
 };
+const deleteSearchHistory = async (id: string) => {
+    try {
+        const res = await axiosJWT.delete(`search/${id}/update`);
+        return res.data;
+    } catch (error) {
+        return {
+            success:false,
+            message:error
+        }
+    }
+};
+// ----------------------
 
 const getSuggestResult = async (title: string) => {
     try {
@@ -39,15 +51,5 @@ const getSuggestResult = async (title: string) => {
         }
     }
 };
-const deleteSearchHistory = async (id: string) => {
-    try {
-        const res = await httpRequest.delete(`search/${id}/update`);
-        return res.data;
-    } catch (error) {
-        return {
-            success:false,
-            message:error
-        }
-    }
-};
+
 export { addSearchHistory, getSearchHistories, getSuggestResult ,deleteSearchHistory};

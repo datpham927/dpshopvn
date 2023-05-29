@@ -10,3 +10,4 @@ export { default as dealFlashIcon } from './logo/dealFlashIcon.svg';
 export { default as dogcute } from './image/dogcute.jpg';
 export { default as noUser } from './image/noUser.png';
 export { default as fire_icon } from './logo/fire_icon.svg';
+export { default as logo_dpshopvn } from './logo/logo_dpshopvn.png';

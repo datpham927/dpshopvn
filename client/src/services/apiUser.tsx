@@ -1,8 +1,8 @@
-import { httpRequest } from '../utils/httpRequest';
+import { axiosJWT } from '../utils/httpRequest';
 
 const apiGetDetailUser = async () => {
     try {
-        const res = await httpRequest.get('user/user_detail');
+        const res = await axiosJWT.get('user/user_detail');
         return res.data;
     } catch (error) {
         return {
