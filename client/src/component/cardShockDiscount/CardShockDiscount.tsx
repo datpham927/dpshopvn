@@ -1,14 +1,15 @@
 import React from 'react';
 import {fire_icon} from '../../assets';
-import { CartProduct } from '../../interfaces/interfaces';
+import { CardProduct } from '../../interfaces/interfaces';
 import { formatMoney } from '../../utils/formatMoney';
+import { Link } from 'react-router-dom';
 
-const CardShockDiscount: React.FC<{ product: CartProduct }> = ({ product }) => {
-    const { discount, images, newPrice} = product;
+const CardShockDiscount: React.FC<{ product: CardProduct }> = ({ product }) => {
+    const { discount, image_url,slug,_id, newPrice} = product;
     return (
-        <div className="flex flex-col w-full h-full gap-2 px-3  rounded-sm hover:shadow-cart cursor-pointer">
+        <Link  to={`${slug}/${_id}`} className="flex flex-col w-full h-full gap-2 px-3  rounded-sm hover:shadow-cart cursor-pointer">
             <div className='w-2/3 rounded-md overflow-hidden mx-auto'>
-                <img className="w-full h-full object-contain " src={images[1]} />
+                <img className="w-full h-full object-contain " src={image_url} />
             </div>
             <div className="flex w-full gap-2 text-red_custom justify-center items-center">
                 <p className="text-base font-medium ">{formatMoney(newPrice)}</p>
@@ -18,7 +19,7 @@ const CardShockDiscount: React.FC<{ product: CartProduct }> = ({ product }) => {
                     Mua ngay kẻo hết
                 <img className="absolute bottom-3 left-0 w-[30px]" src={fire_icon} />
             </button>
-        </div>
+        </Link>
     );
 };
 

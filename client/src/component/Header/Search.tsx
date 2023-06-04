@@ -159,8 +159,9 @@ const Search: React.FC = () => {
                     {products?.map((s) => {
                         return (
                             <Link
-                                to={'/hihi'}
+                                to={`${s.slug}/${s._id}`}
                                 key={s?._id}
+                                onClick={()=> dispatch(setOpenSearchResults(false))}
                                 className="flex flex-col w-full hover:shadow-search items-center py-1 px-3 cursor-pointer gap-2 "
                             >
                                 <img className="w-1/2 rounded-md" src={s?.images[0]} />

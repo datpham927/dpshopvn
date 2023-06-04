@@ -4,7 +4,7 @@ export const path = {
     LOGIN: '/login',
     REGISTER: '/register',
     HOME: '/',
-    DETAILPRODUCT:"/:slug"
+    DETAILPRODUCT:"/:slug/:pid"
 };
 
 export const searchUtility = [
