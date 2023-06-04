@@ -85,10 +85,13 @@ const detailProduct = async (req, res) => {
                 message: "Id required!"
             })
         }
-        const product = await Product.findById(req.params.pid)
+        const option="_id firstName lastName followers avatar_url userId email"
+        const product = await Product.findById(req.params.pid).populate("userId",option)
         //cập nhật số lượng người truy cập
-        if (product && !product.views.includes(req.userId)) {
-            product.views.push(req.userId)
+        if (req?.userId) {
+            if (product && !product.views.includes(req?.userId)) {
+                product.views.push(req.userId)
+            }
         }
         return res.status(201).json({
             success: product ? true : false,
@@ -115,7 +118,7 @@ const getAllProducts = async (req, res) => {
         if (req.query.category) {
             newQueryString.category = { category }
         }
-        let products = Product.find(newQueryString).select("-categoryCode -details -description -views -userId -userBought -size")
+        let products = Product.find(newQueryString).select("-categoryCode -details -description -views -userId -userBought -size -infoProduct")
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
             products = products.sort(sortBy)
@@ -128,12 +131,12 @@ const getAllProducts = async (req, res) => {
         products = products.limit(limit).skip(skip)
         const totalProducts = await Product.countDocuments(newQueryString)
         const newProducts = await products
-    
+
         return res.status(201).json({
             success: newProducts ? true : false,
-            totalPage: limit ? Math.ceil(totalProducts / limit)-1 : 0,
+            totalPage: limit ? Math.ceil(totalProducts / limit) - 1 : 0,
             currentPage: page,
-            total_products:totalProducts,
+            total_products: totalProducts,
             products: newProducts ? newProducts : null,
         })
     } catch (error) {
@@ -193,20 +196,22 @@ const insertProductsData = async (req, res) => {
         const response = await Promise.all(data.map(async (p, i) => {
             const categoryCode = await autoCode(categories[i].category)
             return p.map(async (item, i) => {
-                indexStar =  Math.floor(Math.random() * 3)
+                indexStar = Math.floor(Math.random() * 3)
                 return await Product({
-                    images: item.images,
+                    image_url:item.image.split(",")[0],
+                    images: item?.images&&item?.images.map(i=> i.split(",")[0]
+                    .replace("100x100","750x750")).filter(e=> !e.includes('w100')&&!e.includes("upload")&&!e.includes("w1080")),
                     title: item.title,
                     brand: item.brand,
                     slug: slugify(item.title),
                     star: star[indexStar],
-                    sold: item.solid?.replace(".", ""),
-                    oldPrice: item.oldPrice?item.oldPrice?.replace(".", ""):150000,
-                    newPrice:  item.newPrice?item.newPrice?.replace(".", ""):200000,
+                    sold: item.solid?item.solid?.replace(".", ""):0,
+                    oldPrice: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
+                    newPrice: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
                     inStock: 1000,
-                    discount: item.discount?item.discount:15,
+                    discount: item.discount ? item.discount : 15,
                     categoryCode: categoryCode,
-                    details: convertArrToObject(item.detail),
+                    infoProduct: convertArrToObject(item.detail),
                     userId: user[i % 2],
                     description: item.description
                 }).save()

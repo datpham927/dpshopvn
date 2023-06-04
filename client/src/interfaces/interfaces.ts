@@ -4,7 +4,8 @@ interface Category {
     category_image: string;
     category_slug: string;
 }
-interface CartProduct {
+interface CardProduct {
+    image_url:string,
     images: Array<string>;
     slug: string;
     title: string;
@@ -15,6 +16,27 @@ interface CartProduct {
     oldPrice: number;
     newPrice: number;
     _id: string;
+}
+
+interface ProductDetail extends CardProduct {
+    description: Array<string>;
+    brand: string;
+    categoryCode:string,
+    userBought: Array<string>;
+    infoProduct: [
+        {
+            name: string;
+            value: string;
+        },
+    ];
+    userId: {
+        _id: string;
+        firstName: string;
+        lastName: string;
+        followers: Array<string>;
+        avatar_url: string;
+        email: string;
+    };
 }
 
 interface UserInterface {
@@ -29,4 +51,4 @@ interface UserInterface {
     totalProduct: number;
 }
 
-export type { Category, UserInterface, CartProduct };
+export type { Category, UserInterface, CardProduct, ProductDetail };

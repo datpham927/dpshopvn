@@ -24,7 +24,7 @@ const Header: React.FC = () => {
 
     return (
         <header className="h-header w-full bg-primary z-[999]">
-            <div className="w-full h-full flex flex-col max-w-7xl m-auto p-[10px] ">
+            <div className="w-full h-full flex flex-col max-w-7xl min-w-[1280px] m-auto p-[10px] ">
                 <div className="flex w-full h-full items-center ">
                     <div className="flex justify-between w-9/12">
                         <Link to={path.HOME}>

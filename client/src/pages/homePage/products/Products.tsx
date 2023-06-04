@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { searchUtility } from '../../../utils/const';
 import { getAllProduct } from '../../../services/apiProduct';
-import { CartProduct } from '../../../interfaces/interfaces';
+import { CardProduct } from '../../../interfaces/interfaces';
 import ProductItem from '../../../component/productItem/ProductItem';
 
 const Products: React.FC = () => {
-    const [products, setProduct] = useState<CartProduct[]>([]);
+    const [products, setProduct] = useState<CardProduct[]>([]);
     const [hiddenButton, setHiddenButton] = useState<boolean>(false);
     const [page, setPage] = useState<number>(0);
     const [optionTab, setOptionTab] = useState<number>(1);

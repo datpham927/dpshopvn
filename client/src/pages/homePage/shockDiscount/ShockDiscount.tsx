@@ -3,11 +3,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import {  Navigation} from 'swiper';
 import {dealFlashIcon} from '../../../assets';
 import { getAllProduct } from '../../../services/apiProduct';
-import { CartProduct } from '../../../interfaces/interfaces';
+import { CardProduct } from '../../../interfaces/interfaces';
 import { CartShockDiscount } from '../../../component';
 
 const ShockDiscount: React.FC = () => {
-    const [products, setProducts] = useState<CartProduct[]>([]);
+    const [products, setProducts] = useState<CardProduct[]>([]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -31,6 +31,7 @@ const ShockDiscount: React.FC = () => {
                     slidesPerView={6}
                     loop={false}
                     allowTouchMove={false}
+                    slidesPerGroup={3}
                     navigation={true}
                     modules={[Navigation]}
                     className="mySwiper"

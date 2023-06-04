@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 
 const productSchema = mongoose.Schema({
+    image_url: { type: String, require: true },
     images: { type: Array, default: [], require: true },
     title: { type: String, require: true },
     brand: { type: String, require: true },
@@ -8,7 +9,6 @@ const productSchema = mongoose.Schema({
         type: String, require: true,
         lowercase: true
     },
-    size: { type: Array, default: ["2XL,L,M,XL"] },
     star: { type: Number, default: 0 },
     sold: { type: Number, default: 0 },
     userBought: { type: Array, default: [] },
@@ -17,7 +17,7 @@ const productSchema = mongoose.Schema({
     inStock: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
     categoryCode: { type: String, default: "", require: true },
-    details: [{
+    infoProduct: [{
         name: String,
         value: String
     }],
