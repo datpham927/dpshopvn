@@ -7,6 +7,7 @@ import { IconExcept, noUser } from '../../../../assets';
 import { formatMoney } from '../../../../utils/formatMoney';
 import { formatStar } from '../../../../utils/formatStar';
 import { ProductDetail } from '../../../../interfaces/interfaces';
+import ButtonOutline from '../../../../component/buttonOutline/ButtonOutline';
 
 const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     const [quantity, setQuantity] = useState<number>(0);
@@ -26,19 +27,23 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                 <span className="text-base font-medium"> {productDetail?.userId.followers.length}</span>
             </div>
             <div className="flex gap-2">
-                <button className="flex gap-1 text-sm font-medium  items-center p-2 rounded-[4px]  border-[1px] border-solid border-primary text-primary  hover:bg-opacity-70">
+                <ButtonOutline>
                     <CardGiftcardIcon fontSize="small" />
                     Xem shop
-                </button>
-                <button className="flex gap-1 text-sm font-medium  items-center p-2 rounded-[4px]  border-[1px] border-solid border-primary text-primary  hover:bg-opacity-70">
+                </ButtonOutline>
+                <ButtonOutline>
                     <AddIcon fontSize="small" />
                     Theo dõi
-                </button>
+                </ButtonOutline>
             </div>
-            <button className="flex gap-1 mt-4 text-sm w-full justify-center font-medium  items-center p-2 rounded-[4px]  border-[1px] border-solid border-red_custom text-red_custom  hover:bg-opacity-70">
+            {/* <button className="flex gap-1 mt-4 text-sm w-full justify-center font-medium  items-center p-2 rounded-[4px]  border-[1px] border-solid border-red_custom text-red_custom  hover:bg-opacity-70">
                 <MessageIcon fontSize="small" />
                 Chat ngay
-            </button>
+            </button> */}
+            <ButtonOutline className="w-full border-red_custom mt-4  justify-center text-red_custom">
+                <MessageIcon fontSize="small" />
+                Chat ngay
+            </ButtonOutline>
         </div>
     );
 
@@ -109,11 +114,10 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                 </div>
                             </div>
                             <div className="flex gap-4 mt-4">
-                                <button className="flex gap-2 text-lg px-4 py-2 rounded-sm  text-red-700 border-[1px] border-solid border-red_custom bg-[#FBEBED] hover:bg-opacity-70">
+                                <ButtonOutline>
                                     <ShoppingCartOutlinedIcon />
                                     Thêm vào giỏ hàng
-                                </button>
-
+                                </ButtonOutline>
                                 <button className="flex gap-2 text-lg px-4 py-2 rounded-sm text-white bg-red_custom hover:bg-opacity-70">
                                     Mua ngay
                                 </button>

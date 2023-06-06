@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { apiProductDetail } from '../../services/apiProduct';
 import { ProductDetail } from '../../interfaces/interfaces';
 import { SimilarProducts } from './similarProducts/SimilarProducts';
+import ProductInfo from './productInfo/ProductInfo';
+import ReviewsProduct from './reviewsProduct/ReviewsProduct';
 
 const DetailPage: React.FC = () => {
     const [productDetail, setProductDetail] = useState<ProductDetail>({
@@ -39,10 +41,12 @@ const DetailPage: React.FC = () => {
     }, [pid]);
 
     return (
-        <div>
+        <>
             <HeaderDetail productDetail={productDetail} />
             <SimilarProducts categoryCode={productDetail.categoryCode} />
-        </div>
+            <ProductInfo productDetail={productDetail} />
+            <ReviewsProduct pid={productDetail._id} userBought={productDetail.userBought} />
+        </>
     );
 };
 
