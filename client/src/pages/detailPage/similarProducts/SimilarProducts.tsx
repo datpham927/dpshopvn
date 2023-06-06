@@ -15,9 +15,9 @@ export const SimilarProducts: React.FC<{ categoryCode: string }> = ({ categoryCo
         categoryCode && fetchApi();
     }, [categoryCode]);
     return (
-        <div className="p-3 rounded-sm bg-white">
-            <div className='text-3xl'>Sản Phẩm Tương Tự</div>
-            <div className='flex w-full h-full'>
+        <div className="flex flex-col p-3 rounded-sm bg-white gap-7 mt-5">
+            <div className="text-2xl  px-6">Sản Phẩm Tương Tự</div>
+            <div className="flex w-full h-full">
                 <Swiper
                     slidesPerView={6}
                     loop={false}
