@@ -5,6 +5,7 @@ import { UserInterface } from '../../../interfaces/interfaces';
 // Define the initial state using that type
 
 const initialState: UserInterface = {
+    _id: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -22,10 +23,11 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setDetailUser: (state, action) => {
-            const { firstName, lastName, email, isAdmin, address, mobile, avatar_url, confirm, totalProduct } =
+            const { firstName, _id, lastName, email, isAdmin, address, mobile, avatar_url, confirm, totalProduct } =
                 action.payload;
             (state.firstName = firstName),
                 (state.lastName = lastName),
+                (state._id = _id),
                 (state.email = email),
                 (state.isAdmin = isAdmin),
                 (state.address = address),

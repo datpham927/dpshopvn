@@ -18,14 +18,14 @@ interface resultSuggest {
     title: string;
     _id: string;
 }
-interface products extends resultSuggest {
+interface ProductSuggest extends resultSuggest {
     images: string[];
     slug: string;
 }
 const Search: React.FC = () => {
     const [searchHistories, setSearchHistories] = useState<search[]>([]);
     const [resultSuggest, setResultSuggest] = useState<resultSuggest[]>([]);
-    const [products, setProducts] = useState<products[]>([]);
+    const [productSuggest, setProductSuggest] = useState<ProductSuggest[]>([]);
     const [limitHistory, setLimitHistory] = useState<number>(4);
     const { openSearchResults } = useAppSelector((state) => state.action);
     const [searchValue, setSearchValue] = useState<string>('');
@@ -39,8 +39,8 @@ const Search: React.FC = () => {
                 setSearchHistories(res?.data);
             }
         };
-        fetchHistory();
-    }, []);
+        openSearchResults&&fetchHistory();
+    }, [openSearchResults]);
     useEffect(() => {
         const handleOnclick = (e: { target: any }) => {
             if (e.target.closest('#search')) {
@@ -71,12 +71,12 @@ const Search: React.FC = () => {
     }, [valueDebounce]);
 
     useEffect(() => {
-        const fetchApi = async () => {
+        const fetchApiProductSuggest = async () => {
             const res = await getAllProduct({ limit: 8, sort: '-solid' });
-            setProducts(res?.products);
+            setProductSuggest(res?.products);
         };
-        fetchApi();
-    }, []);
+        openSearchResults&&fetchApiProductSuggest();
+    }, [openSearchResults]);
 
     const handleDeleteHistory = async (_id: string) => {
         setSearchHistories(() => searchHistories.filter((h) => h._id !== _id));
@@ -156,7 +156,7 @@ const Search: React.FC = () => {
             <div className="flex flex-col gap-3 ">
                 <h1 className="font-medium text-base px-[20px]">Sản phẩm nổi bật</h1>
                 <ul className="grid grid-cols-4 gap-1">
-                    {products?.map((s) => {
+                    {productSuggest?.map((s) => {
                         return (
                             <Link
                                 to={`${s.slug}/${s._id}`}

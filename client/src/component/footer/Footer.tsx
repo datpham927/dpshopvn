@@ -1,10 +1,6 @@
 import React from 'react';
 import { logo_dpshopvn } from '../../assets';
-//
-//
-//
-//
-
+ 
 const Footer: React.FC = () => {
     return (
         <div className=" w-full h-full mt-6 bg-white p-5">

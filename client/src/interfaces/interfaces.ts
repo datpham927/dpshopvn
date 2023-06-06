@@ -5,7 +5,7 @@ interface Category {
     category_slug: string;
 }
 interface CardProduct {
-    image_url:string,
+    image_url: string;
     images: Array<string>;
     slug: string;
     title: string;
@@ -21,7 +21,7 @@ interface CardProduct {
 interface ProductDetail extends CardProduct {
     description: Array<string>;
     brand: string;
-    categoryCode:string,
+    categoryCode: string;
     userBought: Array<string>;
     infoProduct: [
         {
@@ -40,6 +40,7 @@ interface ProductDetail extends CardProduct {
 }
 
 interface UserInterface {
+    _id:string;
     firstName: string;
     lastName: string;
     email: string;
@@ -51,4 +52,15 @@ interface UserInterface {
     totalProduct: number;
 }
 
-export type { Category, UserInterface, CardProduct, ProductDetail };
+interface Review {
+    _id: string;
+    comment: string;
+    createdAt: string;
+    images: Array<string>;
+    likes: Array<string>;
+    rating: number;
+    userId: { _id: string; avatar_url: string; email: string; lastName: string; firstName: string };
+    __v: 0;
+}
+
+export type { Category, UserInterface, CardProduct, ProductDetail, Review };

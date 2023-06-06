@@ -34,7 +34,7 @@ const Left: React.FC<{ productImage: Array<string>; imageUrl: string }> = ({ pro
                     ))}
                 </Swiper>
             </ul>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center mt-4">
                 <span className="font-normal">Chia sẻ :</span>
                 <span className="cursor-pointer">
                     <img src={iconFacebook} />
