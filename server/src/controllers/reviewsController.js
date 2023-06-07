@@ -19,6 +19,22 @@ const createComment = async (req, res) => {
         })
     }
 }
+const deleteComment = async (req, res) => {
+    try {
+        const { cId } = req.params
+        if (!cId) return res.status(401).json({ success: false, message: "cId required!" })
+        const comment = await Reviews.findByIdAndDelete(cId)
+        return res.status(201).json({
+            success: comment ? true : false,
+            message: comment ? "Delete success" : "Delete failed",
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 const getComment = async (req, res) => {
     try {
         const { pid } = req.params
@@ -87,4 +103,4 @@ const unlikeComment = async (req, res) => {
         })
     }
 }
-module.exports = { createComment, getComment, editComment, likeComment, unlikeComment }
+module.exports = { createComment, getComment, editComment, likeComment, unlikeComment,deleteComment }
