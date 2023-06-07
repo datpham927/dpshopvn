@@ -35,6 +35,9 @@ const apiLikeProduct = async (commentId: string) => {
         };
     }
 };
+ 
+ 
+ 
 
 const apiPostComment= async (data:object,pid:string) => {
     try {
@@ -59,3 +62,4 @@ const apiDeleteComment= async (cId:string) => {
     }
 };
 export { getAllReviewsById, apiUnlikeComment, apiLikeProduct ,apiPostComment,apiDeleteComment};
+ 
