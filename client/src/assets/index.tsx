@@ -14,7 +14,6 @@ export { default as iconFacebook } from './logo/iconFacebook.svg';
 export { default as iconMessenger } from './logo/iconMessenger.svg';
 export { default as iconCopy } from './logo/iconCopy.svg';
 export { default as logoFb } from './logo/logoFb.png';
-
 export const IconExcept = (
     <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
 
-export const showNotification = (message: string, err: boolean): void => {
+export const showNotification = (message: string, err?: boolean): void => {
     err
-        ? toast.error(message, {
+        ? toast.success(message, {
               position: 'top-center',
               autoClose: 2000,
               hideProgressBar: false,
@@ -11,7 +11,7 @@ export const showNotification = (message: string, err: boolean): void => {
               draggable: true,
               progress: undefined,
           })
-        : toast.success(message, {
+        : toast.error(message, {
               position: 'top-center',
               autoClose: 2000,
               hideProgressBar: false,

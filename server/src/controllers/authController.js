@@ -210,7 +210,7 @@ const sendGmailForgetPassword = async (req, res) => {
              </p>
              <a href='${token}' >Click vào đây!</a>
             </div>`,
-            fullName: user.lastName ? user.lastName + " " + user.firstName : email.split("@")[0]
+            fullName: user.lastName ? user.lastName + " " + user.firstName : email?.split("@")[0]
         })
         res.status(200).json({
             success: true,

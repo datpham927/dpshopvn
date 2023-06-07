@@ -11,9 +11,7 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
-
     const dispatch = useAppDispatch();
-
     const handleSummit = async (e:any) => {
         e.preventDefault()
         if(!email||!password ){
@@ -23,7 +21,7 @@ const Login: React.FC = () => {
         const res = await apiLogin(email, password);
         if (res.success) {
             localStorage.setItem('access_token', JSON.stringify(res.access_token));
-            showNotification('Đăng nhập thành công!', false);
+            showNotification('Đăng nhập thành công!',true);
             dispatch(setOpenLogin(false));
             dispatch(setIsLoginSuccess(true))
             window.location.reload();
