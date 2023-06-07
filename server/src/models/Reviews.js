@@ -4,9 +4,9 @@ const reviewsSchema = new mongoose.Schema({
     rating: { type: Number, default: 0 },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     comment: { type: String, require: true },
-    image: { type: Array, default: [] },
-    like: { type: Number, default: 0 },
-    productID: { type: String, require: true },
+    images: { type: Array, default: [] },
+    likes:  { type: Array, default: [] },
+    productId: { type: String, require: true },
 }, {
     timestamps: true
 });

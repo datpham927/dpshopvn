@@ -10,7 +10,10 @@ const crypto = require("crypto")
 const sendVerificationEmail = async (req, res) => {
     try {
         const { email } = req.body
-        if (!email) throw new Error("Input required!")
+        if (!email) return res.status(403).json({
+            success: false,
+            message: "Input required!"
+        })
         // create a random token string
         const token = randomTokenByCrypto(3)
         const hashToken = hashTokenByCrypto(token)
@@ -20,23 +23,27 @@ const sendVerificationEmail = async (req, res) => {
             // update token xác minh vào database (trường hợp muốn gửi lại token đến email khi token hết hạn)
             await User.findOneAndUpdate({ email, password: { $exists: false } }, {
                 verificationEmailToken: hashToken,
-                passwordTokenExpires: Date.now() + 30 * 1000
-            }, { new: true })
+                passwordTokenExpires: Date.now() + 5*60 * 1000
+            })
         } else {
             //kiểm tra account tồn tại chưa, nếu chưa thì create
             const user = await User.findOne({ email })
-            if (user) throw new Error("Account already exists!")
+            if (user) return res.status(200).json({
+                success: false,
+                message: "Account already exists!"
+            })
+
             await User.create({
                 email, verificationEmailToken: hashToken,
-                passwordTokenExpires: Date.now() + 20 * 60 * 1000
+                passwordTokenExpires: Date.now() + 5*60 * 1000
             }, { new: true })
         }
         sendMail({
             email, html: `<div >
             <p > Mã xác minh đăng ký tài khoản của bạn là
               <span style="color:blue;font-size:20px" >${token}</span> 
-              hiệu lực trong vào 5 phút, không chia sẽ mã này với người khác. </p>
-            </div>`, fullName: email.split("@")[0]
+              hiệu lực trong vào 5 phút, không chia sẽ mã này với người khác. Xin cảm ơn! </p>
+            </div>`, fullName: email?.split("@")[0]
         })
         res.status(200).json({
             success: true,
@@ -58,7 +65,10 @@ const confirmVerificationEmail = async (req, res) => {
         const user = await User.findOne({ email, passwordTokenExpires: { $gt: Date.now() } })
         const hashToken = hashTokenByCrypto(token)
         if (hashToken !== user?.verificationEmailToken) {
-            throw new Error("Confirm failed!")
+            res.status(403).json({
+                success: false,
+                message: "Confirm failed!"
+            })
         }
         user.passwordTokenExpires = null
         user.verificationEmailToken = null
@@ -113,7 +123,7 @@ const register = async (req, res) => {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        res.status(500).json({
+        res.status(200).json({
             success: true,
             message: "Register successfully!",
             access_token: `Bearer ${access_token}`
@@ -135,11 +145,12 @@ const login = async (req, res) => {
         if (!confirmPassword) throw new Error("Incorrect account or password!")
         const access_token = generateAccessToken(user._id, user.isAdmin)
         const refresh_token = generateRefreshToken(user._id)
-        res.cookie("refresh_token", `Bearer ${refresh_token}`, {
+        await res.cookie("refresh_token", `Bearer ${refresh_token}`, {
             httpOnly: true,
+            secure: false,
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        res.status(500).json({
+        res.status(200).json({
             success: true,
             message: "Register successfully!",
             access_token: `Bearer ${access_token}`
@@ -154,10 +165,14 @@ const login = async (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         const cookie = req.cookies
-        const refresh_token = cookie.refresh_token.split(" ")[1]
-        const response = verifyRefreshToken(refresh_token)
+       
+        if (!cookie?.refresh_token) return res.status(401).json({
+            success: false,
+            message: "Cookie required!"
+        })
+        const response = verifyRefreshToken(cookie?.refresh_token)
         if (!response) {
-            res.status(403).json({
+            return res.status(403).json({
                 success: false,
                 message: "Verification failed"
             })
@@ -169,7 +184,10 @@ const refreshToken = async (req, res) => {
             access_token
         })
     } catch (error) {
-
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
     }
 }
 //-------------
@@ -192,7 +210,7 @@ const sendGmailForgetPassword = async (req, res) => {
              </p>
              <a href='${token}' >Click vào đây!</a>
             </div>`,
-            fullName: user.lastName ? user.lastName + " " + user.firstName : email.split("@")[0]
+            fullName: user.lastName ? user.lastName + " " + user.firstName : email?.split("@")[0]
         })
         res.status(200).json({
             success: true,
@@ -228,9 +246,23 @@ const resetPassword = async (req, res) => {
 }
 
 
+const logOut = (req, res) => {
+    try {
+      res.clearCookie("refresh_token");
+      return res.status(200).json({
+        success: true,
+        message: "logout successfully",
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
 
 module.exports = {
     sendVerificationEmail, confirmVerificationEmail,
     deleteUnconfirmedUser, register, login, refreshToken,
-    sendGmailForgetPassword, resetPassword
+    sendGmailForgetPassword, resetPassword,logOut
 }

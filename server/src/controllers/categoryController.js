@@ -1,3 +1,4 @@
+const slugify = require("slugify")
 const { categories } = require("../ulits/const")
 const Category = require("../models/Category")
 const autoCode = require("../ulits/autoCode")
@@ -10,7 +11,9 @@ const insertCategory = async (req, res) => {
         const data = categories.map(async e => {
             return await Category({
                 category: e.category,
-                categoryCode: autoCode(e.category)
+                category_code: autoCode(e.category),
+                category_image:e.image,
+                category_slug:slugify(e.category)
             }).save()
         })
         res.json({

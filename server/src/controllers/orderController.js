@@ -15,7 +15,7 @@ const createOrderProduct = async (req, res) => {
             })
         )
         //chứa sản phẩm thep shop
-        let productByShop = [/* shopId: "",products: [],totalPrice: 0 */]
+        let productByShop = [/* {shopId: "",products: [],totalPrice: 0 }*/]
         //kiểm tra product có đủ inStock không và chia order sản phẩm theo shop
         const checkProduct = await Promise.all(infoProductInCart.map(async c => {
             //kiểm tra shopId đã có trong mảng hay chưa
