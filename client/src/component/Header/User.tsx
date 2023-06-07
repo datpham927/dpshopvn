@@ -18,7 +18,7 @@ const User: React.FC = () => {
         const res=await apiLogout()
          if(!res.success) return
          localStorage.removeItem("access_token")
-         showNotification("Đăng xuất thành công",false)
+         showNotification("Đăng xuất thành công",true)
          setIsOpenMenu(false)
          dispatch(setDetailUser({}))
          dispatch(setIsLoginSuccess(false))

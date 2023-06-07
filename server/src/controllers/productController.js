@@ -199,8 +199,7 @@ const insertProductsData = async (req, res) => {
                 indexStar = Math.floor(Math.random() * 3)
                 const images=item?.images&&item?.images.map(i=> i.split(",")[0]
                 .replace("100x100","750x750")).filter((e,i)=> !e.includes('w100')&&!e.includes("upload")&&!e.includes("w1080"))
-                return await Product({
-                    image_url:item.image.split(",")[0],
+                return await Product({  image_url:item.image?.split(",")[0], 
                     images:Array.from(images).filter((e,i)=> i!=0),
                     title: item.title,
                     brand: item.brand,

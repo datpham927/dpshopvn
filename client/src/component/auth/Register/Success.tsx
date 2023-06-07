@@ -30,12 +30,12 @@ const Success: React.FC<ModeRegister> = (props) => {
             const res = await apiRegister(email, password);
             if (res?.success) {
                 dispatch(setIsLoginSuccess(true))
-                showNotification('Đăng ký tài khoản thành công!', false);
+                showNotification('Đăng ký tài khoản thành công!',true);
                 localStorage.setItem('access_token', JSON.stringify(res.access_token));
                 window.location.reload();
                 // eslint-disable-next-line react-hooks/exhaustive-deps
             } else {
-                showNotification('Đăng ký tài khoản không thành công!', true);
+                showNotification('Đăng ký tài khoản không thành công!', false);
             }
             dispatch(setOpenLogin(false));
         }
