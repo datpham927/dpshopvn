@@ -6,7 +6,8 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 interface actionInitial {
     openSearchResults: boolean;
     openLogin:boolean
-    isLogin:boolean
+  
+    isLogin:boolean   //switch to login or register model
 }
 const initialState: actionInitial = {
     openSearchResults: false,
@@ -16,7 +17,6 @@ const initialState: actionInitial = {
 
 export const actionSlice = createSlice({
     name: 'action',
-    // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
         setOpenSearchResults: (state, action: PayloadAction<boolean>) => {

@@ -34,3 +34,12 @@ export const searchUtility = [
         title: 'Rẽ vô đối',
     },
 ];
+
+
+export const ratingReview = [
+    { start: 1, text: 'Rất tệ' },
+    { start: 2, text: 'Tệ ' },
+    { start: 3, text: 'Bình thường' },
+    { start: 4, text: 'Tốt ' },
+    { start: 5, text: 'Rất tốt' },
+];

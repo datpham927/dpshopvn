@@ -45,7 +45,7 @@ const DetailPage: React.FC = () => {
             <HeaderDetail productDetail={productDetail} />
             <SimilarProducts categoryCode={productDetail.categoryCode} />
             <ProductInfo productDetail={productDetail} />
-            <ReviewsProduct pid={productDetail._id} userBought={productDetail.userBought} />
+            <ReviewsProduct productDetail={productDetail} userBought={productDetail.userBought} />
         </>
     );
 };

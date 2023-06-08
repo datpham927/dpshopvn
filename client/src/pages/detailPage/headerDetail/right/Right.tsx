@@ -7,7 +7,7 @@ import { IconExcept, noUser } from '../../../../assets';
 import { formatMoney } from '../../../../utils/formatMoney';
 import { formatStar } from '../../../../utils/formatStar';
 import { ProductDetail } from '../../../../interfaces/interfaces';
-import ButtonOutline from '../../../../component/buttonOutline/ButtonOutline';
+import {ButtonOutline} from '../../../../component';
 
 const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     const [quantity, setQuantity] = useState<number>(0);

@@ -40,7 +40,7 @@ const getComment = async (req, res) => {
         const { pid } = req.params
         if (!pid) return res.status(401).json({ success: false, message: "productId required!" })
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        const comment = await Reviews.find({ productId: pid }).populate("userId", option)
+        const comment = await Reviews.find({ productId: pid }).populate("userId", option).sort("-createdAt")
         return res.status(201).json({
             success: comment ? true : false,
             data: comment ? comment : null
@@ -103,4 +103,4 @@ const unlikeComment = async (req, res) => {
         })
     }
 }
-module.exports = { createComment, getComment, editComment, likeComment, unlikeComment,deleteComment }
+module.exports = { createComment, getComment, editComment, likeComment, unlikeComment, deleteComment }

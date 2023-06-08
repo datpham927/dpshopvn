@@ -9,6 +9,8 @@ import Right from './Right/Right';
 const Auth: React.FC = () => {
     const { openLogin ,isLogin} = useAppSelector((state) => state.action);
     const dispatch = useAppDispatch();
+      
+
     const handleClose = (e: { stopPropagation: () => void }) => {
         e.stopPropagation();
         dispatch(setOpenLogin(false));
