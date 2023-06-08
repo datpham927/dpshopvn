@@ -1,27 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
- 
-import { getAllReviewsById } from '../../../services/apiReviews';
- 
 import CloseIcon from '@mui/icons-material/Close';
 import { apiDeleteComment, apiPostComment, getAllReviewsById } from '../../../services/apiReviews';
- 
 import { Review } from '../../../interfaces/interfaces';
-import ReviewItem from '../../../component/reviewItem/ReviewItem';
 import { formatStar } from '../../../utils/formatStar';
 import ButtonOutline from '../../../component/buttonOutline/ButtonOutline';
- 
-
-const ReviewsProduct: React.FC<{ pid: string; userBought: Array<string> }> = ({ pid, userBought }) => {
-    const [reviews, setReviews] = useState<Review[]>();
- 
 import { apiUploadImage } from '../../../services/apiUploadPicture';
 import { showNotification } from '../../../component';
+import ReviewItem from '../../../component/reviewItem/ReviewItem';
 const ReviewsProduct: React.FC<{ pid: string; userBought: Array<string> }> = ({ pid, userBought }) => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [valueInput, setValueInput] = useState<string>('');
- 
     useEffect(() => {
         const fetchApiReview = async () => {
             const res = await getAllReviewsById(pid);
@@ -29,7 +19,6 @@ const ReviewsProduct: React.FC<{ pid: string; userBought: Array<string> }> = ({ 
         };
         pid && fetchApiReview();
     }, [pid]);
- 
 
     const [imageUrl, setImageUrl] = useState<Array<string>>([]);
 
@@ -62,7 +51,6 @@ const ReviewsProduct: React.FC<{ pid: string; userBought: Array<string> }> = ({ 
         setReviews(() => reviews?.filter((rv) => rv._id !== cId));
     };
 
- 
     const showStar =
         'px-7 text-lg  text-red_custom font-normal bg-white capitalize border-slate-300 hover:bg-opacity-100';
     return (
@@ -86,19 +74,6 @@ const ReviewsProduct: React.FC<{ pid: string; userBought: Array<string> }> = ({ 
             </div>
             <div className="flex flex-col w-full gap-6 rounded-sm">
                 {reviews?.map((e) => {
- 
-                    console.log(userBought.includes(e.userId._id));
-                    return <ReviewItem key={e._id} review={e} isBought={userBought.includes(e.userId._id)} />;
-                })}
-            </div>
-            <div className="flex gap-2 group  border-solid border-[1px] border-bgSecondary rounded-sm px-3 py-1">
-                <textarea placeholder="Nhận xét sản phẩm ... " rows={3} className="outline-none flex-1   resize-none " />
-                <div className="flex gap-2 items-center">
-                    <button>
-                        <InsertPhotoIcon style={{ color: 'green' }} />
-                    </button>
-                    <ButtonOutline className='text-base h-fit'>Gửi bình luận</ButtonOutline>
- 
                     return (
                         <ReviewItem
                             key={e?._id}
@@ -147,7 +122,6 @@ const ReviewsProduct: React.FC<{ pid: string; userBought: Array<string> }> = ({ 
                     >
                         Gửi bình luận
                     </ButtonOutline>
- 
                 </div>
             </div>
         </div>

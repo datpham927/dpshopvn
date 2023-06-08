@@ -14,15 +14,11 @@ import { useAppSelector } from '../../redux/hooks';
 import { apiLikeProduct, apiUnlikeComment } from '../../services/apiReviews';
 import ButtonOutline from '../buttonOutline/ButtonOutline';
 
-
-const ReviewItem: React.FC<{ review: Review; isBought: boolean }> = ({ review, isBought }) => {
-
 const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: () => void }> = ({
     review,
     isBought,
     handleDelete,
 }) => {
-
     const { comment, createdAt, images, likes, _id, rating, userId } = review;
     const user = useAppSelector((state) => state.user);
     const [likesReviews, setLikesReviews] = useState<string[]>(likes);
@@ -37,8 +33,6 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
             await apiLikeProduct(_id);
         }
     };
-
-
 
     return (
         <div className="w-full h-full px-6 py-4 border-b-[1px] border-solid border-b-slate-200">
@@ -55,11 +49,7 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
                             <h3 className="text-sm font-medium">
                                 {userId.firstName
                                     ? `${userId.lastName} ${userId.firstName}`
-
-                                    : userId.email.split('@')[0]}
-=======
                                     : userId.email?.split('@')[0]}
-
                             </h3>
 
                             <span className="flex  text-[10px] items-center  p-1 rounded-sm  border-[1px] border-solid border-primary text-primary">
@@ -118,11 +108,7 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
                         {user._id === userId._id && (
                             <div className="flex gap-4">
                                 <button className="text-sm hover:text-primary">Chỉnh sửa</button>
-
-                                <button className="text-sm hover:text-primary">Xóa</button>
- 
                                 <button className="text-sm hover:text-primary" onClick={handleDelete}>Xóa</button>
- 
                             </div>
                         )}
                     </div>
