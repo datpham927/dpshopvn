@@ -3,11 +3,11 @@ import AddIcon from '@mui/icons-material/Add';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import MessageIcon from '@mui/icons-material/Message';
-import { IconExcept, noUser } from '../../../../assets';
-import { formatMoney } from '../../../../utils/formatMoney';
-import { formatStar } from '../../../../utils/formatStar';
-import { ProductDetail } from '../../../../interfaces/interfaces';
-import {ButtonOutline} from '../../../../component';
+import { IconExcept, noUser } from '../../../assets';
+import { formatMoney } from '../../../utils/formatMoney';
+import { formatStar } from '../../../utils/formatStar';
+import { ProductDetail } from '../../../interfaces/interfaces';
+import {ButtonOutline} from '../../../component';
 
 const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     const [quantity, setQuantity] = useState<number>(0);

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { apiRegister } from '../../../services/apiAuth';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { showNotification } from '../../showNotification/showNotification';
-import { setOpenLogin } from '../../../redux/features/action/actionSlice';
-import { setIsLoginSuccess } from '../../../redux/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { apiRegister } from '../../../../services/apiAuth';
+import { setIsLoginSuccess } from '../../../../redux/features/auth/authSlice';
+import { showNotification } from '../../../../component';
+import { setOpenLogin } from '../../../../redux/features/action/actionSlice';
+
 
 interface ModeRegister {
     setModeRegister: React.Dispatch<React.SetStateAction<number>>;

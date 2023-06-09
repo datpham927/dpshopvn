@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { logoFb,logoGoogle} from '../../../assets';
-import { apiSendEmail } from '../../../services/apiAuth';
-import { useAppDispatch } from '../../../redux/hooks';
-import { setEmail } from '../../../redux/features/auth/authSlice';
-import { setIsLogin } from '../../../redux/features/action/actionSlice';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { setEmail } from '../../../../redux/features/auth/authSlice';
+import { apiSendEmail } from '../../../../services/apiAuth';
+import { setIsLogin } from '../../../../redux/features/action/actionSlice';
+import { logoFb, logoGoogle } from '../../../../assets';
+
 
 
 interface ModeRegister{
@@ -18,7 +19,7 @@ const sendMail: React.FC<ModeRegister> = (props) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useAppDispatch();
 
-    const handleSummit = async (e: any) => {
+    const handleSummit = async (e:  { preventDefault: () => void }) => {
         e.preventDefault();
         const emailRegex = /\b[A-Z0-9._%+-]+@gmail\.com\b/i;
         if (!emailValue) {

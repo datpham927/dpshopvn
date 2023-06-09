@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
-import { iconFacebook, iconCopy, iconMessenger } from '../../../../assets';
+import { iconCopy, iconFacebook, iconMessenger } from '../../../assets';
 
 const Left: React.FC<{ productImage: Array<string>; imageUrl: string }> = ({ productImage, imageUrl }) => {
     const [imagePrimary, setImagePrimary] = useState<string>(imageUrl);

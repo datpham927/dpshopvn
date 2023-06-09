@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { apiLogin } from '../../../services/apiAuth';
-import { setOpenLogin } from '../../../redux/features/action/actionSlice';
-import { useAppDispatch } from '../../../redux/hooks';
-import { setIsLoginSuccess } from '../../../redux/features/auth/authSlice';
-import { showNotification } from '../..';
+import { apiLogin } from '../../../../services/apiAuth';
+import { setOpenLogin } from '../../../../redux/features/action/actionSlice';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { setIsLoginSuccess } from '../../../../redux/features/auth/authSlice';
+import { showNotification } from '../../../../component';
 const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
     const dispatch = useAppDispatch();
-    const handleSummit = async (e:any) => {
+    const handleSummit = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
         if(!email||!password ){
             setError('Tài khoản hoặc mật khẩu không chính xác!');

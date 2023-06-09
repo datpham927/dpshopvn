@@ -1,8 +1,9 @@
 import React from 'react';
-
 import { ProductDetail } from '../../../interfaces/interfaces';
-import Left from './left/Left';
-import Right from './right/Right';
+import Right from './Right';
+import Left from './Left';
+
+
 const HeaderDetail: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     return (
         <div className="flex bg-white">

@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setOpenLogin } from '../../redux/features/action/actionSlice';
-import Register from './Register/Register';
-import Login from './Login/Login';
+import Login from './left/Login/Login';
 import Right from './Right/Right';
+import Register from './left/Register/Register';
 
 const Auth: React.FC = () => {
-    const { openLogin ,isLogin} = useAppSelector((state) => state.action);
+    const { openLogin, isLogin } = useAppSelector((state) => state.action);
     const dispatch = useAppDispatch();
-      
 
     const handleClose = (e: { stopPropagation: () => void }) => {
         e.stopPropagation();

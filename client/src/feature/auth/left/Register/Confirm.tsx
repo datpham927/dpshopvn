@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useAppSelector } from '../../../redux/hooks';
-import { apiConfirmEmail, apiSendEmail } from '../../../services/apiAuth';
+import { useAppSelector } from '../../../../redux/hooks';
+import { apiConfirmEmail, apiSendEmail } from '../../../../services/apiAuth';
 
 interface ModeRegister{
     setModeRegister:React.Dispatch<React.SetStateAction<number>>,
@@ -15,7 +15,7 @@ const Confirm: React.FC<ModeRegister> = (props) => {
     const { email } = useAppSelector((state) => state.auth);
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     useEffect(() => {
-        let intervalId: number | undefined;
+        let intervalId: any;
         if (waitingTime <= 30 && waitingTime >= 0) {
             intervalId = setInterval(() => {
                 setWaitingTime((prevWaitingTime) => prevWaitingTime - 1);

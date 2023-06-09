@@ -19,6 +19,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
         };
         productDetail && fetchApiReview();
     }, [productDetail]);
+    
     const handleDeleteComment = async (cId: string) => {
         const res = await apiDeleteComment(cId);
         res.success && showNotification('Xóa thành công', true);

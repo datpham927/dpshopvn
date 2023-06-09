@@ -31,6 +31,7 @@ interface ProductDetail extends CardProduct {
     ];
     userId: {
         _id: string;
+        createdAt: string;
         firstName: string;
         lastName: string;
         followers: Array<string>;
@@ -40,7 +41,7 @@ interface ProductDetail extends CardProduct {
 }
 
 interface UserInterface {
-    _id:string;
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -50,6 +51,7 @@ interface UserInterface {
     avatar_url: string;
     confirm: boolean;
     totalProduct: number;
+    createAt: Date;
 }
 
 interface Review {
@@ -59,7 +61,15 @@ interface Review {
     images: Array<string>;
     likes: Array<string>;
     rating: number;
-    userId: { _id: string; avatar_url: string; email: string; lastName: string; firstName: string };
+    userId: {
+        _id: string;
+        avatar_url: string;
+        email: string;
+        lastName: string;
+        firstName: string;
+        createdAt: Date;
+        followers: Array<string>;
+    };
     __v: 0;
 }
 

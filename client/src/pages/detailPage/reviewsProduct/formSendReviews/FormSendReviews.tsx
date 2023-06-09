@@ -25,9 +25,11 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
+
+    // ----------- handel upload image -----------
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
-        setIsLoad(false);
+        setIsLoad(true);
         if (!files) return;
         const formData = new FormData();
         for (const i of files) {
@@ -36,21 +38,32 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
             const response = await apiUploadImage(formData);
             setImageUrl((i) => [...i, response.url]);
         }
-        setIsLoad(true);
+        setIsLoad(false);
     };
-
-    const handleSummit = async () => {
+    // ------- summit -----------
+    const handleSummit = async (e: { stopPropagation: () => void }) => {
+        e.stopPropagation();
         if (!isLoginSuccess) {
             dispatch(setOpenLogin(true));
             return;
         }
+        if (isLoad) {
+            showNotification('Đang tải ảnh vui lòng chờ đợi it phút!', true);
+            return;
+        }
+        if (!valueInput) {
+            showNotification('Vui lòng nhập nhận xét!', true);
+            return;
+        }
+
         const res = await apiPostComment({ comment: valueInput, images: imageUrl, rating: 0 }, productDetail._id);
         if (!res.success) {
-            showNotification('Đánh giá không thành công', true);
+            showNotification('Đánh giá không thành công!', true);
             return;
         }
         setReviews && setReviews((e) => [{ ...res.comment, userId: user }, ...e]);
-        setOpenFormReview && setOpenFormReview(true);
+        setOpenFormReview && setOpenFormReview(false);
+        showNotification('Đánh giá thành công!', true);
     };
 
     return (
@@ -68,6 +81,18 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
                     setOpenFormReview && setOpenFormReview(true);
                 }}
             >
+                <div className="flex justify-between">
+                    <h3 className="text-xl ">Nhận xét</h3>
+                    <span
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenFormReview && setOpenFormReview(false);
+                        }}
+                    >
+                        <CloseIcon />
+                    </span>
+                </div>
                 <div className="flex justify-center items-center w-10/12 mx-auto gap-3">
                     <img className="h-20 w-20" src={productDetail.image_url} />
                     <span className="text-sm">{productDetail.title}</span>
@@ -76,7 +101,13 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
                     {ratingReview.map((s) => (
                         <div
                             className="flex flex-col justify-center items-center gap-1 text-[rgb(243,153,74)] cursor-pointer"
-                            onClick={() => setRating(s.start)}
+                            onClick={() => {
+                                if (productDetail.userBought.includes(user._id)) {
+                                    setRating(s.start);
+                                } else {
+                                    showNotification('Bạn không được phép đánh giá');
+                                }
+                            }}
                         >
                             {s.start <= rating ? (
                                 <StarRateIcon style={{ fontSize: '40px', color: '#rgb(243,153,74)' }} />
@@ -90,7 +121,7 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
                     ))}
                     <li></li>
                 </ul>
-                {/* ------------------*/}
+                {/* -------- input ----------*/}
                 <div className="flex flex-col border-solid border-[1px] border-gray-300 rounded-md py-1 w-10/12 mx-auto">
                     <textarea
                         placeholder="Nhận xét sản phẩm ... "
@@ -105,9 +136,10 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
                             <InsertPhotoIcon fontSize="large" style={{ color: 'green' }} />
                         </label>
                     </div>
-                    <>
-                        {isLoad && (
-                            <ul className="grid grid-cols-6 gap-3 px-4">
+                    {/* ------------ show image ------------- */}
+                    {imageUrl.length > 0 && (
+                        <div className="w-full h-[100px] overflow-scroll ">
+                            <ul className="grid grid-cols-6 gap-3 px-4 ">
                                 {imageUrl.map((image) => (
                                     <li className="relative w-full h-[60px] border-solid border-[1px] my-4 border-bgSecondary ">
                                         <img className="w-full h-full object-fill" src={image} />
@@ -120,19 +152,18 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
                                     </li>
                                 ))}
                             </ul>
-                        )}
-                    </>
+                        </div>
+                    )}
                 </div>
-                {/* ------------------- */}
+                {/* ------- button ------------ */}
                 <div className="flex gap-2 items-center mt-6">
                     <ButtonOutline
-                        //  ${!isLoad ? 'opacity-60 cursor-wait' : ''
+                        //
                         // isLoad &&
-                        className={`text-base h-fit mx-auto bg-primary text-white`}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleSummit();
-                        }}
+                        className={`text-base h-fit mx-auto bg-primary text-white ${
+                            isLoad || !valueInput ? 'opacity-60' : ''
+                        }`}
+                        onClick={handleSummit}
                     >
                         Gửi bình luận
                     </ButtonOutline>
