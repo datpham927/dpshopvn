@@ -4,7 +4,7 @@ import { ProductDetail } from '../../../interfaces/interfaces'
 const ProductInfo:React.FC<{productDetail:ProductDetail}> = ({productDetail}) => {
     const {infoProduct,description}=productDetail
   return (
-    <div>  <div className="my-5 bg-white rounded-sm  px-9 py-4">
+    <div>  <div className="my-5 bg-white rounded-sm  px-6 py-4">
     <h1 className="text-xl font-semibold">Thông tin chi tiết</h1>
     <table className="w-full my-3 rounded-sm">
         {infoProduct.map((e) => (
@@ -15,7 +15,7 @@ const ProductInfo:React.FC<{productDetail:ProductDetail}> = ({productDetail}) =>
         ))}
     </table>
 </div>
-<div className="my-5 bg-white rounded-sm px-9 py-4">
+<div className="my-5 bg-white rounded-sm px-6 py-4">
     <h1 className="text-xl  font-normal">MÔ TẢ SẢN PHẨM</h1>
     <ul className="flex flex-col gap-1  mt-3">
         {description?.map((item) => (

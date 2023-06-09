@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { searchUtility } from '../../../utils/const';
 import { getAllProduct } from '../../../services/apiProduct';
 import { CardProduct } from '../../../interfaces/interfaces';
-import ProductItem from '../../../component/productItem/ProductItem';
+import { ProductItem } from '../../../component';
 
 const Products: React.FC = () => {
     const [products, setProduct] = useState<CardProduct[]>([]);

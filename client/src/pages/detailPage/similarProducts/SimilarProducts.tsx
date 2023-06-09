@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import { getAllProduct } from '../../../services/apiProduct';
 import { CardProduct } from '../../../interfaces/interfaces';
-import ProductItem from '../../../component/productItem/ProductItem';
+import { ProductItem } from '../../../component';
 
 export const SimilarProducts: React.FC<{ categoryCode: string }> = ({ categoryCode }) => {
     const [products, setProducts] = useState<CardProduct[]>([]);
