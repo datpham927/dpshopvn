@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { apiDeleteComment, getAllReviewsById } from '../../../services/apiReviews';
 import { ProductDetail, Review } from '../../../interfaces/interfaces';
 import { formatStar } from '../../../utils/formatStar';
-import { ButtonOutline, ReviewItem, showNotification } from '../../../component';
-import FormSendReviews from './formSendReviews/FormSendReviews';
-
-const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array<string> }> = ({
+import { ButtonOutline, FormReviews, ReviewItem, showNotification } from '../../../component';
+const ReviewsProduct: React.FC<{ productDetail: ProductDetail | any; userBought: Array<string> | any }> = ({
     productDetail,
     userBought,
 }) => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [openFormReview, setOpenFormReview] = useState<boolean>(false);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [productEdit, setProductEdit] = useState<Review | any>();
 
     useEffect(() => {
         const fetchApiReview = async () => {
@@ -19,12 +19,21 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
         };
         productDetail && fetchApiReview();
     }, [productDetail]);
-    
+
     const handleDeleteComment = async (cId: string) => {
         const res = await apiDeleteComment(cId);
-        res.success && showNotification('Xóa thành công', true);
+        if (!res.success) {
+            showNotification('Xóa không thành công', true);
+            return;
+        }
+        showNotification('Xóa thành công', true);
         setReviews(() => reviews?.filter((rv) => rv._id !== cId));
     };
+    const handleEditComment = () => {
+        setOpenFormReview(true);
+        setIsEdit(true);
+    };
+
     const showStar =
         'px-7 text-lg  text-red_custom font-normal bg-white capitalize border-slate-300 hover:bg-opacity-100';
     return (
@@ -48,10 +57,28 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
             </div>
 
             {/* ---------- input */}
-            <ButtonOutline className="w-4/12 mx-auto" onClick={() => setOpenFormReview(true)}>
+            <ButtonOutline
+                className="w-4/12 mx-auto"
+                onClick={() => {
+                    setOpenFormReview(true);
+                    setIsEdit(false)
+                    setProductEdit([]);
+                }}
+            >
                 Gửi đánh giá
-            </ButtonOutline >
-            {openFormReview && <FormSendReviews setReviews={setReviews} productDetail={productDetail} setOpenFormReview={setOpenFormReview} />}
+            </ButtonOutline>
+            {openFormReview && (
+                <FormReviews
+                    isEdit={isEdit}
+                    title={`${isEdit ? 'Chỉnh sửa' : 'Nhận xét'}`}
+                    titleButton={` ${isEdit ? 'Cập nhật' : 'Gửi bình luận'}`}
+                    setReviews={setReviews}
+                    reviews={reviews}
+                    productEdit={productEdit}
+                    productDetail={productDetail}
+                    setOpenFormReview={setOpenFormReview}
+                />
+            )}
             {/* ------------------- */}
             <div className="flex flex-col w-full gap-6 rounded-sm">
                 {reviews?.map((e) => {
@@ -59,8 +86,12 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
                         <ReviewItem
                             key={e?._id}
                             review={e}
-                            isBought={userBought.includes(e?.userId?._id)}
+                            isBought={userBought?.includes(e?.userId?._id)}
                             handleDelete={() => handleDeleteComment(e?._id)}
+                            handleEdit={() => {
+                                setProductEdit(e);
+                                handleEditComment();
+                            }}
                         />
                     );
                 })}

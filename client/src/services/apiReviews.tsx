@@ -35,13 +35,10 @@ const apiLikeProduct = async (commentId: string) => {
         };
     }
 };
- 
- 
- 
 
-const apiPostComment= async (data:object,pid:string) => {
+const apiPostComment = async (data: object, pid: string) => {
     try {
-        const res = await axiosJWT.post(`/reviews/${pid}`,data);
+        const res = await axiosJWT.post(`/reviews/${pid}`, data);
         return res.data;
     } catch (error) {
         return {
@@ -50,7 +47,7 @@ const apiPostComment= async (data:object,pid:string) => {
         };
     }
 };
-const apiDeleteComment= async (cId:string) => {
+const apiDeleteComment = async (cId: string) => {
     try {
         const res = await axiosJWT.delete(`/reviews/${cId}/delete_comment`);
         return res.data;
@@ -61,5 +58,17 @@ const apiDeleteComment= async (cId:string) => {
         };
     }
 };
-export { getAllReviewsById, apiUnlikeComment, apiLikeProduct ,apiPostComment,apiDeleteComment};
- 
+
+const apiEditComment = async (data: any, cid: any) => {
+    try {
+        const res = await axiosJWT.put(`/reviews/${cid}/edit_comment`, data);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+
+export { getAllReviewsById, apiUnlikeComment, apiLikeProduct, apiPostComment, apiDeleteComment, apiEditComment };

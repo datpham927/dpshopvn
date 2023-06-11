@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 interface ButtonOutlineProps {
     children: React.ReactNode;
-    onClick?: ((e: any) => void | Promise<void> | React.MouseEvent<HTMLButtonElement, MouseEvent>) | undefined;
+    onClick?: ((e: any ) => void | Promise<void> | React.MouseEvent<HTMLButtonElement, MouseEvent>) | undefined;
     className?: string;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 const ButtonOutline: React.FC<ButtonOutlineProps> = ({ children, onClick, className }) => {
     return (
         <button
@@ -17,4 +18,5 @@ const ButtonOutline: React.FC<ButtonOutlineProps> = ({ children, onClick, classN
     );
 };
 
-export default ButtonOutline;
+// eslint-disable-next-line react-refresh/only-export-components
+export default  memo(ButtonOutline);

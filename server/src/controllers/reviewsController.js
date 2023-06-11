@@ -4,8 +4,7 @@ const Reviews = require("../models/Reviews")
 const createComment = async (req, res) => {
     try {
         const { pid } = req.params
-        console.log(pid)
-        if (!pid || Object.keys(req.body).length === 0) return res.status(401).json({ success: false, message: "Input required!" })
+        if (!pid || Object.keys(req.body)?.length === 0) return res.status(401).json({ success: false, message: "Input required!" })
         const comment = await Reviews.create({ userId: req.userId, productId: pid, ...req.body })
         return res.status(201).json({
             success: comment ? true : false,
@@ -21,9 +20,9 @@ const createComment = async (req, res) => {
 }
 const deleteComment = async (req, res) => {
     try {
-        const { cId } = req.params
-        if (!cId) return res.status(401).json({ success: false, message: "cId required!" })
-        const comment = await Reviews.findByIdAndDelete(cId)
+        const { cid } = req.params
+        if (!cid) return res.status(401).json({ success: false, message: "cid required!" })
+        const comment = await Reviews.findByIdAndDelete(cid)
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Delete success" : "Delete failed",
@@ -56,9 +55,9 @@ const getComment = async (req, res) => {
 
 const editComment = async (req, res) => {
     try {
-        const { id } = req.params
-        if (Object.keys(req.body).length === 0) return res.status(401).json({ success: false, message: "Input required!" })
-        const comment = await Reviews.findByIdAndUpdate(id, req.body, { new: true })
+        const { cid } = req.params
+        if (Object.keys(req.body)?.length === 0) return res.status(401).json({ success: false, message: "Input required!" })
+        const comment = await Reviews.findByIdAndUpdate(cid, req.body, { new: true })
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Update successfully" : "Update failed",
@@ -74,7 +73,7 @@ const editComment = async (req, res) => {
 
 const likeComment = async (req, res) => {
     try {
-        const comment = await Reviews.findById(req.params.id)
+        const comment = await Reviews.findById(req.params.cid)
         comment.likes.push(req.userId)
         comment.save()
         res.status(200).json({
@@ -90,7 +89,7 @@ const likeComment = async (req, res) => {
 }
 const unlikeComment = async (req, res) => {
     try {
-        const comment = await Reviews.findByIdAndUpdate(req.params.id, { $pull: { likes: req.userId } })
+        const comment = await Reviews.findByIdAndUpdate(req.params.cid, { $pull: { likes: req.userId } })
         console.log(comment)
         res.status(200).json({
             success: true,

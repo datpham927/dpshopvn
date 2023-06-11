@@ -4,7 +4,7 @@ const User = require("../models/User")
 const updateUser = async (req, res) => {
     try {
         const userId = req.userId
-        if (!userId || Object.keys(req.body).length === 0) {
+        if (!userId || Object.keys(req.body)?.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: "Missing inputs"
@@ -109,7 +109,7 @@ const following = async (req, res) => {
 const updateUserByAdmin = async (req, res) => {
     try {
         const { userId } = req.body
-        if (!userId || Object.keys(req.body).length === 0) {
+        if (!userId || Object.keys(req.body)?.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: "Missing inputs"

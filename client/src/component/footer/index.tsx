@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { logo_dpshopvn } from '../../assets';
  
 const Footer: React.FC = () => {
@@ -19,4 +19,4 @@ const Footer: React.FC = () => {
     );
 };
 
-export default Footer;
+export default memo(Footer);

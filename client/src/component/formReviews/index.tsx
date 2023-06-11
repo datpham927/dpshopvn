@@ -1,23 +1,37 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { apiPostComment } from '../../../../services/apiReviews';
-import { ButtonOutline, showNotification } from '../../../../component';
-import { setOpenLogin } from '../../../../redux/features/action/actionSlice';
-import { apiUploadImage } from '../../../../services/apiUploadPicture';
-import { ProductDetail, Review } from '../../../../interfaces/interfaces';
-import { ratingReview } from '../../../../utils/const';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { apiEditComment, apiPostComment } from '../../services/apiReviews';
+import { ButtonOutline, Overlay, showNotification } from '..';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import { apiUploadImage } from '../../services/apiUploadPicture';
+import { ProductDetail, Review } from '../../interfaces/interfaces';
+import { ratingReview } from '../../utils/const';
 
-interface SendReviewsProps {
+interface FormReviewsProps {
     setReviews?: React.Dispatch<React.SetStateAction<Review[]>>;
+    reviews: Array<Review>;
+    productEdit?: Review;
     productDetail: ProductDetail;
     setOpenFormReview?: React.Dispatch<SetStateAction<boolean>>;
+    title: string | any;
+    isEdit?: boolean;
+    titleButton?: string;
 }
 
-const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail, setOpenFormReview }) => {
+const FormReviews: React.FC<FormReviewsProps> = ({
+    setReviews,
+    reviews,
+    isEdit,
+    productDetail,
+    productEdit,
+    setOpenFormReview,
+    titleButton,
+    title,
+}) => {
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [valueInput, setValueInput] = useState<string>('');
     const [imageUrl, setImageUrl] = useState<Array<string>>([]);
@@ -27,6 +41,15 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
 
     // ----------- handel upload image -----------
+    useEffect(() => {
+        if (productEdit) {
+            setImageUrl(productEdit?.images);
+            setValueInput(productEdit?.comment);
+            setRating(productEdit?.rating);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         setIsLoad(true);
@@ -40,22 +63,8 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
         }
         setIsLoad(false);
     };
-    // ------- summit -----------
-    const handleSummit = async (e: { stopPropagation: () => void }) => {
-        e.stopPropagation();
-        if (!isLoginSuccess) {
-            dispatch(setOpenLogin(true));
-            return;
-        }
-        if (isLoad) {
-            showNotification('Đang tải ảnh vui lòng chờ đợi it phút!', true);
-            return;
-        }
-        if (!valueInput) {
-            showNotification('Vui lòng nhập nhận xét!', true);
-            return;
-        }
-
+    //  ------- post-------------
+    const postComment = async () => {
         const res = await apiPostComment({ comment: valueInput, images: imageUrl, rating: 0 }, productDetail._id);
         if (!res.success) {
             showNotification('Đánh giá không thành công!', true);
@@ -66,9 +75,43 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
         showNotification('Đánh giá thành công!', true);
     };
 
+    //  ------- edit comment-------------
+    const editComment = async () => {
+        const res = await apiEditComment({ comment: valueInput, images: imageUrl, rating: 0 }, productEdit?._id);
+        if (!res.success) {
+            showNotification('Cập nhật không thành công!', true);
+            return;
+        }
+        const filterViews=reviews?.filter(r=>r._id!==productEdit?._id)
+        setReviews && setReviews(() => [res.data,...filterViews]);
+        setOpenFormReview && setOpenFormReview(false);
+        showNotification('Cập nhật thành công!', true);
+    };
+    // ------- summit -----------
+    const handleSummit = async (e: { stopPropagation: () => void }) => {
+        e.stopPropagation();
+        if (!isLoginSuccess) {
+            dispatch(setOpenFeatureAuth(true));
+            return;
+        }
+        if (isLoad) {
+            showNotification('Đang tải ảnh vui lòng chờ đợi it phút!', true);
+            return;
+        }
+        if (!valueInput) {
+            showNotification('Vui lòng nhập nhận xét!', false);
+            return;
+        }
+        if (isEdit) {
+            editComment();
+        } else {
+            postComment();
+        }
+    };
+
     return (
-        <div
-            className="fixed flex justify-center items-center w-screen h-screen right-0 top-0 bg-overlay z-[900]"
+        <Overlay
+            className="z-[1000]"
             onClick={(e) => {
                 e.stopPropagation();
                 setOpenFormReview && setOpenFormReview(false);
@@ -82,7 +125,7 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
                 }}
             >
                 <div className="flex justify-between">
-                    <h3 className="text-xl ">Nhận xét</h3>
+                    <h3 className="text-xl ">{title}</h3>
                     <span
                         className="cursor-pointer"
                         onClick={(e) => {
@@ -137,7 +180,7 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
                         </label>
                     </div>
                     {/* ------------ show image ------------- */}
-                    {imageUrl.length > 0 && (
+                    {imageUrl?.length > 0 && (
                         <div className="w-full h-[100px] overflow-scroll ">
                             <ul className="grid grid-cols-6 gap-3 px-4 ">
                                 {imageUrl.map((image) => (
@@ -160,17 +203,17 @@ const FormSendReviews: React.FC<SendReviewsProps> = ({ setReviews, productDetail
                     <ButtonOutline
                         //
                         // isLoad &&
-                        className={`text-base h-fit mx-auto bg-primary text-white ${
+                        className={`w-4/12 text-lg h-fit mx-auto  bg-primary text-white ${
                             isLoad || !valueInput ? 'opacity-60' : ''
                         }`}
                         onClick={handleSummit}
                     >
-                        Gửi bình luận
+                        {titleButton}
                     </ButtonOutline>
                 </div>
             </div>
-        </div>
+        </Overlay>
     );
 };
 
-export default FormSendReviews;
+export default FormReviews;

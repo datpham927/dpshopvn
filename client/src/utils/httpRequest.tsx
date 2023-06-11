@@ -27,7 +27,7 @@ axiosJWT.interceptors.request.use(
 //     async (config) => {
 //       const access_token = localStorage.getItem('access_token');
 //       if (!access_token) return config;
-//       const decode: any = jwt_decode(JSON.parse(access_token));
+//       const decode: any  = jwt_decode(JSON.parse(access_token));
 //       const currentTime = new Date();
 //       if (decode.exp < currentTime.getTime() / 1000) {
 //         const data = await apiRefreshToken();

@@ -5,7 +5,7 @@ const Product = require("../models/Product")
 
 const createProduct = async (req, res) => {
     try {
-        if (Object.keys(req.body).length == 0) {
+        if (Object.keys(req.body)?.length == 0) {
             return res.status(400).json({
                 success: false,
                 message: "Input required!"
@@ -31,7 +31,7 @@ const createProduct = async (req, res) => {
 }
 const updateProduct = async (req, res) => {
     try {
-        if (!req.params.pid || Object.keys(req.body).length == 0) {
+        if (!req.params.pid || Object.keys(req.body)?.length == 0) {
             return res.status(400).json({
                 success: false,
                 message: "Input required!"

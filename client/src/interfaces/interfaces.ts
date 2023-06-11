@@ -51,7 +51,7 @@ interface UserInterface {
     avatar_url: string;
     confirm: boolean;
     totalProduct: number;
-    createAt: Date;
+    createdAt: string;
 }
 
 interface Review {
@@ -67,7 +67,7 @@ interface Review {
         email: string;
         lastName: string;
         firstName: string;
-        createdAt: Date;
+        createdAt: string;
         followers: Array<string>;
     };
     __v: 0;

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiProductDetail } from '../../services/apiProduct';
 import { ProductDetail } from '../../interfaces/interfaces';
-import { SimilarProducts } from './similarProducts/SimilarProducts';
-import ProductInfo from './productInfo/ProductInfo';
+import { SimilarProducts } from './similarProducts';
 import HeaderDetail from './headerDetail';
 import ReviewsProduct from './reviewsProduct';
+import ProductDescription from './productDescription';
 
 const DetailPage: React.FC = () => {
     const [productDetail, setProductDetail] = useState<ProductDetail>();
@@ -28,7 +28,7 @@ const DetailPage: React.FC = () => {
                 <>
                     <HeaderDetail productDetail={productDetail} />
                     <SimilarProducts categoryCode={productDetail.categoryCode} />
-                    <ProductInfo productDetail={productDetail} />
+                    <ProductDescription productDetail={productDetail} />
                     <ReviewsProduct productDetail={productDetail} userBought={productDetail.userBought} />
                 </>
             )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
@@ -11,15 +11,19 @@ import moment from 'moment';
 import 'moment/dist/locale/vi';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { apiLikeProduct, apiUnlikeComment } from '../../services/apiReviews';
-import { setOpenLogin } from '../../redux/features/action/actionSlice';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { ButtonOutline } from '..';
 import { ratingReview } from '../../utils/const';
 
-const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: () => void }> = ({
-    review,
-    isBought,
-    handleDelete,
-}) => {
+interface ReviewsProps {
+    review: Review;
+    isBought: boolean;
+    handleDelete?: () => void;
+    handleEdit?: () => void;
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, handleEdit }) => {
     moment.locale('vi');
     const { comment, createdAt, images, likes, _id, rating, userId } = review;
     const user = useAppSelector((state) => state.user);
@@ -30,7 +34,7 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
 
     const handleLike = async () => {
         if (!isLoginSuccess) {
-            dispatch(setOpenLogin(true));
+            dispatch(setOpenFeatureAuth(true));
             return;
         }
         if (likesReviews.includes(user._id)) {
@@ -49,25 +53,25 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
                     <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden">
                         <img
                             className="w-full h-full block object-contain"
-                            src={userId.avatar_url ? userId.avatar_url : noUser}
+                            src={userId?.avatar_url ? userId?.avatar_url : noUser}
                         />
                     </div>
                     <div className="flex flex-col justify-center gap-1">
                         <div className="flex gap-3 items-center">
                             <h3 className="text-base font-medium">
-                                {userId.firstName
-                                    ? `${userId.lastName} ${userId.firstName}`
-                                    : userId.email?.split('@')[0]}
+                                {userId?.firstName
+                                    ? `${userId?.lastName} ${userId?.firstName}`
+                                    : userId?.email?.split('@')[0]}
                             </h3>
-                            {isAdmin && user._id === userId._id && (
-                                <span className="text-[10px] items-center  py-[1px] px-1 rounded-sm  border-[1px] border-solid border-pink-500 text-pink-500">
+                            {isAdmin && user._id === userId?._id && (
+                                <span className="text-[10px] items-center  py-[1px] px-1 rounded-sm  border-[1px] border-solid border-red_custom text-red_custom">
                                     admin
                                 </span>
                             )}
                         </div>
 
-                        <span className="text-sm text-text_secondary ">
-                            Đã tham gia {moment(userId.createdAt).fromNow()}
+                        <span className="text-xs text-text_secondary ">
+                            Đã tham gia {moment(userId?.createdAt).fromNow()}
                         </span>
                     </div>
                 </div>
@@ -77,7 +81,7 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
                         {isBought && (
                             <div className="flex w-full h-full  gap-2 items-center">
                                 <div className="flex ">{formatStar(rating, '20px')}</div>
-                                <span className="text-sm">{ratingReview.find((r) => r.start === rating)?.text}</span>
+                                <span className="text-sm">{ratingReview?.find((r) => r.start === rating)?.text}</span>
                             </div>
                         )}
 
@@ -98,7 +102,7 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
                         </div>
                     </div>
                     <div className="flex flex-col w-full h-full  gap-1">
-                        <span className="text-base text-capitalize">{comment} </span>
+                   <span className="text-base text-capitalize">{comment} </span>
                         <ul className="w-full h-full">
                             <Swiper
                                 slidesPerView={4}
@@ -122,20 +126,22 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
                     </div>
                     <div className="flex w-full gap-6 mt-3">
                         <ButtonOutline
-                            className={`${likesReviews.includes(user._id) && 'bg-bgSecondary border-transparent'}`}
+                            className={`${likesReviews?.includes(user._id) && 'bg-bgSecondary border-transparent'}`}
                             onClick={handleLike}
                         >
-                            {likesReviews.includes(user._id) ? (
+                            {likesReviews?.includes(user._id) ? (
                                 <ThumbUpAltIcon fontSize="small" />
                             ) : (
                                 <ThumbUpOffAltIcon fontSize="small" />
                             )}
-                            Hữu ích <span>{likesReviews.length}</span>
+                            Hữu ích <span>{likesReviews?.length}</span>
                         </ButtonOutline>
-                        {(user._id === userId._id || user.isAdmin) && (
+                        {(user._id === userId?._id || user.isAdmin) && (
                             <div className="flex gap-6 text-primary ">
-                                {user._id === userId._id && (
-                                    <button className="text-sm hover:opacity-80">Chỉnh sửa</button>
+                                {user._id === userId?._id && (
+                                    <button className="text-sm hover:opacity-80" onClick={handleEdit}>
+                                        Chỉnh sửa
+                                    </button>
                                 )}
                                 <button className="text-sm hover:opacity-80" onClick={handleDelete}>
                                     Xóa
@@ -149,4 +155,4 @@ const ReviewItem: React.FC<{ review: Review; isBought: boolean; handleDelete?: (
     );
 };
 
-export default ReviewItem;
+export default memo(ReviewItem);

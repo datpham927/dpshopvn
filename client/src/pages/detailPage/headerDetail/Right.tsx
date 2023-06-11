@@ -17,14 +17,14 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
             <div className="flex items-center w-full h-auto gap-2">
                 <img className="w-10 h-10 rounded-full" src={noUser} />
                 <div>
-                    {productDetail?.userId.lastName
-                        ? productDetail?.userId.lastName + ' ' + productDetail?.userId.firstName
-                        : productDetail?.userId.email?.split('@')[0]}
+                    {productDetail?.userId?.lastName
+                        ? productDetail?.userId?.lastName + ' ' + productDetail?.userId?.firstName
+                        : productDetail?.userId?.email?.split('@')[0]}
                 </div>
             </div>
             <div className="flex my-2 gap-2 text-sm items-center mt-4">
                 Lượt theo dõi:
-                <span className="text-base font-medium"> {productDetail?.userId.followers.length}</span>
+                <span className="text-base font-medium"> {productDetail?.userId?.followers?.length}</span>
             </div>
             <div className="flex gap-2">
                 <ButtonOutline>

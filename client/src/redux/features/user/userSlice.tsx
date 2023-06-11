@@ -13,6 +13,7 @@ const initialState: UserInterface = {
     address: '',
     mobile: '',
     avatar_url: '',
+    createdAt: '',
     confirm: false,
     totalProduct: 0,
 };
@@ -23,10 +24,11 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setDetailUser: (state, action) => {
-            const { firstName, _id, lastName, email, isAdmin, address, mobile, avatar_url, confirm, totalProduct } =
+            const { firstName, _id, lastName, email, isAdmin, address, createdAt,mobile, avatar_url, confirm, totalProduct } =
                 action.payload;
             (state.firstName = firstName),
                 (state.lastName = lastName),
+                (state.createdAt = createdAt),
                 (state._id = _id),
                 (state.email = email),
                 (state.isAdmin = isAdmin),
