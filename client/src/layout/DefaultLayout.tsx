@@ -48,7 +48,6 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                     {children}
                 </main>
                 <Footer />
-                <Overlay />
                 <Auth />
             </div>
             {toastContainer}

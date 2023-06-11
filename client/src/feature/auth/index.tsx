@@ -1,30 +1,28 @@
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setOpenLogin } from '../../redux/features/action/actionSlice';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import Login from './left/Login/Login';
 import Right from './Right/Right';
 import Register from './left/Register/Register';
+import { Overlay } from '../../component';
 
 const Auth: React.FC = () => {
-    const { openLogin, isLogin } = useAppSelector((state) => state.action);
+    const { openFeatureAuth, isLogin } = useAppSelector((state) => state.action);
     const dispatch = useAppDispatch();
 
     const handleClose = (e: { stopPropagation: () => void }) => {
         e.stopPropagation();
-        dispatch(setOpenLogin(false));
+        dispatch(setOpenFeatureAuth(false));
     };
     const handleOpen = (e: { stopPropagation: () => void }) => {
         e.stopPropagation();
-        dispatch(setOpenLogin(true));
+        dispatch(setOpenFeatureAuth(true));
     };
     return (
         <>
-            {openLogin && (
-                <div
-                    onClick={handleClose}
-                    className="fixed flex items-center justify-center w-screen h-screen  bg-overlay right-0 top-0  z-[1000]"
-                >
+            {openFeatureAuth && (
+                <Overlay className="z-[1000]" onClick={handleClose}>
                     <div onClick={handleOpen} className="relative w-[800px] h-auto ">
                         <div className="flex w-full h-full bg-white m-auto rounded-lg items-center overflow-hidden">
                             {isLogin ? <Login /> : <Register />}
@@ -38,7 +36,7 @@ const Auth: React.FC = () => {
                             <CloseIcon fontSize="medium" />
                         </div>
                     </div>
-                </div>
+                </Overlay>
             )}
         </>
     );

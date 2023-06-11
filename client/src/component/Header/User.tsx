@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import {noUser} from '../../assets';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setOpenLogin } from '../../redux/features/action/actionSlice';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { apiLogout } from '../../services/apiAuth';
 import { setDetailUser } from '../../redux/features/user/userSlice';
 import { setIsLoginSuccess } from '../../redux/features/auth/authSlice';
@@ -55,7 +55,7 @@ const User: React.FC = () => {
                     <span className="flex items-center cursor-pointer">
                         <PersonOutlineOutlinedIcon fontSize="large" />
                     </span>
-                    <div className="flex flex-col mx-1 cursor-pointer" onClick={() => dispatch(setOpenLogin(true))}>
+                    <div className="flex flex-col mx-1 cursor-pointer" onClick={() => dispatch(setOpenFeatureAuth(true))}>
                         <div className="text-xs font-normal text-white">
                             <span>Đăng nhập</span> / <span>Đăng ký</span>
                         </div>

@@ -4,14 +4,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 // Define the initial state using that type
 interface actionInitial {
-    openSearchResults: boolean;
-    openLogin:boolean
+    openFeatureAuth:boolean
   
     isLogin:boolean   //switch to login or register model
 }
 const initialState: actionInitial = {
-    openSearchResults: false,
-    openLogin:false,
+    openFeatureAuth:false,
     isLogin:false
 };
 
@@ -19,11 +17,9 @@ export const actionSlice = createSlice({
     name: 'action',
     initialState,
     reducers: {
-        setOpenSearchResults: (state, action: PayloadAction<boolean>) => {
-            state.openSearchResults = action.payload;
-        },
-        setOpenLogin: (state, action: PayloadAction<boolean>) => {
-            state.openLogin = action.payload;
+    
+        setOpenFeatureAuth: (state, action: PayloadAction<boolean>) => {
+            state.openFeatureAuth = action.payload;
         },
         setIsLogin: (state, action: PayloadAction<boolean>) => {
             state.isLogin = action.payload;
@@ -31,6 +27,6 @@ export const actionSlice = createSlice({
     },
 });
 
-export const { setOpenSearchResults,setOpenLogin,setIsLogin } = actionSlice.actions;
+export const { setOpenFeatureAuth,setIsLogin } = actionSlice.actions;
 
 export default actionSlice.reducer;

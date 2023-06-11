@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { CardProduct } from '../../interfaces/interfaces';
 import { formatStar } from '../../utils/formatStar';
 import { formatMoney } from '../../utils/formatMoney';
 
-const ProductItem: React.FC<{ props: CardProduct }> = ({ props }) => {
-    const { star, discount, image_url, newPrice, title ,sold,slug,_id} = props;
+// eslint-disable-next-line react-refresh/only-export-components
+const ProductItem: React.FC<{ props: CardProduct; scrollIntoView?: boolean }> = ({ props, scrollIntoView }) => {
+    const { star, discount, image_url, newPrice, title, sold, slug, _id } = props;
+    const productRef = useRef<HTMLAnchorElement>(null);
+
+    useEffect(() => {
+        if (!scrollIntoView) return;
+        productRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            
+        });
+    }, []);
     return (
-        <a href={`/${slug}/${_id}`} className="flex flex-col w-full h-full  px-3 hover:shadow-cart cursor-pointer">
+        <a
+            href={`/${slug}/${_id}`}
+            className="flex flex-col w-full h-full  px-3 hover:shadow-cart cursor-pointer"
+            ref={productRef}
+        >
             <div className="flex w-2/3 h-[170px] mx-auto my-2">
                 <img className="w-full h-full object-contain " src={image_url} />
             </div>
@@ -14,7 +28,7 @@ const ProductItem: React.FC<{ props: CardProduct }> = ({ props }) => {
             <div className="flex items-center gap-2 my-2">
                 <div className="flex items-center">{formatStar(star)}</div>
                 <span className="border-l-[1px] border-solid border-black text-xs line leading-none px-2 ">
-                    Đã bán {sold}+
+                    Đã bán {sold >= 5000 ? `${sold}+` : sold}
                 </span>
             </div>
             <div className="flex w-full gap-2 text-red_custom  items-center text-sm mb-7 ">
@@ -25,4 +39,5 @@ const ProductItem: React.FC<{ props: CardProduct }> = ({ props }) => {
     );
 };
 
-export default ProductItem;
+// eslint-disable-next-line react-refresh/only-export-components
+export default memo(ProductItem);

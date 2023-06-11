@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { apiRegister } from '../../../../services/apiAuth';
 import { setIsLoginSuccess } from '../../../../redux/features/auth/authSlice';
 import { showNotification } from '../../../../component';
-import { setOpenLogin } from '../../../../redux/features/action/actionSlice';
+import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 
 
 interface ModeRegister {
@@ -25,7 +25,7 @@ const Success: React.FC<ModeRegister> = (props) => {
     const handleSummit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         if (!password) return;
-        if (password.length < 6) {
+        if (password?.length < 6) {
             setError('Mật khẩu tối thiểu 6 ký tự!');
         } else {
             const res = await apiRegister(email, password);
@@ -38,7 +38,7 @@ const Success: React.FC<ModeRegister> = (props) => {
             } else {
                 showNotification('Đăng ký tài khoản không thành công!', false);
             }
-            dispatch(setOpenLogin(false));
+            dispatch(setOpenFeatureAuth(false));
         }
     };
 

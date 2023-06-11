@@ -4,7 +4,7 @@ const Cart = require("../models/Cart")
 
 const createOrderProduct = async (req, res) => {
     try {
-        if (!req.userId || Object.keys(req.body).length === 0) return res.status(403).json({
+        if (!req.userId || Object.keys(req.body)?.length === 0) return res.status(403).json({
             success: false,
             message: "Input required!"
         })
@@ -47,7 +47,7 @@ const createOrderProduct = async (req, res) => {
         const success = checkProduct.filter(s => s.success === true)
         console.log("err", err)
         console.log("success", success)
-        if (err.length > 0) {
+        if (err?.length > 0) {
             return res.status(401).json({
                 success: false,
                 message: `Sản phẩm có Id ${err.map(e => e.message).join(",")} không đủ hàng`

@@ -15,7 +15,7 @@ const Confirm: React.FC<ModeRegister> = (props) => {
     const { email } = useAppSelector((state) => state.auth);
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     useEffect(() => {
-        let intervalId: any;
+        let intervalId: any ;
         if (waitingTime <= 30 && waitingTime >= 0) {
             intervalId = setInterval(() => {
                 setWaitingTime((prevWaitingTime) => prevWaitingTime - 1);

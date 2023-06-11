@@ -54,8 +54,8 @@ const Products: React.FC = () => {
             {header}
             <div className="flex flex-col bg-white pb-8 gap-10">
                 <div className="grid grid-cols-6 ">
-                    {products.map((p) => (
-                        <ProductItem key={p._id} props={p} />
+                    {products.map((p, index) => (
+                        <ProductItem key={p._id} props={p} scrollIntoView={index === 0} />
                     ))}
                 </div>
                 {!hiddenButton && (

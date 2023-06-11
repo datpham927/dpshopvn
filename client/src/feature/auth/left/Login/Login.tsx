@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { apiLogin } from '../../../../services/apiAuth';
-import { setOpenLogin } from '../../../../redux/features/action/actionSlice';
+import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { setIsLoginSuccess } from '../../../../redux/features/auth/authSlice';
 import { showNotification } from '../../../../component';
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
         if (res.success) {
             localStorage.setItem('access_token', JSON.stringify(res.access_token));
             showNotification('Đăng nhập thành công!',true);
-            dispatch(setOpenLogin(false));
+            dispatch(setOpenFeatureAuth(false));
             dispatch(setIsLoginSuccess(true))
             window.location.reload();
         } else {

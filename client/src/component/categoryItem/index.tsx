@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Category } from '../../interfaces/interfaces'
 
 const CategoryItem:React.FC<{props:Category}> = ({props}) => {
@@ -16,4 +16,4 @@ const CategoryItem:React.FC<{props:Category}> = ({props}) => {
     );
 }
 
-export default CategoryItem
+export default memo(CategoryItem)

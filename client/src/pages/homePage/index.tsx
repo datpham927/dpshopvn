@@ -1,8 +1,8 @@
 import React from 'react';
-import Banners from './banners/Banners';
-import Categories from './categories/Categories';
-import ShockDiscount from './shockDiscount/ShockDiscount';
-import Products from './products/Products';
+import Categories from './categories';
+import ShockDiscount from './shockDiscount';
+import Products from './products';
+import Banners from './banners';
 
 const HomePage: React.FC = () => {
     return (
