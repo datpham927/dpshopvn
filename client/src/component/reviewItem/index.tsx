@@ -4,6 +4,7 @@ import { Navigation } from 'swiper';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import MoodIcon from '@mui/icons-material/Mood';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import { v4 as uuidv4 } from 'uuid';
 import { Review } from '../../interfaces/interfaces';
 import { formatStar } from '../../utils/formatStar';
 import { noUser } from '../../assets';
@@ -81,7 +82,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                         {isBought && (
                             <div className="flex w-full h-full  gap-2 items-center">
                                 <div className="flex ">{formatStar(rating, '20px')}</div>
-                                <span className="text-sm">{ratingReview?.find((r) => r.start === rating)?.text}</span>
+                                <span className="text-sm font-semibold">{ratingReview?.find((r) => r.start === rating)?.text}</span>
                             </div>
                         )}
 
@@ -102,7 +103,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                         </div>
                     </div>
                     <div className="flex flex-col w-full h-full  gap-1">
-                   <span className="text-base text-capitalize">{comment} </span>
+                   <span className="text-sm text-capitalize">{comment} </span>
                         <ul className="w-full h-full">
                             <Swiper
                                 slidesPerView={4}
@@ -114,7 +115,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                                 className="mySwiper"
                             >
                                 {images?.map((i) => (
-                                    <SwiperSlide>
+                                    <SwiperSlide key={uuidv4()}>
                                         <div className=" h-[200px]  mx-auto">
                                             <img className="w-full h-full object-contain block" src={i} />
                                         </div>
@@ -155,4 +156,5 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default memo(ReviewItem);

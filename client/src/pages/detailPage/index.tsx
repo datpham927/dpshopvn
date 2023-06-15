@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiProductDetail } from '../../services/apiProduct';
 import { ProductDetail } from '../../interfaces/interfaces';
@@ -9,7 +9,6 @@ import ProductDescription from './productDescription';
 
 const DetailPage: React.FC = () => {
     const [productDetail, setProductDetail] = useState<ProductDetail>();
-
     const pid = useParams().pid;
     useEffect(() => {
         if (!pid) return;
@@ -20,6 +19,11 @@ const DetailPage: React.FC = () => {
             }
         };
         fetchDetail();
+    }, [pid]);
+    useEffect(() => {
+        document.querySelector('header')?.scrollIntoView({
+            behavior: 'instant',
+        });
     }, [pid]);
 
     return (

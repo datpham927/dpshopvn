@@ -83,21 +83,31 @@ const following = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
         const currentUser = await User.findById(req.userId)
-        if (currentUser.followings.includes(req.params.id)) {
-            await user.updateOne({ $pull: { followers: req.userId } })
-            await currentUser.updateOne({ $pull: { followings: req.params.id } });
-            res.status(200).json({
-                success: true,
-                message: "user has been unfollowed",
-            })
-        } else {
-            await user.updateOne({ $push: { followers: req.userId } })
-            await currentUser.updateOne({ $push: { followings: req.params.id } });
-            res.status(200).json({
-                success: true,
-                message: "user has been followed",
-            })
-        }
+        await user.updateOne({ $push: { followers: req.userId } })
+        await currentUser.updateOne({ $push: { followings: req.params.id } });
+        res.status(200).json({
+            success: true,
+            message: "user has been followed",
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+//unfollowing
+const unFollowing = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        const currentUser = await User.findById(req.userId)
+        await user.updateOne({ $pull: { followers: req.userId } })
+        await currentUser.updateOne({ $pull: { followings: req.params.id } });
+        res.status(200).json({
+            success: true,
+            message: "user has been unfollowed",
+        })
+
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -175,5 +185,7 @@ const deleteUser = async (req, res) => {
 }
 
 
-module.exports = { updateUser, updateUserByAdmin, currentUserDetail,
-    adminUserDetail, deleteUser, following, getAllUsers }
+module.exports = {
+    updateUser, updateUserByAdmin, currentUserDetail,
+    adminUserDetail, deleteUser, following, unFollowing, getAllUsers
+}

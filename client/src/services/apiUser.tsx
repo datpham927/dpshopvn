@@ -6,11 +6,32 @@ const apiGetDetailUser = async () => {
         return res.data;
     } catch (error) {
         return {
-            success:false,
-            message:error
-        }
+            success: false,
+            message: error,
+        };
     }
 };
- 
 
-export { apiGetDetailUser };
+const apiFollowingUser = async (userId: string) => {
+    try {
+        const res = await axiosJWT.post(`user/${userId}/follow`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+const apiUnFollowingUser = async (userId: string) => {
+    try {
+        const res = await axiosJWT.put(`user/${userId}/unfollow`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+export { apiGetDetailUser, apiFollowingUser ,apiUnFollowingUser};

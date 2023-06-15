@@ -1,5 +1,6 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { v4 as uuidv4 } from 'uuid';
 import { Autoplay, Pagination, Navigation } from 'swiper';
 const Banners: React.FC = () => {
     const img = [
@@ -27,9 +28,9 @@ const Banners: React.FC = () => {
                     modules={[Autoplay, Pagination, Navigation]}
                     className="mySwiper"
                 >
-                    {img.map((i) => {
+                    {img?.map((i) => {
                         return (
-                            <SwiperSlide>
+                            <SwiperSlide key={uuidv4()}>
                                 <div className="w-full h-full shrink-0 ">
                                     <img className="w-full h-full object-fill" src={i} />
                                 </div>
@@ -49,9 +50,9 @@ const Banners: React.FC = () => {
                     modules={[Autoplay]}
                     className="mySwiper"
                 >
-                    {img.map((i) => {
+                    {img?.map((i) => {
                         return (
-                            <SwiperSlide>
+                            <SwiperSlide key={uuidv4()}>
                                 <div className="w-full object-fill rounded-lg overflow-hidden ">
                                     <img
                                         className="w-full object-fill"

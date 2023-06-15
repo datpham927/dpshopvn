@@ -1,6 +1,5 @@
 const Cart = require("../models/Cart")
-const Order = require("../models/Order")
-const Product = require("../models/Product")
+
 
 
 
@@ -8,13 +7,11 @@ const addToCart = async (req, res) => {
     try {
         const cart = await Cart.findOne({ productId: req.body.productId })
         if (cart) {
-            cart.quantity = req.body.quantity
-            cart.price == req.body.price
-            cart.save()
+            const cart = await Cart.findOneAndUpdate({ productId: req.body.productId }, { ...req.body }, { new: true })
             return res.status(200).json({
                 success: cart ? true : false,
                 message: cart ? "success" : 'failed',
-                cart
+                data: cart ? cart : null
             })
         }
         const newCart = await Cart.create({ userId: req.userId, ...req.body })

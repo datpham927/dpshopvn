@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { getCategories } from '../../../services/apiCategory';
 import { Category } from '../../../interfaces/interfaces';
 import { CategoryItem } from '../../../component';
@@ -13,8 +14,8 @@ const Categories: React.FC = () => {
     }, []);
     return (
         <div className="grid grid-cols-10 h-full bg-white py-3 rounded-md overflow-hidden ">
-            {categories.map((c) => {
-                return <CategoryItem key={c.category_code} props={c} />;
+            {categories?.map((c) => {
+                return <CategoryItem key={uuidv4()} props={c} />;
             })}
         </div>
     );

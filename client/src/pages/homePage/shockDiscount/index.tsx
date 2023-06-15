@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {  Navigation} from 'swiper';
+import { v4 as uuidv4 } from 'uuid';
 import {dealFlashIcon} from '../../../assets';
 import { getAllProduct } from '../../../services/apiProduct';
 import { CardProduct } from '../../../interfaces/interfaces';
@@ -38,7 +39,7 @@ const ShockDiscount: React.FC = () => {
                 >
                     {products.map((p) => {
                         return (
-                            <SwiperSlide>
+                            <SwiperSlide key={uuidv4()}>
                                 <CartShockDiscount key={p._id} product={p} />
                             </SwiperSlide>
                         );

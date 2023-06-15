@@ -3,6 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardControlKeyIcon from '@mui/icons-material/KeyboardControlKey';
 import CloseIcon from '@mui/icons-material/Close';
+import { v4 as uuidv4 } from 'uuid';
 import { deleteSearchHistory, getSearchHistories, getSuggestResult } from '../../services/apiSearch';
 import { useAppDispatch } from '../../redux/hooks';
 import useDebounce from '../../Hook/useDebounce';
@@ -88,7 +89,7 @@ const Search: React.FC = () => {
         resultSuggest?.map((s, i) => {
             return (
                 i < limitHistory && (
-                    <li key={s?._id} className="flex gap-3 hover:bg-hover cursor-pointer py-2 px-5">
+                    <li key={uuidv4()} className="flex gap-3 hover:bg-hover cursor-pointer py-2 px-5">
                         <SearchIcon style={{ color: 'rgb(128, 128, 137)' }} />{' '}
                         <span className="text-sm ">{s?.title}</span>
                     </li>
@@ -107,7 +108,7 @@ const Search: React.FC = () => {
                                 return (
                                     i < limitHistory && (
                                         <li
-                                            key={s?._id}
+                                            key={uuidv4()}
                                             className="flex gap-3 justify-between hover:bg-hover cursor-pointer py-2 px-5"
                                         >
                                             <div>
@@ -161,7 +162,7 @@ const Search: React.FC = () => {
                             return (
                                 <Link
                                     to={`${s.slug}/${s._id}`}
-                                    key={s?._id}
+                                    key={uuidv4()}
                                     onClick={() => setOpenSearchResults(false)}
                                     className="flex flex-col w-full hover:shadow-search items-center py-1 px-3 cursor-pointer gap-2 "
                                 >

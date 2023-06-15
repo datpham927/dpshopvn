@@ -1,51 +1,36 @@
 import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import MessageIcon from '@mui/icons-material/Message';
-import { IconExcept, noUser } from '../../../assets';
+import { IconExcept } from '../../../assets';
 import { formatMoney } from '../../../utils/formatMoney';
 import { formatStar } from '../../../utils/formatStar';
 import { ProductDetail } from '../../../interfaces/interfaces';
-import {ButtonOutline} from '../../../component';
+import { ButtonOutline, showNotification } from '../../../component';
+import { apiAddToCart } from '../../../services/apiCart';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { setAddProductInCart } from '../../../redux/features/cart/cartSlice';
+import InfoShop from './InfoShop';
+import { setIsLogin, setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 
 const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
-    const [quantity, setQuantity] = useState<number>(0);
-
-    const infoShop = (
-        <div className="w-[240px] h-auto border-[1px] border-solid py-3 border-slate-200 rounded-sm px-3">
-            <div className="flex items-center w-full h-auto gap-2">
-                <img className="w-10 h-10 rounded-full" src={noUser} />
-                <div>
-                    {productDetail?.userId?.lastName
-                        ? productDetail?.userId?.lastName + ' ' + productDetail?.userId?.firstName
-                        : productDetail?.userId?.email?.split('@')[0]}
-                </div>
-            </div>
-            <div className="flex my-2 gap-2 text-sm items-center mt-4">
-                Lượt theo dõi:
-                <span className="text-base font-medium"> {productDetail?.userId?.followers?.length}</span>
-            </div>
-            <div className="flex gap-2">
-                <ButtonOutline>
-                    <CardGiftcardIcon fontSize="small" />
-                    Xem shop
-                </ButtonOutline>
-                <ButtonOutline>
-                    <AddIcon fontSize="small" />
-                    Theo dõi
-                </ButtonOutline>
-            </div>
-            {/* <button className="flex gap-1 mt-4 text-sm w-full justify-center font-medium  items-center p-2 rounded-[4px]  border-[1px] border-solid border-red_custom text-red_custom  hover:bg-opacity-70">
-                <MessageIcon fontSize="small" />
-                Chat ngay
-            </button> */}
-            <ButtonOutline className="w-full border-red_custom mt-4  justify-center text-red_custom">
-                <MessageIcon fontSize="small" />
-                Chat ngay
-            </ButtonOutline>
-        </div>
-    );
+    const [quantity, setQuantity] = useState<number>(1);
+    const { isLoginSuccess } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+    const handleAddToCart = async () => {
+        const response = await apiAddToCart({
+            quantity,
+            shopId: productDetail.userId._id,
+            productId: productDetail._id,
+            unitPrice: productDetail.newPrice,
+            totalPrice: quantity * productDetail.newPrice,
+        });
+        if (response?.success) {
+            dispatch(setAddProductInCart(response.data));
+            showNotification('Sản phẩm đã được thêm vào giỏ hàng', true);
+        } else {
+            showNotification('Sản phẩm chưa được thêm vào giỏ hàng', true);
+        }
+    };
 
     return (
         <div className="flex  h-full flex-1">
@@ -63,7 +48,6 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                         <h3 className="text-text_secondary text-[15px]">Đã bán {productDetail?.sold}</h3>
                     </div>
                 </div>
-
                 <div className="flex">
                     <div className="flex-1 h-full pr-3">
                         <div className="flex flex-col gap-4">
@@ -91,7 +75,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                 <div className="flex items-center border-[1px] border-solid border-slate-300 w-[100px]  rounded-sm">
                                     <button
                                         onClick={() => {
-                                            if (quantity > 0) {
+                                            if (quantity > 1) {
                                                 setQuantity(quantity - 1);
                                             }
                                         }}
@@ -114,7 +98,11 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                 </div>
                             </div>
                             <div className="flex gap-4 mt-4">
-                                <ButtonOutline>
+                                <ButtonOutline
+                                    onClick={() => {
+                                        isLoginSuccess ? handleAddToCart() : dispatch(setOpenFeatureAuth(true));
+                                    }}
+                                >
                                     <ShoppingCartOutlinedIcon />
                                     Thêm vào giỏ hàng
                                 </ButtonOutline>
@@ -125,7 +113,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                         </div>
                     </div>
                     {/* ---------------- */}
-                    {infoShop}
+                    <InfoShop props={productDetail.userId} />
                 </div>
             </div>
         </div>
