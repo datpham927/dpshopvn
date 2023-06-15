@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import {logo} from '../../assets';
 import { getCategories } from '../../services/apiCategory';
 import Search from './Search';
@@ -45,7 +46,7 @@ const Header: React.FC = () => {
                     {categories?.map(
                         (c, i) =>
                             i < 5 && (
-                                <a key={c.category_code} className="text-[13px] text-white cursor-pointer">
+                                <a key={uuidv4()} className="text-[13px] text-white cursor-pointer">
                                     {c.category}
                                 </a>
                             ),

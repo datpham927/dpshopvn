@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ProductDetail } from '../../../interfaces/interfaces';
 import Right from './Right';
 import Left from './Left';
-
 
 const HeaderDetail: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     return (

@@ -1,8 +1,10 @@
 import { axiosJWT, httpRequest } from '../utils/httpRequest';
 
-const getAllReviewsById = async (pid: string) => {
+const getAllReviewsById = async (pid: string, queries:object) => {
     try {
-        const res = await httpRequest.get(`/reviews/get/${pid}`);
+        const res = await httpRequest.get(`/reviews/get/${pid}`,{
+            params:queries
+        });
         return res.data;
     } catch (error) {
         return {
@@ -59,7 +61,7 @@ const apiDeleteComment = async (cId: string) => {
     }
 };
 
-const apiEditComment = async (data: any, cid: any) => {
+const apiEditComment = async (data: any, cid: string) => {
     try {
         const res = await axiosJWT.put(`/reviews/${cid}/edit_comment`, data);
         return res.data;
@@ -70,5 +72,16 @@ const apiEditComment = async (data: any, cid: any) => {
         };
     }
 };
+const apiRatingsProduct = async (pid: any) => {
+    try {
+        const res = await httpRequest.get(`reviews/${pid}/ratings_product`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
 
-export { getAllReviewsById, apiUnlikeComment, apiLikeProduct, apiPostComment, apiDeleteComment, apiEditComment };
+export { getAllReviewsById, apiUnlikeComment, apiLikeProduct, apiPostComment, apiDeleteComment, apiEditComment ,apiRatingsProduct};

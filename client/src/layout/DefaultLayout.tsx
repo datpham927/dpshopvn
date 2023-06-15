@@ -18,7 +18,6 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         const fetchApiDetailUser = async () => {
             const res = await apiGetDetailUser();
             if (res.success) {
-                console.log(res.data)
                 dispatch(setIsLoginSuccess(true));
                 dispatch(setDetailUser(res.data));
             }

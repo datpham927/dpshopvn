@@ -52,6 +52,7 @@ interface UserInterface {
     confirm: boolean;
     totalProduct: number;
     createdAt: string;
+    followings: Array<string>;
 }
 
 interface Review {
@@ -73,4 +74,13 @@ interface Review {
     __v: 0;
 }
 
-export type { Category, UserInterface, CardProduct, ProductDetail, Review };
+interface ProductInCart {
+    _id: string;
+    userId: string;
+    shopId: string;
+    quantity: string;
+    unitPrice: number;
+    totalPrice: number;
+}
+
+export type { Category, UserInterface, CardProduct, ProductDetail, Review, ProductInCart };

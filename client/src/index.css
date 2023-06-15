@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -15,10 +15,6 @@ body {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-.menu-user {
-    @apply text-base hover:bg-color_hover px-3 py-1 cursor-pointer;
 }
 
 .swiper-button-prev:after,
@@ -48,4 +44,11 @@ body {
     color: white;
     background-color: black;
     opacity: 0.5;
+}
+
+.menu-user {
+    @apply text-sm hover:bg-color_hover px-3 py-1 cursor-pointer;
+}
+.option-rating-review {
+    @apply px-7 text-base py-2 bg-white rounded-sm  text-primary font-normal border-[1px] border-solid  capitalize   hover:bg-opacity-100;
 }

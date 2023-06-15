@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
+import { v4 as uuidv4 } from 'uuid';
 import { getAllProduct } from '../../../services/apiProduct';
 import { CardProduct } from '../../../interfaces/interfaces';
 import { ProductItem } from '../../../component';
@@ -27,9 +28,9 @@ export const SimilarProducts: React.FC<{ categoryCode: string }> = ({ categoryCo
                     modules={[Navigation]}
                     className="mySwiper"
                 >
-                    {products.map((item) => {
+                    {products?.map((item) => {
                         return (
-                            <SwiperSlide>
+                            <SwiperSlide key={uuidv4()}>
                                 <ProductItem key={item._id} props={item} />
                             </SwiperSlide>
                         );

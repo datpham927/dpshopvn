@@ -47,7 +47,7 @@ const verifyAdmin = async (req, res, next) => {
             const user = await User.findById(decodedToken._id);
             if (!user.isAdmin) {
                 return res.status(401).json({
-                    success: true,
+                    success: false,
                     message: "Invalid access token"
                 });
             }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
+import { v4 as uuidv4 } from 'uuid';
 import { iconCopy, iconFacebook, iconMessenger } from '../../../assets';
 
 const Left: React.FC<{ productImage: Array<string>; imageUrl: string }> = ({ productImage, imageUrl }) => {
@@ -21,7 +22,7 @@ const Left: React.FC<{ productImage: Array<string>; imageUrl: string }> = ({ pro
                     className="mySwiper"
                 >
                     {productImage?.map((i) => (
-                        <SwiperSlide>
+                        <SwiperSlide key={uuidv4()}>
                             <li
                                 className={`w-16 h-16 cursor-pointer ${
                                     imagePrimary === i && 'border-[2px] border-solid border-primary'

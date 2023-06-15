@@ -1,7 +1,7 @@
 const Reviews = require("../models/Reviews")
 
 
-const createComment = async (req, res) => {
+const createReview = async (req, res) => {
     try {
         const { pid } = req.params
         if (!pid || Object.keys(req.body)?.length === 0) return res.status(401).json({ success: false, message: "Input required!" })
@@ -9,7 +9,7 @@ const createComment = async (req, res) => {
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Created success" : "Created failed",
-            comment: comment ? comment : null
+            data: comment ? comment : null
         })
     } catch (error) {
         return res.status(500).json({
@@ -18,7 +18,7 @@ const createComment = async (req, res) => {
         })
     }
 }
-const deleteComment = async (req, res) => {
+const deleteReview = async (req, res) => {
     try {
         const { cid } = req.params
         if (!cid) return res.status(401).json({ success: false, message: "cid required!" })
@@ -34,15 +34,32 @@ const deleteComment = async (req, res) => {
         })
     }
 }
-const getComment = async (req, res) => {
+const getAllReviews = async (req, res) => {
     try {
         const { pid } = req.params
         if (!pid) return res.status(401).json({ success: false, message: "productId required!" })
+        const newQuery = {
+            productId: pid
+        };
+        if (req.query.rating) {
+            newQuery.rating = req.query.rating
+        }
+
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        const comment = await Reviews.find({ productId: pid }).populate("userId", option).sort("-createdAt")
+        let allReviews = Reviews.find(newQuery).populate("userId", option).sort("-createdAt")
+
+        const limit = req.query.limit
+        const page = req.query.page * 1 || 0
+        const skip = page * limit
+        allReviews = allReviews.limit(limit).skip(skip)
+        const totalReviews = await Reviews.countDocuments(newQuery)
+        const newAllReviews = await allReviews
         return res.status(201).json({
-            success: comment ? true : false,
-            data: comment ? comment : null
+            success: newAllReviews ? true : false,
+            totalPage: limit ? Math.ceil(totalReviews / limit) - 1 : 0,
+            currentPage: page,
+            total_reviews: totalReviews,
+            data: newAllReviews ? newAllReviews : null,
         })
     } catch (error) {
         return res.status(500).json({
@@ -102,4 +119,24 @@ const unlikeComment = async (req, res) => {
         })
     }
 }
-module.exports = { createComment, getComment, editComment, likeComment, unlikeComment, deleteComment }
+
+const getRatingsProduct = async (req, res) => {
+    try {
+        const ratings = await Reviews.find({ productId: req.params.pid }).select("rating _id")
+        res.status(200).json({
+            success: ratings ? true : false,
+            data: ratings ? ratings : null,
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+
+
+
+
+
+module.exports = { createReview, getAllReviews, editComment, likeComment, unlikeComment, deleteReview, getRatingsProduct }

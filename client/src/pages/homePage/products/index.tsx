@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { searchUtility } from '../../../utils/const';
 import { getAllProduct } from '../../../services/apiProduct';
 import { CardProduct } from '../../../interfaces/interfaces';
@@ -37,6 +38,7 @@ const Products: React.FC = () => {
             <div className="grid grid-cols-8 gap-4 ">
                 {searchUtility.map((e) => (
                     <div
+                        key={uuidv4()}
                         onClick={() => setOptionTab(e.id)}
                         className={`flex flex-col gap-1 p-1 ${
                             optionTab == e.id ? 'bg-bgSecondary border-primary' : 'bg-white'
@@ -55,7 +57,7 @@ const Products: React.FC = () => {
             <div className="flex flex-col bg-white pb-8 gap-10">
                 <div className="grid grid-cols-6 ">
                     {products.map((p, index) => (
-                        <ProductItem key={p._id} props={p} scrollIntoView={index === 0} />
+                        <ProductItem key={uuidv4()} props={p} scrollIntoView={index === 0} />
                     ))}
                 </div>
                 {!hiddenButton && (
