@@ -13,14 +13,12 @@ const Cart: React.FC = () => {
         const fetchApi = async () => {
             const res = await apiGetProductInCart();
             if (!res.success) return;
-            console.log('res.products', res.products);
             dispatch(setAddProductInCart(res.products));
         };
         isLoginSuccess && fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoginSuccess]);
 
-    console.log('productInCart', productInCart);
 
     return (
         <div className="flex items-end  cursor-pointer">

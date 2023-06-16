@@ -4,11 +4,11 @@ import {  Navigation} from 'swiper';
 import { v4 as uuidv4 } from 'uuid';
 import {dealFlashIcon} from '../../../assets';
 import { getAllProduct } from '../../../services/apiProduct';
-import { CardProduct } from '../../../interfaces/interfaces';
+import { CardProductItem } from '../../../interfaces/interfaces';
 import { CartShockDiscount } from '../../../component';
 
 const ShockDiscount: React.FC = () => {
-    const [products, setProducts] = useState<CardProduct[]>([]);
+    const [products, setProducts] = useState<CardProductItem[]>([]);
 
     useEffect(() => {
         const fetchProducts = async () => {

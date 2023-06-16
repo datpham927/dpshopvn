@@ -1,19 +1,19 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { CardProduct } from '../../interfaces/interfaces';
+import { CardProductItem } from '../../interfaces/interfaces';
 import { formatStar } from '../../utils/formatStar';
 import { formatMoney } from '../../utils/formatMoney';
 import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line react-refresh/only-export-components
-const ProductItem: React.FC<{ props: CardProduct; scrollIntoView?: boolean }> = ({ props, scrollIntoView }) => {
-    const { star, discount, image_url, newPrice, title, sold, slug, _id } = props;
+const ProductItem: React.FC<{ props: CardProductItem; scrollIntoView?: boolean }> = ({ props, scrollIntoView }) => {
+    const { star, discount, image_url, newPrice, title, sold, slug, _id, category_name } = props;
     const productRef = useRef<HTMLAnchorElement>(null);
 
     // useEffect(() => {
     //     if (!scrollIntoView) return;
     //     productRef.current?.scrollIntoView({
     //         behavior: 'smooth',
-            
+
     //     });
     // }, []);
     return (

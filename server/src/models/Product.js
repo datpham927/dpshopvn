@@ -16,7 +16,8 @@ const productSchema = mongoose.Schema({
     newPrice: { type: Number, default: 0 },
     inStock: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
-    categoryCode: { type: String, default: "", require: true },
+    category_code: { type: String, default: "", require: true },
+    category_name: { type: String, default: "", require: true },
     infoProduct: [{
         name: String,
         value: String

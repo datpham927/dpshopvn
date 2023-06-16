@@ -4,7 +4,7 @@ interface Category {
     category_image: string;
     category_slug: string;
 }
-interface CardProduct {
+interface CardProductItem {
     image_url: string;
     images: Array<string>;
     slug: string;
@@ -16,12 +16,13 @@ interface CardProduct {
     oldPrice: number;
     newPrice: number;
     _id: string;
+    category_name: string;
 }
 
-interface ProductDetail extends CardProduct {
+interface ProductDetail extends CardProductItem {
     description: Array<string>;
     brand: string;
-    categoryCode: string;
+    category_code: string;
     userBought: Array<string>;
     infoProduct: [
         {
@@ -83,4 +84,4 @@ interface ProductInCart {
     totalPrice: number;
 }
 
-export type { Category, UserInterface, CardProduct, ProductDetail, Review, ProductInCart };
+export type { Category, UserInterface, CardProductItem, ProductDetail, Review, ProductInCart };

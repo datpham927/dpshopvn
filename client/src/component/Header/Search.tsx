@@ -108,7 +108,8 @@ const Search: React.FC = () => {
                                 return (
                                     i < limitHistory && (
                                         <li
-                                            key={uuidv4()}
+
+                                          key={uuidv4()}
                                             className="flex gap-3 justify-between hover:bg-hover cursor-pointer py-2 px-5"
                                         >
                                             <div>
