@@ -119,7 +119,7 @@ const getAllProducts = async (req, res) => {
             newQueryString.category =req.query.category
         }
         console.log(newQueryString)
-        let products = Product.find(newQueryString).select("-categoryCode -details -description -views -userId -userBought -size -infoProduct")
+        let products = Product.find(newQueryString).select("-category_code -details -description -views -userId -userBought -size -infoProduct")
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
             products = products.sort(sortBy)
@@ -190,7 +190,7 @@ const updateRatingsProduct = async (req, res) => {
 }
 
 
-// insert products data    
+// // insert products data    
 // const Bo_qua_tang = require("../../dataInsert/Bo-qua-tang.json")
 // const Cham_soc_thu_cung = require("../../dataInsert/Cham-soc-thu-cung.json")
 // const DJo_An_Vat = require("../../dataInsert/DJo-An-Vat.json")
@@ -210,12 +210,14 @@ const updateRatingsProduct = async (req, res) => {
 // const { categories } = require("../ulits/const")
 // const autoCode = require("../ulits/autoCode")
 // const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82"]
+
 // const insertProductsData = async (req, res) => {
 //     try {
 //         const star = [3.5, 4, 4.5, 5]
 //         let indexStar = 0
 //         const response = await Promise.all(data.map(async (p, i) => {
-//             const categoryCode = await autoCode(categories[i].category)
+//             const category_code = await autoCode(categories[i].category)
+//             const  category_name=categories[i].category
 //             return p.map(async (item, i) => {
 //                 indexStar = Math.floor(Math.random() * 3)
 //                 const images=item?.images&&item?.images.map(i=> i.split(",")[0]
@@ -231,7 +233,8 @@ const updateRatingsProduct = async (req, res) => {
 //                     newPrice: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
 //                     inStock: 1000,
 //                     discount: item.discount ? item.discount : 15,
-//                     categoryCode: categoryCode,
+//                    category_code,
+//                     category_name,
 //                     infoProduct: convertArrToObject(item.detail),
 //                     userId: user[i % 2],
 //                     description: item.description
@@ -255,6 +258,6 @@ module.exports = {
     detailProduct,
     getAllProducts,
     getAllProductFollowing,
-    updateRatingsProduct
+    updateRatingsProduct,
     // insertProductsData, 
 }

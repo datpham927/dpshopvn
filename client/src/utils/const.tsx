@@ -4,7 +4,8 @@ export const path = {
     LOGIN: '/login',
     REGISTER: '/register',
     HOME: '/',
-    DETAILPRODUCT:"/:slug/:pid"
+    DETAILPRODUCT: '/:slug/:pid',
+    PAGE_CATEGORY: '/danh-muc/:category_slug/:cid',
 };
 
 export const searchUtility = [
@@ -34,7 +35,6 @@ export const searchUtility = [
         title: 'Rẽ vô đối',
     },
 ];
-
 
 export const ratingReview = [
     { start: 1, text: 'Rất tệ' },

@@ -24,7 +24,6 @@ export const cartSlice = createSlice({
                 if (existingProductIndex !== -1) {
                     state.productInCart[existingProductIndex] = { ...action.payload };
                 } else {
-                    console.log('action.payload', action.payload);
                     state.productInCart.push(action.payload);
                 }
             }

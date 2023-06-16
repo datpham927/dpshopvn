@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import { fire_icon } from '../../assets';
-import { CardProduct } from '../../interfaces/interfaces';
+import { CardProductItem } from '../../interfaces/interfaces';
 import { formatMoney } from '../../utils/formatMoney';
 import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line react-refresh/only-export-components
-const CardShockDiscount: React.FC<{ product: CardProduct }> = ({ product }) => {
+const CardShockDiscount: React.FC<{ product: CardProductItem }> = ({ product }) => {
     const { discount, image_url, slug, _id, newPrice } = product;
     return (
         <Link

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiProductDetail } from '../../services/apiProduct';
 import { ProductDetail } from '../../interfaces/interfaces';
@@ -6,6 +6,7 @@ import { SimilarProducts } from './similarProducts';
 import HeaderDetail from './headerDetail';
 import ReviewsProduct from './reviewsProduct';
 import ProductDescription from './productDescription';
+import Breadcrumbs from './breadcrumbs';
 
 const DetailPage: React.FC = () => {
     const [productDetail, setProductDetail] = useState<ProductDetail>();
@@ -20,6 +21,7 @@ const DetailPage: React.FC = () => {
         };
         fetchDetail();
     }, [pid]);
+    
     useEffect(() => {
         document.querySelector('header')?.scrollIntoView({
             behavior: 'instant',
@@ -30,8 +32,13 @@ const DetailPage: React.FC = () => {
         <>
             {productDetail && (
                 <>
+                    <Breadcrumbs
+                        category_name={productDetail?.category_name}
+                        category_code={productDetail?.category_code}
+                        title={productDetail.title}
+                    />
                     <HeaderDetail productDetail={productDetail} />
-                    <SimilarProducts categoryCode={productDetail.categoryCode} />
+                    <SimilarProducts category_code={productDetail.category_code} />
                     <ProductDescription productDetail={productDetail} />
                     <ReviewsProduct productDetail={productDetail} userBought={productDetail.userBought} />
                 </>

@@ -43,7 +43,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         <>
             <div className="flex flex-col w-screen h-full mx-auto  bg-background_primary">
                 <Header />
-                <main className="flex flex-col h-full max-w-7xl min-w-[1280px]  px-5 py-3 mx-auto mt-4">
+                <main className="flex flex-col h-full max-w-7xl min-w-[1280px]  px-5  mx-auto  ">
                     {children}
                 </main>
                 <Footer />

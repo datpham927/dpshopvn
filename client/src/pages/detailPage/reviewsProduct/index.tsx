@@ -117,7 +117,10 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
                         <div> {formatStar(averageRating, '25px')}</div>
                     </div>
                     <div className="flex gap-5">
-                        <button className={'option-rating-review'} onClick={() => setOptionRating(0)}>
+                        <button
+                            className={`option-rating-review   ${optionRating === 0 ? 'border-primary' : ''} `}
+                            onClick={() => setOptionRating(0)}
+                        >
                             Tất cả ({ratings?.length})
                         </button>
                         {starsByType?.map((i) => (
