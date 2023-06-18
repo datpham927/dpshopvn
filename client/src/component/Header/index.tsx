@@ -46,9 +46,9 @@ const Header: React.FC = () => {
                     {categories?.map(
                         (c, i) =>
                             i < 5 && (
-                                <a key={uuidv4()} className="text-[13px] text-white cursor-pointer">
+                                <Link to={`/danh-muc/${c.category_slug}/${c.category_code}`} key={uuidv4()} className="text-[13px] text-white cursor-pointer">
                                     {c.category}
-                                </a>
+                                </Link>
                             ),
                     )}
                 </div>

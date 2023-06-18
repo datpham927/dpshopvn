@@ -50,14 +50,14 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
         fetchApiRatings();
     }, [productDetail._id]);
 
-    const handleDeleteComment = async (cId: string) => {
-        const res = await apiDeleteComment(cId);
+    const handleDeleteComment = async (cid: string) => {
+        const res = await apiDeleteComment(cid);
         if (!res.success) {
             showNotification('Xóa không thành công', true);
             return;
         }
         showNotification('Xóa thành công', true);
-        setReviews(() => reviews?.filter((rv) => rv._id !== cId));
+        setReviews(() => reviews?.filter((rv) => rv._id !== cid));
     };
     const handleEditComment = () => {
         setOpenFormReview(true);

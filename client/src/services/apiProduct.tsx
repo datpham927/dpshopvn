@@ -36,4 +36,17 @@ const apiUpdateRatingProduct = async (pid: string, rating: number) => {
     }
 };
 
-export { getAllProduct, apiProductDetail, apiUpdateRatingProduct };
+
+const apiGetAllBrandByCategory = async (cid:any) => {
+    try {
+        const res = await httpRequest.get(`product/${cid}/brand`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+
+export { getAllProduct, apiProductDetail, apiUpdateRatingProduct ,apiGetAllBrandByCategory};

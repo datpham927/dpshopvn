@@ -116,7 +116,7 @@ const getAllProducts = async (req, res) => {
             newQueryString.title = { $regex: req.query.title, $options: "i" }
         }
         if (req.query.category) {
-            newQueryString.category =req.query.category
+            newQueryString.category = req.query.category
         }
         console.log(newQueryString)
         let products = Product.find(newQueryString).select("-category_code -details -description -views -userId -userBought -size -infoProduct")
@@ -174,7 +174,7 @@ const getAllProductFollowing = async (req, res) => {
 
 const updateRatingsProduct = async (req, res) => {
     try {
-        if (!req.body.rating&&!req.params.pid) res.status(401).json({
+        if (!req.body.rating && !req.params.pid) res.status(401).json({
             success: false
         })
         const response = await Product.findByIdAndUpdate(req.params.pid, { star: Number(req.body.rating) })
@@ -188,7 +188,22 @@ const updateRatingsProduct = async (req, res) => {
         })
     }
 }
+const getAllBrand = async (req, res) => {
+    try {
 
+        const brand = await Product.distinct("brand", { category_code: req.params.cid })
+        res.status(201).json({
+            success: brand ? true : false,
+            data: brand
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+
+}
 
 // // insert products data    
 // const Bo_qua_tang = require("../../dataInsert/Bo-qua-tang.json")
@@ -259,5 +274,6 @@ module.exports = {
     getAllProducts,
     getAllProductFollowing,
     updateRatingsProduct,
+    getAllBrand,
     // insertProductsData, 
 }
