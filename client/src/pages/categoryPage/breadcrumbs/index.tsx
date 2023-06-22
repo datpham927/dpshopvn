@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 interface BreadcrumbProps {
@@ -17,14 +17,16 @@ const Breadcrumbs: React.FC<BreadcrumbProps> = ({ title }) => {
         },
     ];
 
+    const navigate = useNavigate();
+
     return (
         <div className="flex w-full items-center py-2  ">
             {breadcrumbs.map((b) => (
                 <>
-                    <Link
-                        to={b.path}
+                    <div
+                        onClick={() => b.path !== '#' && navigate(b.path)}
                         className={`flex w-auto text-sm  ${
-                            b.path !== '#' ? 'text-secondary hover:underline' : 'text-primary'
+                            b.path !== '#' ? 'text-secondary cursor-pointer hover:underline' : 'text-primary'
                         }`}
                     >
                         <span
@@ -34,7 +36,7 @@ const Breadcrumbs: React.FC<BreadcrumbProps> = ({ title }) => {
                         >
                             {b.breadcrumb}
                         </span>
-                    </Link>
+                    </div>
                     {b.path !== '#' && (
                         <span className="text-secondary w-auto ">
                             <KeyboardArrowRightIcon fontSize="medium" />

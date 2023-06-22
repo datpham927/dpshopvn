@@ -26,7 +26,7 @@ interface ReviewsProps {
 // eslint-disable-next-line react-refresh/only-export-components
 const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, handleEdit }) => {
     moment.locale('vi');
-    const { comment, createdAt, images, likes, _id, rating, userId } = review;
+    const { comment, createdAt, images, likes, _id, rating, createdby } = review;
     const user = useAppSelector((state) => state.user);
     const [likesReviews, setLikesReviews] = useState<string[]>(likes);
     const dispatch = useAppDispatch();
@@ -54,17 +54,17 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                     <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden">
                         <img
                             className="w-full h-full block object-contain"
-                            src={userId?.avatar_url ? userId?.avatar_url : noUser}
+                            src={createdby?.avatar_url ? createdby?.avatar_url : noUser}
                         />
                     </div>
                     <div className="flex flex-col justify-center gap-1">
                         <div className="flex gap-3 items-center">
                             <h3 className="text-base font-medium">
-                                {userId?.firstName
-                                    ? `${userId?.lastName} ${userId?.firstName}`
-                                    : userId?.email?.split('@')[0]}
+                                {createdby?.firstName
+                                    ? `${createdby?.lastName} ${createdby?.firstName}`
+                                    : createdby?.email?.split('@')[0]}
                             </h3>
-                            {isAdmin && user._id === userId?._id && (
+                            {isAdmin && user._id === createdby?._id && (
                                 <span className="text-[10px] items-center  py-[1px] px-1 rounded-sm  border-[1px] border-solid border-red_custom text-red_custom">
                                     admin
                                 </span>
@@ -72,7 +72,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                         </div>
 
                         <span className="text-xs text-text_secondary ">
-                            Đã tham gia {moment(userId?.createdAt).fromNow()}
+                            Đã tham gia {moment(createdby?.createdAt).fromNow()}
                         </span>
                     </div>
                 </div>
@@ -137,9 +137,9 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                             )}
                             Hữu ích <span>{likesReviews?.length}</span>
                         </ButtonOutline>
-                        {(user._id === userId?._id || user.isAdmin) && (
+                        {(user._id === createdby?._id || user.isAdmin) && (
                             <div className="flex gap-6 text-primary ">
-                                {user._id === userId?._id && (
+                                {user._id === createdby?._id && (
                                     <button className="text-sm hover:opacity-80" onClick={handleEdit}>
                                         Chỉnh sửa
                                     </button>

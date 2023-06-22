@@ -2,13 +2,13 @@ import React from 'react';
 import SideBar from './sideBar';
 import CategoryView from './categoryView';
 import Breadcrumbs from './breadcrumbs';
-import { useParams } from 'react-router-dom';
+import { useLocation  } from 'react-router-dom';
 
 const CategoryPage: React.FC = () => {
-    const params = useParams();
+    const location = useLocation().state;
     return (
         <>
-            <Breadcrumbs title={params?.category_slug||""} />
+            <Breadcrumbs title={location?.category_name || ''} />
             <div className="flex  gap-2">
                 <SideBar />
                 <CategoryView />

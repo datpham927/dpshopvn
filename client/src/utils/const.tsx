@@ -43,3 +43,12 @@ export const ratingReview = [
     { start: 4, text: 'Tốt ' },
     { start: 5, text: 'Rất tốt' },
 ];
+
+
+export const priceProduct = [
+    { start: 1, text: 'Rất tệ' },
+    { start: 2, text: 'Tệ ' },
+    { start: 3, text: 'Bình thường' },
+    { start: 4, text: 'Tốt ' },
+    { start: 5, text: 'Rất tốt' },
+];

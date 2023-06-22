@@ -86,7 +86,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
             showNotification('Đánh giá không thành công!', true);
             return;
         }
-        setReviews && setReviews((e) => [{ ...res.data, userId: user }, ...e]);
+        setReviews && setReviews((e) => [{ ...res.data,createdby:user }, ...e]);
         setRatings && setRatings((r) => [...r, { _id: res._id, rating: rating }]);
         setOpenFormReview && setOpenFormReview(false);
         showNotification('Đánh giá thành công!', true);
@@ -100,7 +100,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
             return;
         }
         const filterViews = reviews?.filter((r) => r._id !== reviewEdit?._id);
-        setReviews && setReviews(() => [{ ...res.data, rating, userId: user }, ...filterViews]);
+        setReviews && setReviews(() => [{ ...res.data, rating,createdby:user }, ...filterViews]);
         setRatings && setRatings((r) => [...r, { _id: res._id, rating: rating }]);
         setOpenFormReview && setOpenFormReview(false);
         showNotification('Cập nhật thành công!', true);

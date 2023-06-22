@@ -1,28 +1,31 @@
 import React, { memo } from 'react';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {logo} from '../../assets';
+import { logo } from '../../assets';
 import { getCategories } from '../../services/apiCategory';
 import Search from './Search';
 import User from './User';
 import Cart from './Cart';
-import { Category } from '../../interfaces/interfaces';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { path } from '../../utils/const';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { setCategories } from '../../redux/features/category/categorySlice';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>();
+    const dispatch=useAppDispatch()
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchCategory = async () => {
             const res = await getCategories();
             if (res?.success) {
-                setCategories(res.categories);
+                dispatch(setCategories(res.categories));
             }
         };
         fetchCategory();
     }, []);
-
+   
+     const {categories}=useAppSelector(state=>state.category)
     return (
         <header className="h-header w-full bg-primary z-[999]">
             <div className="w-full h-full flex flex-col max-w-7xl min-w-[1280px] m-auto p-[10px] ">
@@ -46,9 +49,19 @@ const Header: React.FC = () => {
                     {categories?.map(
                         (c, i) =>
                             i < 5 && (
-                                <Link to={`/danh-muc/${c.category_slug}/${c.category_code}`} key={uuidv4()} className="text-[13px] text-white cursor-pointer">
+                                <span
+                                    onClick={() =>
+                                        navigate(`/danh-muc/${c.category_slug}/${c.category_code}`, {
+                                            state: {
+                                                category_name: c.category,
+                                            },
+                                        })
+                                    }
+                                    key={uuidv4()}
+                                    className="text-[13px] text-white cursor-pointer"
+                                >
                                     {c.category}
-                                </Link>
+                                </span>
                             ),
                     )}
                 </div>

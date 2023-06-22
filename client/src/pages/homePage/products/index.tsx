@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { searchUtility } from '../../../utils/const';
 import { getAllProduct } from '../../../services/apiProduct';
 import { CardProductItem } from '../../../interfaces/interfaces';
-import { ProductItem } from '../../../component';
+
+import Header from './Header';
+import Body from './body';
 
 const Products: React.FC = () => {
     const [products, setProduct] = useState<CardProductItem[]>([]);
@@ -32,43 +32,10 @@ const Products: React.FC = () => {
         fetchProducts();
     }, [page, optionTab]);
 
-    const header = (
-        <div className="flex flex-col gap-1 w-full h-full mt-[-15px]  sticky top-0 right-0 bg-background_primary pt-4 pb-1  z-100">
-            <div className="px-4 py-2 rounded-sm text-xl font-normal bg-white">Gợi ý hôm nay</div>
-            <div className="grid grid-cols-8 gap-4 ">
-                {searchUtility.map((e) => (
-                    <div
-                        key={uuidv4()}
-                        onClick={() => setOptionTab(e.id)}
-                        className={`flex flex-col gap-1 p-1 ${
-                            optionTab == e.id ? 'bg-bgSecondary border-primary' : 'bg-white'
-                        }  rounded-[4px] justify-center items-center cursor-pointer border-[1px] border-transparent border-solid  hover:border-primary`}
-                    >
-                        <img className="w-[50px]" src={e.image} />
-                        <span className="text-sm text-primary">{e.title}</span>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
     return (
         <div className="w-full h-full ">
-            {header}
-            <div className="flex flex-col bg-white pb-8 gap-10">
-                <div className="grid grid-cols-6 ">
-                    {products.map((p, index) => (
-                        <ProductItem key={uuidv4()} props={p} scrollIntoView={index === 0} />
-                    ))}
-                </div>
-                {!hiddenButton && (
-                    <button
-                        onClick={() => setPage((p) => (p += 1))}
-                        className="w-1/6 outline-none mx-auto text-xl rounded-sm py-1 px-3 bg-primary text-white hover:opacity-80  "
-                    >
-                        Xem thêm
-                    </button>
-                )}
-            </div>
+            <Header optionTab={optionTab} setOptionTab={setOptionTab} />
+            <Body hiddenButton={hiddenButton} products={products} setPage={setPage} />
         </div>
     );
 };

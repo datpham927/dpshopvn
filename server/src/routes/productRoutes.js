@@ -17,6 +17,6 @@ router.delete("/:pid/delete", [verifyAdmin], productController.deleteProduct)
 router.put("/:pid/update_rating", productController.updateRatingsProduct)
 
 
-// router.post("/insert", productController.insertProductsData)
+router.post("/insert", productController.insertProductsData)
 
 module.exports = router

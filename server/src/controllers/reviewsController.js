@@ -5,7 +5,7 @@ const createReview = async (req, res) => {
     try {
         const { pid } = req.params
         if (!pid || Object.keys(req.body)?.length === 0) return res.status(401).json({ success: false, message: "Input required!" })
-        const comment = await Reviews.create({ userId: req.userId, productId: pid, ...req.body })
+        const comment = await Reviews.create({ createdby: req.userId, productId: pid, ...req.body })
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Created success" : "Created failed",
@@ -107,7 +107,6 @@ const likeComment = async (req, res) => {
 const unlikeComment = async (req, res) => {
     try {
         const comment = await Reviews.findByIdAndUpdate(req.params.cid, { $pull: { likes: req.userId } })
-        console.log(comment)
         res.status(200).json({
             success: true,
             message: "Comment has been unlike",

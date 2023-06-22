@@ -19,7 +19,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
     const handleAddToCart = async () => {
         const response = await apiAddToCart({
             quantity,
-            shopId: productDetail.userId._id,
+            shopId: productDetail.createdby._id,
             productId: productDetail._id,
             unitPrice: productDetail.newPrice,
             totalPrice: quantity * productDetail.newPrice,
@@ -113,7 +113,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                         </div>
                     </div>
                     {/* ---------------- */}
-                    <InfoShop props={productDetail.userId} />
+                    <InfoShop props={productDetail.createdby} />
                 </div>
             </div>
         </div>
