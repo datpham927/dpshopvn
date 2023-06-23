@@ -61,7 +61,7 @@ const apiDeleteComment = async (cid: string) => {
     }
 };
 
-const apiEditComment = async (data: any, cid: string) => {
+const apiEditComment = async (data: any, cid: any) => {
     try {
         const res = await axiosJWT.put(`/reviews/${cid}/edit_comment`, data);
         return res.data;

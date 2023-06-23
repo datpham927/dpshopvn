@@ -53,7 +53,7 @@ const createOrderProduct = async (req, res) => {
         const orderProduct = await Promise.all(productByShop.map(async e => {
             await Cart.findOneAndDelete({ shopId: e.shopId })
             return Order.create({
-                createdby: req.userId,
+                user: req.userId,
                 e,
                 ...req.body,
                 dateShipping: Date.now() + 5 * 24 * 60 * 60 * 1000

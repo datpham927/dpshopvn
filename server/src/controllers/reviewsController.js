@@ -5,7 +5,7 @@ const createReview = async (req, res) => {
     try {
         const { pid } = req.params
         if (!pid || Object.keys(req.body)?.length === 0) return res.status(401).json({ success: false, message: "Input required!" })
-        const comment = await Reviews.create({ createdby: req.userId, productId: pid, ...req.body })
+        const comment = await Reviews.create({ user: req.userId, productId: pid, ...req.body })
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Created success" : "Created failed",
@@ -46,7 +46,7 @@ const getAllReviews = async (req, res) => {
         }
 
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        let allReviews = Reviews.find(newQuery).populate("userId", option).sort("-createdAt")
+        let allReviews = Reviews.find(newQuery).populate("user", option).sort("-createdAt")
 
         const limit = req.query.limit
         const page = req.query.page * 1 || 0

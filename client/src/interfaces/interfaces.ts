@@ -30,7 +30,7 @@ interface ProductDetail extends CardProductItem {
             value: string;
         },
     ];
-    createdby: {
+    user: {
         _id: string;
         createdAt: string;
         firstName: string;
@@ -63,7 +63,7 @@ interface Review {
     images: Array<string>;
     likes: Array<string>;
     rating: number;
-    createdby: {
+    user: {
         _id: string;
         avatar_url: string;
         email: string;
@@ -77,7 +77,7 @@ interface Review {
 
 interface ProductInCart {
     _id: string;
-    createdby: string;
+    user: string;
     shopId: string;
     quantity: string;
     unitPrice: number;

@@ -12,7 +12,7 @@ interface PaginationProps {
 const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurrentPage }) => {
     const pageDisplay = () => {
         const newArray = [];
-        for (let i = 1; i <= totalPage; i++) {
+        for (let i = 1; i <= totalPage - 1; i++) {
             newArray.push(i);
         }
         const pageDisplay = [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2];
@@ -26,16 +26,13 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurr
                 HandleOnClick={() => currentPage !== 0 && setCurrentPage(currentPage - 1)}
                 currentPage={currentPage}
             >
-                <KeyboardArrowLeftIcon />
+                <KeyboardArrowLeftIcon  style={{ opacity: `${currentPage === 0 ? '0.4' : '1'}` }} />
             </PaginationItem>
             {/* ------------------------ */}
-            <PaginationItem
-                HandleOnClick={() => setCurrentPage(0)}
-                currentPage={currentPage}
-            >
+            <PaginationItem HandleOnClick={() => setCurrentPage(0)} currentPage={currentPage}>
                 {Number(0)}
             </PaginationItem>
-              {/* --------------------------- */}
+            {/* --------------------------- */}
             {currentPage >= 3 && (
                 <div className="flex items-center">
                     <MoreHorizIcon fontSize="small" style={{ opacity: '0.3' }} />
@@ -51,12 +48,17 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurr
                     <MoreHorizIcon fontSize="small" style={{ opacity: '0.3' }} />
                 </div>
             )}
+
             {/* ------------ right ------------- */}
+            <PaginationItem HandleOnClick={() => setCurrentPage(totalPage)} currentPage={currentPage}>
+                {Number(totalPage)}
+            </PaginationItem>
+
             <PaginationItem
                 HandleOnClick={() => currentPage !== totalPage && setCurrentPage(currentPage + 1)}
                 currentPage={currentPage}
             >
-                <ChevronRightIcon />
+                <ChevronRightIcon style={{ opacity: `${currentPage === totalPage ? '0.4' : '1'}` }} />
             </PaginationItem>
         </div>
     );

@@ -11,7 +11,7 @@ const createProduct = async (req, res) => {
                 message: "Input required!"
             })
         }
-        const newProducts = await Product.create({ createdby: req.userId, slug: slugify(req.body.title), ...req.body })
+        const newProducts = await Product.create({ user: req.userId, slug: slugify(req.body.title), ...req.body })
         if (newProducts) {
             const user = await User.findById(req.userId)
             user.totalProduct++
@@ -86,7 +86,7 @@ const detailProduct = async (req, res) => {
             })
         }
         const option = "_id firstName lastName followers avatar_url userId email"
-        const product = await Product.findById(req.params.pid).populate("createdby", option)
+        const product = await Product.findById(req.params.pid).populate("user")
         //cập nhật số lượng người truy cập
         if (req?.userId) {
             if (product && !product.views.includes(req?.userId)) {
@@ -115,8 +115,9 @@ const getAllProducts = async (req, res) => {
         if (req.query.title) {
             newQueryString.title = { $regex: req.query.title, $options: "i" }
         }
-        if (req.query.category) {
-            newQueryString.category = req.query.category
+      
+        if (req.query.category_code) {
+            newQueryString.category_code = req.query.category_code
         }
         let products = Product.find(newQueryString).select("-category_code -details -description -views -userId -userBought -size -infoProduct")
         if (req.query.sort) {
@@ -153,7 +154,7 @@ const getAllProductFollowing = async (req, res) => {
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
         const allProduct = await Promise.all(
             currentUser.followings.map(e => {
-                return Product.findOne({createdby:e }).populate("createdby", option)
+                return Product.findOne({user:e }).populate("user", option)
             })
         )
         res.status(200).json({
@@ -247,10 +248,10 @@ const insertProductsData = async (req, res) => {
                     newPrice: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
                     inStock: 1000,
                     discount: item.discount ? item.discount : 15,
-                   category_code,
+                    category_code,
                     category_name,
                     infoProduct: convertArrToObject(item.detail),
-                    createdby: user[i % 2],
+                    user: user[i % 2],
                     description: item.description
                 }).save()
             })

@@ -158,7 +158,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
                             <ReviewItem
                                 key={uuidv4()}
                                 review={e}
-                                isBought={userBought?.includes(e?.createdby?._id)}
+                                isBought={userBought?.includes(e?.user?._id)}
                                 handleDelete={() => handleDeleteComment(e?._id)}
                                 handleEdit={() => {
                                     setReviewEdit(e);

@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAllProduct } from '../../../services/apiProduct';
 import { CardProductItem } from '../../../interfaces/interfaces';
 import { ProductItem } from '../../../component';
+import { useParams } from 'react-router-dom';
 
 export const SimilarProducts: React.FC<{ category_code: string }> = ({ category_code }) => {
     const [products, setProducts] = useState<CardProductItem[]>([]);
@@ -15,6 +16,7 @@ export const SimilarProducts: React.FC<{ category_code: string }> = ({ category_
         };
         category_code && fetchApi();
     }, [category_code]);
+    const params = useParams();
     return (
         <div className="flex flex-col p-3 rounded-sm bg-white gap-7 mt-5">
             <div className="text-2xl  px-6">Sản Phẩm Tương Tự</div>
@@ -30,9 +32,11 @@ export const SimilarProducts: React.FC<{ category_code: string }> = ({ category_
                 >
                     {products?.map((item) => {
                         return (
-                            <SwiperSlide key={uuidv4()}>
-                                <ProductItem key={item._id} props={item} />
-                            </SwiperSlide>
+                            params.pid !== item._id && (
+                                <SwiperSlide key={uuidv4()}>
+                                    <ProductItem key={item._id} props={item} />
+                                </SwiperSlide>
+                            )
                         );
                     })}
                 </Swiper>

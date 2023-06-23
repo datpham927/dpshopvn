@@ -8,7 +8,7 @@ export const path = {
     PAGE_CATEGORY: '/danh-muc/:category_slug/:cid',
 };
 
-export const searchUtility = [
+export const SEARCH_UTILITY = [
     {
         id: 1,
         image: danhchoban,
@@ -36,7 +36,7 @@ export const searchUtility = [
     },
 ];
 
-export const ratingReview = [
+export const RATING_REVIEW = [
     { start: 1, text: 'Rất tệ' },
     { start: 2, text: 'Tệ ' },
     { start: 3, text: 'Bình thường' },
@@ -44,11 +44,33 @@ export const ratingReview = [
     { start: 5, text: 'Rất tốt' },
 ];
 
-
-export const priceProduct = [
-    { start: 1, text: 'Rất tệ' },
-    { start: 2, text: 'Tệ ' },
-    { start: 3, text: 'Bình thường' },
-    { start: 4, text: 'Tốt ' },
-    { start: 5, text: 'Rất tốt' },
+export const SORT_BAR = [
+    {
+        id: 0,
+        label: 'Phổ biến',
+        sortBy: {
+            sort: '-star',
+        },
+    },
+    {
+        id: 1,
+        label: 'Bán chạy',
+        sortBy: {
+            sort: '-sold',
+        },
+    },
+    {
+        id: 2,
+        label: 'Giá thấp đến cao',
+        sortBy: {
+            sort: 'newPrice',
+        },
+    },
+    {
+        id: 3,
+        label: 'Giá cao đến thấp',
+        sortBy: {
+            sort: '-newPrice',
+        },
+    },
 ];
