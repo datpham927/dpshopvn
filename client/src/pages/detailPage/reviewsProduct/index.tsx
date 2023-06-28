@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { apiDeleteComment, apiRatingsProduct, getAllReviewsById } from '../../../services/apiReviews';
 import { ProductDetail, Review } from '../../../interfaces/interfaces';
 import { formatStar } from '../../../utils/formatStar';
-import { ButtonOutline, FormReviews, ReviewItem, showNotification } from '../../../component';
+import { ButtonOutline, FormReviews, NotFound, ReviewItem, showNotification } from '../../../component';
 import { apiUpdateRatingProduct } from '../../../services/apiProduct';
 import Pagination from '../../../component/pagination';
 
@@ -169,9 +169,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
                     })}
                 </div>
             ) : (
-                <div className="flex justify-center items-center w-full h-[200px] bg-bgSecondary text-2xl font-semibold text-text_secondary">
-                    Chưa có bài đánh giá nào
-                </div>
+                <NotFound>Chưa có bài đánh giá nào</NotFound>
             )}
 
             {/* ------------------------- */}

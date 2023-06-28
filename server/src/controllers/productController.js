@@ -109,7 +109,7 @@ const getAllProducts = async (req, res) => {
     try {
         const queries = { ...req.query }
         const excludeFields = ["limit", "sort", "page"]
-        excludeFields.forEach(field => delete queries[field])
+        excludeFields?.forEach(field => delete queries[field])
         let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
         let newQueryString = JSON.parse(queriesString)
         if (req.query.title) {
@@ -126,11 +126,21 @@ const getAllProducts = async (req, res) => {
         } else {
             products = products.sort('-createdAt')
         }
+
+        const totalProducts = await Product.countDocuments(newQueryString)
+          if(totalProducts.length===0){
+            return res.status(201).json({
+                success:   false,
+                totalPage: 0,
+                currentPage: 0,
+                total_products: 0,
+                products: null,
+            })
+          }
         const limit = req.query.limit
         const page = req.query.page * 1 || 0
         const skip = page * limit
         products = products.limit(limit).skip(skip)
-        const totalProducts = await Product.countDocuments(newQueryString)
         const newProducts = await products
 
         return res.status(201).json({

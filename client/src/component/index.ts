@@ -8,4 +8,5 @@ export { default as ButtonOutline } from './buttonOutline';
 export { default as ReviewItem } from './reviewItem';
 export { default as FormReviews } from './formReviews';
 export { default as Pagination } from './pagination';
+export { default as NotFound } from './notFound';
 export { showNotification } from './showNotification/showNotification';

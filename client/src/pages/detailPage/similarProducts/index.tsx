@@ -34,7 +34,7 @@ export const SimilarProducts: React.FC<{ category_code: string }> = ({ category_
                         return (
                             params.pid !== item._id && (
                                 <SwiperSlide key={uuidv4()}>
-                                    <ProductItem key={item._id} props={item} />
+                                    <ProductItem  props={item} />
                                 </SwiperSlide>
                             )
                         );

@@ -3,7 +3,8 @@ import { getAllProduct } from '../../../services/apiProduct';
 import { CardProductItem } from '../../../interfaces/interfaces';
 
 import Header from './Header';
-import Body from './body';
+import Body from './Body';
+
 
 const Products: React.FC = () => {
     const [products, setProduct] = useState<CardProductItem[]>([]);
