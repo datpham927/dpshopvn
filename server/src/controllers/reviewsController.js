@@ -5,7 +5,7 @@ const createReview = async (req, res) => {
     try {
         const { pid } = req.params
         if (!pid || Object.keys(req.body)?.length === 0) return res.status(401).json({ success: false, message: "Input required!" })
-        const comment = await Reviews.create({ userId: req.userId, productId: pid, ...req.body })
+        const comment = await Reviews.create({ user: req.userId, productId: pid, ...req.body })
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Created success" : "Created failed",
@@ -46,7 +46,7 @@ const getAllReviews = async (req, res) => {
         }
 
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        let allReviews = Reviews.find(newQuery).populate("userId", option).sort("-createdAt")
+        let allReviews = Reviews.find(newQuery).populate("user", option).sort("-createdAt")
 
         const limit = req.query.limit
         const page = req.query.page * 1 || 0
@@ -107,7 +107,6 @@ const likeComment = async (req, res) => {
 const unlikeComment = async (req, res) => {
     try {
         const comment = await Reviews.findByIdAndUpdate(req.params.cid, { $pull: { likes: req.userId } })
-        console.log(comment)
         res.status(200).json({
             success: true,
             message: "Comment has been unlike",

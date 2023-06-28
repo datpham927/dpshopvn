@@ -10,7 +10,7 @@ import { ButtonOutline, Overlay, showNotification } from '..';
 import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { apiUploadImage } from '../../services/apiUploadPicture';
 import { ProductDetail, Review } from '../../interfaces/interfaces';
-import { ratingReview } from '../../utils/const';
+import { RATING_REVIEW } from '../../utils/const';
 
 interface FormReviewsProps {
     setReviews?: React.Dispatch<React.SetStateAction<Review[]>>;
@@ -46,7 +46,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
     const [imagesUrl, setImagesUrl] = useState<Array<string>>([]);
     const [rating, setRating] = useState<number>(5);
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.user);
+    const currentUser = useAppSelector((state) => state.user);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
 
     // ----------- handel upload image -----------
@@ -56,7 +56,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
             setValueInput(reviewEdit?.comment);
             setRating(reviewEdit?.rating);
         }
-        if (!productDetail.userBought.includes(user._id)) {
+        if (!productDetail.userBought.includes(currentUser._id)) {
             setRating(0);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,7 +86,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
             showNotification('Đánh giá không thành công!', true);
             return;
         }
-        setReviews && setReviews((e) => [{ ...res.data, userId: user }, ...e]);
+        setReviews && setReviews((e) => [{ ...res.data,user:currentUser }, ...e]);
         setRatings && setRatings((r) => [...r, { _id: res._id, rating: rating }]);
         setOpenFormReview && setOpenFormReview(false);
         showNotification('Đánh giá thành công!', true);
@@ -100,7 +100,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
             return;
         }
         const filterViews = reviews?.filter((r) => r._id !== reviewEdit?._id);
-        setReviews && setReviews(() => [{ ...res.data, rating, userId: user }, ...filterViews]);
+        setReviews && setReviews(() => [{ ...res.data, rating,user:currentUser }, ...filterViews]);
         setRatings && setRatings((r) => [...r, { _id: res._id, rating: rating }]);
         setOpenFormReview && setOpenFormReview(false);
         showNotification('Cập nhật thành công!', true);
@@ -158,11 +158,11 @@ const FormReviews: React.FC<FormReviewsProps> = ({
                     <span className="text-sm">{productDetail.title}</span>
                 </div>
                 <ul className="flex gap-2 justify-center">
-                    {ratingReview?.map((s) => (
+                    {RATING_REVIEW?.map((s) => (
                         <div
                             className="flex flex-col justify-center items-center gap-1 text-[rgb(243,153,74)] cursor-pointer"
                             onClick={() => {
-                                if (productDetail.userBought.includes(user?._id)) {
+                                if (productDetail.userBought.includes(currentUser?._id)) {
                                     setRating(s.start);
                                 } else {
                                     showNotification('Bạn không được phép đánh giá');

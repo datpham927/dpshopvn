@@ -1,4 +1,4 @@
-const SearchHistory = require("../models/Search")
+const SearchHistory = require("../models/SearchHistory")
 const Product = require("../models/Product")
 
 
@@ -11,7 +11,7 @@ const addHistory = async (req, res) => {
                 success: false,
             })
         }
-        const response = await SearchHistory.create({ userId: req.userId, ...req.body })
+        const response = await SearchHistory.create({ user: req.userId, ...req.body })
         res.status(200).json({
             success: response ? true : false,
             data: response ? response : null
@@ -27,7 +27,7 @@ const addHistory = async (req, res) => {
 
 const searchHistory = async (req, res) => {
     try {
-        const response = await SearchHistory.find({ userId: req.userId }).sort("-createdAt")
+        const response = await SearchHistory.find({ user: req.userId }).sort("-createdAt")
         res.status(200).json({
             success: response ? true : false,
             data: response ? response : null

@@ -45,7 +45,11 @@ body {
     background-color: black;
     opacity: 0.5;
 }
-
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .menu-user {
     @apply text-sm hover:bg-color_hover px-3 py-1 cursor-pointer;
 }

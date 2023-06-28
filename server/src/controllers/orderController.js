@@ -44,9 +44,6 @@ const createOrderProduct = async (req, res) => {
             }
         }))
         const err = checkProduct.filter(e => e.success === false)
-        const success = checkProduct.filter(s => s.success === true)
-        console.log("err", err)
-        console.log("success", success)
         if (err?.length > 0) {
             return res.status(401).json({
                 success: false,
@@ -56,7 +53,7 @@ const createOrderProduct = async (req, res) => {
         const orderProduct = await Promise.all(productByShop.map(async e => {
             await Cart.findOneAndDelete({ shopId: e.shopId })
             return Order.create({
-                userId: req.userId,
+                user: req.userId,
                 e,
                 ...req.body,
                 dateShipping: Date.now() + 5 * 24 * 60 * 60 * 1000

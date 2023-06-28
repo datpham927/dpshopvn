@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { apiLikeProduct, apiUnlikeComment } from '../../services/apiReviews';
 import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { ButtonOutline } from '..';
-import { ratingReview } from '../../utils/const';
+import { RATING_REVIEW } from '../../utils/const';
 
 interface ReviewsProps {
     review: Review;
@@ -26,8 +26,8 @@ interface ReviewsProps {
 // eslint-disable-next-line react-refresh/only-export-components
 const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, handleEdit }) => {
     moment.locale('vi');
-    const { comment, createdAt, images, likes, _id, rating, userId } = review;
-    const user = useAppSelector((state) => state.user);
+    const { comment, createdAt, images, likes, _id, rating, user } = review;
+    const currentUser = useAppSelector((state) => state.user);
     const [likesReviews, setLikesReviews] = useState<string[]>(likes);
     const dispatch = useAppDispatch();
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
@@ -38,11 +38,11 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
             dispatch(setOpenFeatureAuth(true));
             return;
         }
-        if (likesReviews.includes(user._id)) {
-            setLikesReviews(() => likesReviews.filter((e) => e != user._id));
+        if (likesReviews.includes(currentUser._id)) {
+            setLikesReviews(() => likesReviews.filter((e) => e != currentUser._id));
             await apiUnlikeComment(_id);
         } else {
-            setLikesReviews((e) => [...e, user._id]);
+            setLikesReviews((e) => [...e, currentUser._id]);
             await apiLikeProduct(_id);
         }
     };
@@ -54,17 +54,17 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                     <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden">
                         <img
                             className="w-full h-full block object-contain"
-                            src={userId?.avatar_url ? userId?.avatar_url : noUser}
+                            src={user?.avatar_url ? user?.avatar_url : noUser}
                         />
                     </div>
                     <div className="flex flex-col justify-center gap-1">
                         <div className="flex gap-3 items-center">
                             <h3 className="text-base font-medium">
-                                {userId?.firstName
-                                    ? `${userId?.lastName} ${userId?.firstName}`
-                                    : userId?.email?.split('@')[0]}
+                                {user?.firstName
+                                    ? `${user?.lastName} ${user?.firstName}`
+                                    : user?.email?.split('@')[0]}
                             </h3>
-                            {isAdmin && user._id === userId?._id && (
+                            {isAdmin && currentUser._id === user?._id && (
                                 <span className="text-[10px] items-center  py-[1px] px-1 rounded-sm  border-[1px] border-solid border-red_custom text-red_custom">
                                     admin
                                 </span>
@@ -72,7 +72,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                         </div>
 
                         <span className="text-xs text-text_secondary ">
-                            Đã tham gia {moment(userId?.createdAt).fromNow()}
+                            Đã tham gia {moment(user?.createdAt).fromNow()}
                         </span>
                     </div>
                 </div>
@@ -82,7 +82,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                         {isBought && (
                             <div className="flex w-full h-full  gap-2 items-center">
                                 <div className="flex ">{formatStar(rating, '20px')}</div>
-                                <span className="text-sm font-semibold">{ratingReview?.find((r) => r.start === rating)?.text}</span>
+                                <span className="text-sm font-semibold">{RATING_REVIEW?.find((r) => r.start === rating)?.text}</span>
                             </div>
                         )}
 
@@ -127,19 +127,19 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                     </div>
                     <div className="flex w-full gap-6 mt-3">
                         <ButtonOutline
-                            className={`${likesReviews?.includes(user._id) && 'bg-bgSecondary border-transparent'}`}
+                            className={`${likesReviews?.includes(currentUser._id) && 'bg-bgSecondary border-transparent'}`}
                             onClick={handleLike}
                         >
-                            {likesReviews?.includes(user._id) ? (
+                            {likesReviews?.includes(currentUser._id) ? (
                                 <ThumbUpAltIcon fontSize="small" />
                             ) : (
                                 <ThumbUpOffAltIcon fontSize="small" />
                             )}
                             Hữu ích <span>{likesReviews?.length}</span>
                         </ButtonOutline>
-                        {(user._id === userId?._id || user.isAdmin) && (
+                        {(currentUser._id === user?._id || currentUser.isAdmin) && (
                             <div className="flex gap-6 text-primary ">
-                                {user._id === userId?._id && (
+                                {currentUser._id === user?._id && (
                                     <button className="text-sm hover:opacity-80" onClick={handleEdit}>
                                         Chỉnh sửa
                                     </button>

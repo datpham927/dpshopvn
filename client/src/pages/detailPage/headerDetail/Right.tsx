@@ -10,7 +10,7 @@ import { apiAddToCart } from '../../../services/apiCart';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { setAddProductInCart } from '../../../redux/features/cart/cartSlice';
 import InfoShop from './InfoShop';
-import { setIsLogin, setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
+import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 
 const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     const [quantity, setQuantity] = useState<number>(1);
@@ -19,7 +19,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
     const handleAddToCart = async () => {
         const response = await apiAddToCart({
             quantity,
-            shopId: productDetail.userId._id,
+            shopId: productDetail.user._id,
             productId: productDetail._id,
             unitPrice: productDetail.newPrice,
             totalPrice: quantity * productDetail.newPrice,
@@ -113,7 +113,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                         </div>
                     </div>
                     {/* ---------------- */}
-                    <InfoShop props={productDetail.userId} />
+                    <InfoShop props={productDetail?.user} />
                 </div>
             </div>
         </div>

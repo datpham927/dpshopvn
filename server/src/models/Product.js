@@ -22,7 +22,7 @@ const productSchema = mongoose.Schema({
         name: String,
         value: String
     }],
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     views: { type: Array, default: [] },// số lượng người truy cập
     description: { type: Array, default: [] },
 }, {

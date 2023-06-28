@@ -5,7 +5,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 // Define the initial state using that type
 interface actionInitial {
     openFeatureAuth:boolean
-  
     isLogin:boolean   //switch to login or register model
 }
 const initialState: actionInitial = {

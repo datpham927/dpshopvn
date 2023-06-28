@@ -14,7 +14,7 @@ const addToCart = async (req, res) => {
                 data: cart ? cart : null
             })
         }
-        const newCart = await Cart.create({ userId: req.userId, ...req.body })
+        const newCart = await Cart.create({ user: req.userId, ...req.body })
         res.status(200).json({
             success: newCart ? true : false,
             message: newCart ? "success" : 'failed',
@@ -45,7 +45,7 @@ const updateCart = async (req, res) => {
 const getProductCart = async (req, res) => {
     try {
         const option = "-userBought -description"
-        const product = await Cart.find({ userId: req.userId }).populate("productId", option)
+        const product = await Cart.find({ user: req.userId }).populate("productId", option)
         res.status(200).json({
             success: product ? true : false,
             products: product ? product : null

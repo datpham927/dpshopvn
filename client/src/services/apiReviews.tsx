@@ -49,9 +49,9 @@ const apiPostComment = async (data: object, pid: string) => {
         };
     }
 };
-const apiDeleteComment = async (cId: string) => {
+const apiDeleteComment = async (cid: string) => {
     try {
-        const res = await axiosJWT.delete(`/reviews/${cId}/delete_comment`);
+        const res = await axiosJWT.delete(`/reviews/${cid}/delete_comment`);
         return res.data;
     } catch (error) {
         return {
@@ -61,7 +61,7 @@ const apiDeleteComment = async (cId: string) => {
     }
 };
 
-const apiEditComment = async (data: any, cid: string) => {
+const apiEditComment = async (data: any, cid: any) => {
     try {
         const res = await axiosJWT.put(`/reviews/${cid}/edit_comment`, data);
         return res.data;

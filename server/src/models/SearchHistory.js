@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const searchHistorySchema = mongoose.Schema({
     text: { type: String, require: true, unique: true },
-    userId: { type: String, require: true },
+    user: { type: String, require: true },
 }, {
     timestamps: true
 })
