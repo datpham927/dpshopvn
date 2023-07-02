@@ -26,7 +26,7 @@ const Products: React.FC = () => {
                     ? await getAllProduct({ sort: '-createdAt', limit: 30, page })
                     : optionTab === 4
                     ? await getAllProduct({ sort: '-sold', limit: 30, page })
-                    : await getAllProduct({ 'newPrice[lte]': 50000, limit: 30, page });
+                    : await getAllProduct({ 'newPrice[lte]': 20000, limit: 30, page });
             res.totalPage === page && setHiddenButton(true);
             res.success && setProduct((p) => [...p, ...res.products]);
         };
