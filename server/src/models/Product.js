@@ -5,6 +5,7 @@ const productSchema = mongoose.Schema({
     images: { type: Array, default: [], require: true },
     title: { type: String, require: true },
     brand: { type: String, require: true },
+    brand_slug: { type: String, require: true },
     slug: {
         type: String, require: true,
         lowercase: true

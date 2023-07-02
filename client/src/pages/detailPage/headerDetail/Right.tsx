@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { IconExcept } from '../../../assets';
@@ -11,12 +11,20 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { setAddProductInCart } from '../../../redux/features/cart/cartSlice';
 import InfoShop from './InfoShop';
 import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
+import { useParams } from 'react-router-dom';
 
 const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     const [quantity, setQuantity] = useState<number>(1);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
+
+
+
     const handleAddToCart = async () => {
+        if (!isLoginSuccess) {
+            dispatch(setOpenFeatureAuth(true));
+            return;
+        }
         const response = await apiAddToCart({
             quantity,
             shopId: productDetail.user._id,
@@ -31,6 +39,10 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
             showNotification('Sản phẩm chưa được thêm vào giỏ hàng', true);
         }
     };
+    const pid = useParams().pid;
+    useEffect(() => {
+        setQuantity(1);
+    }, [pid]);
 
     return (
         <div className="flex  h-full flex-1">
@@ -38,7 +50,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                 <div className="flex flex-col w-full h-auto gap-1">
                     <p className="flex gap-1 text-[13px]">
                         Thương hiệu:
-                        <a href="/ss" className="text-primary">
+                        <a href={`/thuong-hieu/${productDetail.brand_slug}`} className="text-primary">
                             {productDetail?.brand}
                         </a>
                     </p>
@@ -98,11 +110,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                 </div>
                             </div>
                             <div className="flex gap-4 mt-4">
-                                <ButtonOutline
-                                    onClick={() => {
-                                        isLoginSuccess ? handleAddToCart() : dispatch(setOpenFeatureAuth(true));
-                                    }}
-                                >
+                                <ButtonOutline onClick={handleAddToCart}>
                                     <ShoppingCartOutlinedIcon />
                                     Thêm vào giỏ hàng
                                 </ButtonOutline>
