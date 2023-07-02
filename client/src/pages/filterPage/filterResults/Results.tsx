@@ -7,7 +7,7 @@ import { NotFound, ProductItem, Pagination } from '../../../component';
 import { CardProductItem } from '../../../interfaces/interfaces';
 import { getAllProduct } from '../../../services/apiProduct';
 
-const Body: React.FC = () => {
+const Results: React.FC = () => {
     const location = useLocation();
     const queries = queryString.parse(location.search);
     const [products, setProduct] = useState<CardProductItem[]>([]);
@@ -15,6 +15,7 @@ const Body: React.FC = () => {
     const [totalPage, setTotalPage] = useState<number>(0);
     const params = useParams();
     const navigate = useNavigate();
+
 
     useEffect(() => {
         const { pricefrom, priceto, ...rest } = queries;
@@ -25,6 +26,7 @@ const Body: React.FC = () => {
                 'newPrice[lte]': priceto,
                 'newPrice[gte]': pricefrom,
                 category_code: params.cid,
+                brand_slug: params.brand_slug,
             });
 
             if (!res.success) return;
@@ -32,7 +34,7 @@ const Body: React.FC = () => {
             setProduct(res.products);
         };
         fetchProducts();
-    }, [currentPage, params.cid, location.search]);
+    }, [currentPage, params.cid, location.search, params.brand_slug]);
 
     useEffect(() => {
         setCurrentPage(0);
@@ -80,4 +82,4 @@ const Body: React.FC = () => {
     );
 };
 
-export default Body;
+export default Results;

@@ -7,10 +7,10 @@ import { ButtonOutline } from '../../../component';
 import queryString from 'query-string';
 import { formatMoney } from '../../../utils/formatMoney';
 
-const Header: React.FC = () => {
+const SortBar: React.FC = () => {
     const { categories } = useAppSelector((state) => state.category);
     const params = useParams();
-    const title = categories.filter((c) => c.category_code === params.cid)[0]?.category;
+    const title = categories.filter((c) => c.category_code === params.cid)[0]?.category || params.brand_slug;
     const queries = queryString.parse(location.search);
     const { star, pricefrom, priceto, brand, sort } = queries;
 
@@ -87,4 +87,4 @@ const Header: React.FC = () => {
     );
 };
 
-export default Header;
+export default SortBar;

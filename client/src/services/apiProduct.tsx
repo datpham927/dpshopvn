@@ -36,10 +36,11 @@ const apiUpdateRatingProduct = async (pid: string, rating: number) => {
     }
 };
 
-
-const apiGetAllBrandByCategory = async (cid:any) => {
+const apiGetAllBrandByCategory = async (params: object) => {
     try {
-        const res = await httpRequest.get(`product/${cid}/brand`);
+        const res = await httpRequest.get(`product/brands`,  {
+            params,
+        });
         return res.data;
     } catch (error) {
         return {
@@ -49,4 +50,4 @@ const apiGetAllBrandByCategory = async (cid:any) => {
     }
 };
 
-export { getAllProduct, apiProductDetail, apiUpdateRatingProduct ,apiGetAllBrandByCategory};
+export { getAllProduct, apiProductDetail, apiUpdateRatingProduct, apiGetAllBrandByCategory };

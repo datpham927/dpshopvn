@@ -9,14 +9,15 @@ interface PaginationProps {
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurrentPage }) => {
     const pageDisplay = () => {
         const newArray = [];
         for (let i = 1; i <= totalPage - 1; i++) {
             newArray.push(i);
         }
-        const pageDisplay = [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2];
-        return newArray.filter((p) => pageDisplay.includes(p));
+        const pages= [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2];
+        return newArray.filter((p) => pages.includes(p));
     };
 
     return (

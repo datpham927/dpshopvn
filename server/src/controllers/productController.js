@@ -200,8 +200,7 @@ const updateRatingsProduct = async (req, res) => {
 }
 const getAllBrand = async (req, res) => {
     try {
-
-        const brand = await Product.distinct("brand", { category_code: req.params.cid })
+        const brand = await Product.distinct("brand", req.query)
         res.status(201).json({
             success: brand ? true : false,
             data: brand

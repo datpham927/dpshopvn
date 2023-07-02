@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 interface BreadcrumbProps {
-    title: string;
+    title: string|undefined;
 }
 const Breadcrumbs: React.FC<BreadcrumbProps> = ({ title }) => {
     const breadcrumbs = [
