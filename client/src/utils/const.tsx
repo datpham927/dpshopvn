@@ -6,6 +6,7 @@ export const path = {
     HOME: '/',
     DETAILPRODUCT: '/:slug/:pid',
     PAGE_CATEGORY: '/danh-muc/:category_slug/:cid',
+    PAGE_BRAND: '/thuong-hieu/:brand_slug',
 };
 
 export const SEARCH_UTILITY = [
@@ -47,27 +48,34 @@ export const RATING_REVIEW = [
 export const SORT_BAR = [
     {
         id: 0,
+        label: 'tất cả',
+        sortBy: {
+            sort: '',
+        },
+    },
+    {
+        id: 1,
         label: 'Phổ biến',
         sortBy: {
             sort: '-star',
         },
     },
     {
-        id: 1,
+        id: 2,
         label: 'Bán chạy',
         sortBy: {
             sort: '-sold',
         },
     },
     {
-        id: 2,
+        id: 3,
         label: 'Giá thấp đến cao',
         sortBy: {
             sort: 'newPrice',
         },
     },
     {
-        id: 3,
+        id: 4,
         label: 'Giá cao đến thấp',
         sortBy: {
             sort: '-newPrice',

@@ -22,6 +22,7 @@ interface CardProductItem {
 interface ProductDetail extends CardProductItem {
     description: Array<string>;
     brand: string;
+    brand_slug: string;
     category_code: string;
     userBought: Array<string>;
     infoProduct: [

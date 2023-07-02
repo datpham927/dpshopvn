@@ -115,7 +115,7 @@ const getAllProducts = async (req, res) => {
         if (req.query.title) {
             newQueryString.title = { $regex: req.query.title, $options: "i" }
         }
-      
+
         if (req.query.category_code) {
             newQueryString.category_code = req.query.category_code
         }
@@ -128,15 +128,15 @@ const getAllProducts = async (req, res) => {
         }
 
         const totalProducts = await Product.countDocuments(newQueryString)
-          if(totalProducts.length===0){
+        if (totalProducts.length === 0) {
             return res.status(201).json({
-                success:   false,
+                success: false,
                 totalPage: 0,
                 currentPage: 0,
                 total_products: 0,
                 products: null,
             })
-          }
+        }
         const limit = req.query.limit
         const page = req.query.page * 1 || 0
         const skip = page * limit
@@ -164,7 +164,7 @@ const getAllProductFollowing = async (req, res) => {
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
         const allProduct = await Promise.all(
             currentUser.followings.map(e => {
-                return Product.findOne({user:e }).populate("user", option)
+                return Product.findOne({ user: e }).populate("user", option)
             })
         )
         res.status(200).json({
@@ -219,6 +219,7 @@ const getAllBrand = async (req, res) => {
 const Bo_qua_tang = require("../../dataInsert/Bo-qua-tang.json")
 const Cham_soc_thu_cung = require("../../dataInsert/Cham-soc-thu-cung.json")
 const DJo_An_Vat = require("../../dataInsert/DJo-An-Vat.json")
+const DJau_andamp_Hat_Cac_Loai = require("../../dataInsert/DJau-andamp-Hat-Cac-Loai.json")
 const DJo_Uong_Khong_Con = require("../../dataInsert/DJo-Uong-Khong-Con.json")
 const DJo_uong_Pha_che_dang_bot = require("../../dataInsert/DJo-uong-Pha-che-dang-bot.json")
 const DJo_uong_co_con = require("../../dataInsert/DJo-uong-co-con.json")
@@ -230,6 +231,7 @@ const data = [Bo_qua_tang,
     DJo_Uong_Khong_Con, DJo_uong_Pha_che_dang_bot,
     DJo_uong_co_con, Gia_Vi_va_Che_Bien,
     Sua_va_cac_San_pham_tu_sua, Thuc_pham_DJong_hop_va_Kho,
+    DJau_andamp_Hat_Cac_Loai
 ]
 const convertArrToObject = require("../ulits/convertArrToObject")
 const { categories } = require("../ulits/const")
@@ -242,18 +244,20 @@ const insertProductsData = async (req, res) => {
         let indexStar = 0
         const response = await Promise.all(data.map(async (p, i) => {
             const category_code = await autoCode(categories[i].category)
-            const  category_name=categories[i].category
+            const category_name = categories[i].category
             return p.map(async (item, i) => {
                 indexStar = Math.floor(Math.random() * 3)
-                const images=item?.images&&item?.images.map(i=> i.split(",")[0]
-                .replace("100x100","750x750")).filter((e,i)=> !e.includes('w100')&&!e.includes("upload")&&!e.includes("w1080"))
-                return await Product({  image_url:item.image?.split(",")[0], 
-                    images:Array.from(images).filter((e,i)=> i!=0),
+                const images = item?.images && item?.images.map(i => i.split(",")[0]
+                    .replace("100x100", "750x750")).filter((e, i) => !e.includes('w100') && !e.includes("upload") && !e.includes("w1080"))
+                return await Product({
+                    image_url: item.image?.split(",")[0],
+                    images: Array.from(images).filter((e, i) => i != 0),
                     title: item.title,
                     brand: item.brand,
+                    brand_slug: slugify(item.brand),
                     slug: slugify(item.title),
                     star: star[indexStar],
-                    sold: item.solid?item.solid?.replace(".", ""):0,
+                    sold: item.solid ? item.solid?.replace(".", "") : 0,
                     oldPrice: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
                     newPrice: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
                     inStock: 1000,
@@ -285,5 +289,5 @@ module.exports = {
     getAllProductFollowing,
     updateRatingsProduct,
     getAllBrand,
-    insertProductsData, 
+    insertProductsData,
 }

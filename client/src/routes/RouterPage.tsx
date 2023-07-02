@@ -9,6 +9,7 @@ const RouterPage = () => {
             <Route path={path.HOME} element={<HomePage />}></Route>
             <Route path={path.DETAILPRODUCT} element={<DetailPage />}></Route>
             <Route path={path.PAGE_CATEGORY} element={<CategoryPage />}></Route>
+            <Route path={path.PAGE_BRAND} element={<CategoryPage />}></Route>
         </Routes>
     );
 };

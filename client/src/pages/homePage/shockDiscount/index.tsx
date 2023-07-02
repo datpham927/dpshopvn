@@ -25,7 +25,6 @@ const ShockDiscount: React.FC = () => {
                     <p className="text-3xl h-full font-medium text-[rgb(255,125,29)] italic ">Giảm giá sốc</p>
                     <img className="w-[20px] h-[20] animate-active-flash mt-1 " src={dealFlashIcon} />
                 </div>
-                <div className="text-primary text-xl cursor-pointer hover:opacity-80">Xem thêm</div>
             </div>
             <div className='relative'>
                 <Swiper
