@@ -10,7 +10,7 @@ const Overlay: React.FC<OverlayProps> = ({ className, onClick, children }) => {
     return (
         <div
             className={`fixed w-screen h-screen right-0 top-0 bg-overlay ${className ? className : ''} ${
-                children && hasChildrenStyle
+                children ? hasChildrenStyle :""
             } `}
             onClick={onClick}
         >

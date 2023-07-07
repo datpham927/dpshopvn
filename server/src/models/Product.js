@@ -24,7 +24,7 @@ const productSchema = mongoose.Schema({
         value: String
     }],
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    views: { type: Array, default: [] },// số lượng người truy cập
+    views: { type: Number, default: 0 },// số lượng người truy cập
     description: { type: Array, default: [] },
 }, {
     timestamps: true
