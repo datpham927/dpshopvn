@@ -110,7 +110,7 @@ const getAllProducts = async (req, res) => {
         let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
         let newQueryString = JSON.parse(queriesString)
         if (req.query.title) {
-            newQueryString.title = { $regex: req.query.title, $options: "i" }
+            newQueryString.title = { $regex: req.query.title }
         }
 
         if (req.query.category_code) {
@@ -241,9 +241,9 @@ const insertProductsData = async (req, res) => {
         const response = await Promise.all(data.map(async (p, i) => {
             const category_code = await autoCode(categories[i].category)
             const category_name = categories[i].category
-            await User.findByIdAndUpdate(user[i % 3], { $inc: { totalProduct: +1 } })
             return p.map(async (item, i) => {
                 indexStar = Math.floor(Math.random() * 3)
+                await User.findByIdAndUpdate(user[i % 3], { $inc: { totalProduct: +1 } })
                 const images = item?.images && item?.images.map(i => i.split(",")[0]
                     .replace("100x100", "750x750")).filter((e, i) => !e.includes('w100') && !e.includes("upload") && !e.includes("w1080"))
                 return await Product({
@@ -262,7 +262,7 @@ const insertProductsData = async (req, res) => {
                     category_code,
                     category_name,
                     infoProduct: convertArrToObject(item.detail),
-                    user: user[i % 2],
+                    user: user[i % 3],
                     description: item.description
                 }).save()
             })

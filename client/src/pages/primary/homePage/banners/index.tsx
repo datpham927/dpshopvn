@@ -11,7 +11,7 @@ const Banners: React.FC = () => {
         'https://salt.tikicdn.com/cache/w1080/ts/tikimsp/5c/5d/59/46751c01995f0fd9db6dccf7a78ad1fa.png.webp',
     ];
     return (
-        <div className="flex w-full h-full gap-1">
+        <div className="flex w-full h-full gap-1 mt-4">
             <div className="flex w-[74%]  h-full  rounded-md overflow-hidden">
                 <Swiper
                     centeredSlides={true}

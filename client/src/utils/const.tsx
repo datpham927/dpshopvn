@@ -7,6 +7,7 @@ export const path = {
     DETAILPRODUCT: '/:slug/:pid',
     PAGE_CATEGORY: '/danh-muc/:category_slug/:cid',
     PAGE_BRAND: '/thuong-hieu/:brand_slug',
+    PAGE_SEARCH: '/tim-kiem/:title',
     PAGE_SHOP: '/cua-hang/:name_shop/:sid',
 };
 

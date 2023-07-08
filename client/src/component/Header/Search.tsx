@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardControlKeyIcon from '@mui/icons-material/KeyboardControlKey';
 import CloseIcon from '@mui/icons-material/Close';
 import { v4 as uuidv4 } from 'uuid';
 import { deleteSearchHistory, getSearchHistories, getSuggestResult } from '../../services/apiSearch';
-import { useAppDispatch } from '../../redux/hooks';
 import useDebounce from '../../Hook/useDebounce';
 import { getAllProduct } from '../../services/apiProduct';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Overlay } from '..';
 
 interface search {
@@ -32,7 +31,8 @@ const Search: React.FC = () => {
     const [searchValue, setSearchValue] = useState<string>('');
     const valueDebounce = useDebounce(searchValue, 200);
     const inputRef = useRef<HTMLInputElement>(null);
-    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchHistory = async () => {
             const res = await getSearchHistories();
@@ -83,6 +83,18 @@ const Search: React.FC = () => {
         setSearchHistories(() => searchHistories.filter((h) => h._id !== _id));
         await deleteSearchHistory(_id);
     };
+    useEffect(() => {
+        const handleKeyPress = (event: { key: string }) => {
+            if (event.key === 'Enter') {
+                if (searchValue) navigate(`/tim-kiem/${searchValue}`);
+                setOpenSearchResults(false);
+                setSearchValue("")
+            }
+
+        };
+        document.body.addEventListener('keydown', handleKeyPress);
+        return ()=> document.body.removeEventListener('keydown', handleKeyPress);
+    },[searchValue]);
 
     const suggestResult =
         resultSuggest?.length > 0 &&
@@ -108,8 +120,7 @@ const Search: React.FC = () => {
                                 return (
                                     i < limitHistory && (
                                         <li
-
-                                          key={uuidv4()}
+                                            key={uuidv4()}
                                             className="flex gap-3 justify-between hover:bg-hover cursor-pointer py-2 px-5"
                                         >
                                             <div>
@@ -180,8 +191,8 @@ const Search: React.FC = () => {
 
     return (
         <>
-            <div className="bg-white flex  rounded-[2px] w-search h-search z-50" >
-                <div id="search" className="relative flex items-center w-full h-full ">
+            <div className="bg-white flex  rounded-[2px] w-search h-search z-50">
+                <div id="search" className="relative flex items-center w-full h-full pr-4 ">
                     <input
                         onFocus={() => {
                             setOpenSearchResults(true);
@@ -193,17 +204,29 @@ const Search: React.FC = () => {
                         className="outline-none border-none w-full px-3 text-[14px] text-black"
                         placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
                     />
+                    {searchValue !== '' && (
+                        <span onClick={() => setSearchValue('')} className="flex items-center">
+                            <CloseIcon fontSize="small" style={{ color: 'rgb(128, 128, 137)' }} />
+                        </span>
+                    )}
                     {openSearchResults && (
                         <div className="absolute w-full top-[100%] right-0 bg-white shadow-search py-4">
                             {resultSuggest?.length > 0 ? suggestResult : searchRecent}
                         </div>
                     )}
                 </div>
-                <button className="outline-none bg-[#0D5CB6] w-[150px] h-[40px] text-white rounded-r-[2px]">
+                <button
+                    className="outline-none bg-[rgb(9,115,69)] w-[150px] h-[40px] text-white rounded-r-[2px]"
+                    onClick={() => {
+                        if (searchValue) navigate(`/tim-kiem/${searchValue}`);
+                        setOpenSearchResults(false);
+                        setSearchValue('');
+                    }}
+                >
                     <SearchIcon /> <span> Tìm kiếm </span>
                 </button>
             </div>
-            {openSearchResults && <Overlay onClick={() => setOpenSearchResults(false)} className='z-10' />}
+            {openSearchResults && <Overlay onClick={() => setOpenSearchResults(false)} className="z-10" />}
         </>
     );
 };

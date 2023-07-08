@@ -8,7 +8,6 @@ import { useAppDispatch } from '../../redux/hooks';
 import { setIsLoading } from '../../redux/features/action/actionSlice';
 import { NotFound, Pagination, ProductItem } from '..';
 import { getAllProduct } from '../../services/apiProduct';
- 
 
 const ListProducts: React.FC = () => {
     const location = useLocation();
@@ -31,16 +30,17 @@ const ListProducts: React.FC = () => {
                 'newPrice[gte]': pricefrom,
                 category_code: params.cid,
                 brand_slug: params.brand_slug,
+                title:params.title,
                 user: params.sid,
             });
-
+            dispatch(setIsLoading(false));
             if (!res.success) return;
             setTotalPage(res.totalPage);
             setProduct(res.products);
-            dispatch(setIsLoading(false));
+            
         };
         fetchProducts();
-    }, [currentPage, params.cid, location.search, params.brand_slug, params.sid]);
+    }, [currentPage, params.cid, location.search, params.brand_slug, params.sid, params.title]);
 
     useEffect(() => {
         setCurrentPage(0);
