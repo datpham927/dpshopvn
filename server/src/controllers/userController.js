@@ -54,8 +54,8 @@ const currentUserDetail = async (req, res) => {
 
 const adminUserDetail = async (req, res) => {
     try {
-        const { id } = req.params
-        if (!id) return res.status(401).json({
+        const { cid } = req.params
+        if (!cid) return res.status(401).json({
             success: false,
             message: "id not found"
         })
@@ -69,6 +69,26 @@ const adminUserDetail = async (req, res) => {
             success: true,
             message: "successful",
             data: dataUser
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+const detailShop = async (req, res) => {
+    try {
+        const { sid } = req.params
+        const shop = await User.findById(sid).select("-password -verificationEmailToken -passwordTokenExpires -confirm")
+        if (!shop) return res.status(401).json({
+            success: false,
+            message: "User not found"
+        })
+        return res.status(200).json({
+            success: true,
+            message: "successful",
+            data: shop
         })
     } catch (error) {
         return res.status(500).json({
@@ -187,5 +207,5 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     updateUser, updateUserByAdmin, currentUserDetail,
-    adminUserDetail, deleteUser, following, unFollowing, getAllUsers
+    adminUserDetail, deleteUser, following, unFollowing, getAllUsers,detailShop
 }

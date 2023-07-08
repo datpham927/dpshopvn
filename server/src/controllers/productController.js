@@ -85,14 +85,11 @@ const detailProduct = async (req, res) => {
                 message: "Id required!"
             })
         }
-        const option = "_id firstName lastName followers avatar_url userId email"
+        // const option = "_id firstName lastName followers avatar_url userId email"
         const product = await Product.findById(req.params.pid).populate("user")
         //cập nhật số lượng người truy cập
-        if (req?.userId) {
-            if (product && !product.views.includes(req?.userId)) {
-                product.views.push(req.userId)
-            }
-        }
+        product.views += 1
+        product.save()
         return res.status(201).json({
             success: product ? true : false,
             message: product ? "Success!" : `Id:${req.params.pid} not exists!`,
@@ -235,7 +232,7 @@ const data = [Bo_qua_tang,
 const convertArrToObject = require("../ulits/convertArrToObject")
 const { categories } = require("../ulits/const")
 const autoCode = require("../ulits/autoCode")
-const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82"]
+const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82","64611f4510487bbfc0707e7b"]
 
 const insertProductsData = async (req, res) => {
     try {
@@ -244,6 +241,7 @@ const insertProductsData = async (req, res) => {
         const response = await Promise.all(data.map(async (p, i) => {
             const category_code = await autoCode(categories[i].category)
             const category_name = categories[i].category
+            await User.findByIdAndUpdate(user[i % 3], { $inc: { totalProduct: +1 } })
             return p.map(async (item, i) => {
                 indexStar = Math.floor(Math.random() * 3)
                 const images = item?.images && item?.images.map(i => i.split(",")[0]
@@ -255,7 +253,7 @@ const insertProductsData = async (req, res) => {
                     brand: item.brand,
                     brand_slug: slugify(item.brand),
                     slug: slugify(item.title),
-                    star: star[indexStar],
+                    star: star[indexStar], views: 10,
                     sold: item.solid ? item.solid?.replace(".", "") : 0,
                     oldPrice: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
                     newPrice: item.newPrice ? item.newPrice?.replace(".", "") : 200000,

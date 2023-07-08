@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Footer, Header, Overlay } from '../component';
+import { Footer, Header, Loading, Overlay } from '../component';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { apiGetDetailUser } from '../services/apiUser';
@@ -48,6 +48,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 </main>
                 <Footer />
                 <Auth />
+                <Loading/>
             </div>
             {toastContainer}
         </>

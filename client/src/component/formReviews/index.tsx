@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { apiEditComment, apiPostComment } from '../../services/apiReviews';
 import { ButtonOutline, Overlay, showNotification } from '..';
-import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import { setIsLoading, setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { apiUploadImage } from '../../services/apiUploadPicture';
 import { ProductDetail, Review } from '../../interfaces/interfaces';
 import { RATING_REVIEW } from '../../utils/const';
@@ -64,6 +64,8 @@ const FormReviews: React.FC<FormReviewsProps> = ({
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
+
+        dispatch(setIsLoading(true));
         setIsLoad(true);
         if (!files) return;
         const formData = new FormData();
@@ -78,32 +80,40 @@ const FormReviews: React.FC<FormReviewsProps> = ({
             }
         }
         setIsLoad(false);
+        dispatch(setIsLoading(false));
     };
     //  ------- post-------------
     const postComment = async () => {
+        dispatch(setIsLoading(true));
+
         const res = await apiPostComment({ comment: valueInput, images: imagesUrl, rating: rating }, productDetail._id);
         if (!res.success) {
             showNotification('Đánh giá không thành công!', true);
             return;
         }
-        setReviews && setReviews((e) => [{ ...res.data,user:currentUser }, ...e]);
+        setReviews && setReviews((e) => [{ ...res.data, user: currentUser }, ...e]);
         setRatings && setRatings((r) => [...r, { _id: res._id, rating: rating }]);
         setOpenFormReview && setOpenFormReview(false);
         showNotification('Đánh giá thành công!', true);
+        dispatch(setIsLoading(false));
+
     };
 
     //  ------- edit comment-------------
     const editComment = async () => {
+        dispatch(setIsLoading(true));
         const res = await apiEditComment({ comment: valueInput, images: imagesUrl, rating: rating }, reviewEdit?._id);
         if (!res.success) {
             showNotification('Cập nhật không thành công!', true);
             return;
         }
         const filterViews = reviews?.filter((r) => r._id !== reviewEdit?._id);
-        setReviews && setReviews(() => [{ ...res.data, rating,user:currentUser }, ...filterViews]);
+        setReviews && setReviews(() => [{ ...res.data, rating, user: currentUser }, ...filterViews]);
         setRatings && setRatings((r) => [...r, { _id: res._id, rating: rating }]);
         setOpenFormReview && setOpenFormReview(false);
         showNotification('Cập nhật thành công!', true);
+        dispatch(setIsLoading(false));
+
     };
     // ------- summit -----------
     const handleSummit = async (e: { stopPropagation: () => void }) => {
@@ -127,8 +137,6 @@ const FormReviews: React.FC<FormReviewsProps> = ({
         }
     };
 
-
-    
     return (
         <Overlay
             className="z-[1000]"

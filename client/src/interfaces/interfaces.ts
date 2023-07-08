@@ -25,6 +25,7 @@ interface ProductDetail extends CardProductItem {
     brand_slug: string;
     category_code: string;
     userBought: Array<string>;
+    views?: number;
     infoProduct: [
         {
             name: string;
@@ -55,6 +56,7 @@ interface UserInterface {
     totalProduct: number;
     createdAt: string;
     followings: Array<string>;
+    followers: Array<string>;
 }
 
 interface Review {

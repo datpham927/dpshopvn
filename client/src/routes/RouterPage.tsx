@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { path } from '../utils/const';
-import { DetailPage, HomePage } from '../pages';
-import FilterPage from '../pages/filterPage';
+import { DetailPage, FilterPage, HomePage ,ShopPage} from '../pages/primary';
 
 const RouterPage = () => {
     return (
@@ -10,6 +9,7 @@ const RouterPage = () => {
             <Route path={path.DETAILPRODUCT} element={<DetailPage />}></Route>
             <Route path={path.PAGE_CATEGORY} element={<FilterPage />}></Route>
             <Route path={path.PAGE_BRAND} element={<FilterPage />}></Route>
+            <Route path={path.PAGE_SHOP} element={<ShopPage />}></Route>
         </Routes>
     );
 };
