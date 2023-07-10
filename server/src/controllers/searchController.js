@@ -55,7 +55,7 @@ const deleteHistory=async (req, res) => {
 }
 const suggestResult = async (req, res) => {
     try {
-        const response = await Product.find({ title: { $regex: `^${req.query.title}`, $options: 'i' } }).select("title _id").limit(10)
+        const response = await Product.find({ title: { $regex: `^${req.query.title}`, $options: 'i' } }).select("title _id slug").limit(10)
         res.status(200).json({
             success: response ? true : false,
             data: response ? response : null

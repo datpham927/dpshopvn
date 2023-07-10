@@ -19,6 +19,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/pages/homePage/banners/index/.tsx"],
+  "include": ["src", "src/pages/homePage/Banner/index/.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

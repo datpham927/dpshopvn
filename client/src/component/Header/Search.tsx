@@ -4,7 +4,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardControlKeyIcon from '@mui/icons-material/KeyboardControlKey';
 import CloseIcon from '@mui/icons-material/Close';
 import { v4 as uuidv4 } from 'uuid';
-import { deleteSearchHistory, getSearchHistories, getSuggestResult } from '../../services/apiSearch';
+import { addSearchHistory, deleteSearchHistory, getSearchHistories, getSuggestResult } from '../../services/apiSearch';
 import useDebounce from '../../Hook/useDebounce';
 import { getAllProduct } from '../../services/apiProduct';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ interface search {
 interface resultSuggest {
     title: string;
     _id: string;
+    slug: string;
 }
 interface ProductSuggest extends resultSuggest {
     images: string[];
@@ -42,19 +43,6 @@ const Search: React.FC = () => {
         };
         openSearchResults && fetchHistory();
     }, [openSearchResults]);
-    // useEffect(() => {
-    //     const handleOnclick = (e: { target: any  }) => {
-    //         if (e.target.closest('#search')) {
-    //             setOpenSearchResults(true);
-    //         } else {
-    //             setOpenSearchResults(false);
-    //             setLimitHistory(4);
-    //         }
-    //     };
-    //     document.addEventListener('click', handleOnclick);
-    //     return removeEventListener('click', handleOnclick);
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
 
     const handleInput = async (e: { target: HTMLInputElement }) => {
         const title = (e.target as HTMLInputElement).value;
@@ -83,28 +71,42 @@ const Search: React.FC = () => {
         setSearchHistories(() => searchHistories.filter((h) => h._id !== _id));
         await deleteSearchHistory(_id);
     };
+    const handleSummit = async () => {
+        if (searchValue) {
+            navigate(`/tim-kiem/${searchValue}`);
+            await addSearchHistory(searchValue);
+        }
+        setOpenSearchResults(false);
+        setSearchValue('');
+    };
     useEffect(() => {
         const handleKeyPress = (event: { key: string }) => {
             if (event.key === 'Enter') {
-                if (searchValue) navigate(`/tim-kiem/${searchValue}`);
-                setOpenSearchResults(false);
-                setSearchValue("")
+                handleSummit();
             }
-
         };
         document.body.addEventListener('keydown', handleKeyPress);
-        return ()=> document.body.removeEventListener('keydown', handleKeyPress);
-    },[searchValue]);
+        return () => document.body.removeEventListener('keydown', handleKeyPress);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchValue]);
 
     const suggestResult =
         resultSuggest?.length > 0 &&
         resultSuggest?.map((s, i) => {
             return (
                 i < limitHistory && (
-                    <li key={uuidv4()} className="flex gap-3 hover:bg-hover cursor-pointer py-2 px-5">
+                    <Link
+                        to={`/${s.slug}/${s._id}`}
+                        onClick={() => {
+                            setOpenSearchResults(false);
+                            setSearchValue('');
+                        }}
+                        key={uuidv4()}
+                        className="flex gap-3 hover:bg-hover cursor-pointer py-2 px-5"
+                    >
                         <SearchIcon style={{ color: 'rgb(128, 128, 137)' }} />{' '}
                         <span className="text-sm ">{s?.title}</span>
-                    </li>
+                    </Link>
                 )
             );
         });
@@ -217,11 +219,7 @@ const Search: React.FC = () => {
                 </div>
                 <button
                     className="outline-none bg-[rgb(9,115,69)] w-[150px] h-[40px] text-white rounded-r-[2px]"
-                    onClick={() => {
-                        if (searchValue) navigate(`/tim-kiem/${searchValue}`);
-                        setOpenSearchResults(false);
-                        setSearchValue('');
-                    }}
+                    onClick={handleSummit}
                 >
                     <SearchIcon /> <span> Tìm kiếm </span>
                 </button>

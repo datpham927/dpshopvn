@@ -116,7 +116,7 @@ const getAllProducts = async (req, res) => {
         if (req.query.category_code) {
             newQueryString.category_code = req.query.category_code
         }
-        let products = Product.find(newQueryString).select("-category_code -details -description -views -userId -userBought -size -infoProduct")
+        let products = Product.find(newQueryString).select("-category_code -details -description -views -userId -userBought  -infoProduct")
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
             products = products.sort(sortBy)
@@ -159,15 +159,13 @@ const getAllProductFollowing = async (req, res) => {
     try {
         const currentUser = await User.findById(req.userId)
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        const allProduct = await Promise.all(
-            currentUser.followings.map(e => {
-                return Product.findOne({ user: e }).populate("user", option)
-            })
-        )
+        const allProduct = await Promise.all (currentUser.followings.map(e => {
+            return Product.find({ user: e}).populate("user", option)
+        }))
         res.status(200).json({
             success: allProduct ? true : false,
             message: allProduct ? "Success" : "Failed",
-            products: allProduct ? allProduct : null
+            products: allProduct ? allProduct.flat() : null
         })
 
     } catch (error) {
@@ -232,7 +230,7 @@ const data = [Bo_qua_tang,
 const convertArrToObject = require("../ulits/convertArrToObject")
 const { categories } = require("../ulits/const")
 const autoCode = require("../ulits/autoCode")
-const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82","64611f4510487bbfc0707e7b"]
+const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82", "64611f4510487bbfc0707e7b"]
 
 const insertProductsData = async (req, res) => {
     try {

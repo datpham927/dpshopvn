@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "rgb(66,208,134)",
+        primary: "rgb(0,136,72)",
         secondary: "rgb(128, 128, 137)",
         hover: "rgba(39, 39, 42, 0.12)",
         overlay: "rgba(0, 0, 0, 0.53)",

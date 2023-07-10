@@ -14,8 +14,7 @@ import { ButtonOutline, ListProducts, SearchByBrand, SearchByPrice, SearchByRati
 import { useAppSelector } from '../../../redux/hooks';
 import { useDispatch } from 'react-redux';
 import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
-import { FilterPage } from '..';
-import FilterResults from '../filterPage/filterResults';
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 
 const ShopPage: React.FC = () => {
     const [shop, setShop] = useState<UserInterface>();
@@ -111,11 +110,16 @@ const ShopPage: React.FC = () => {
             </div>
             <div className="flex w-full h-full gap-2">
                 <div className="w-1/6  p-4  bg-white ">
+                    <div className='flex items-center gap-1 '>
+                        <FilterAltOutlinedIcon fontSize='small'/>
+                        <h1 className='uppercase font-medium text-base'> Bộ lọc tìm kiếm</h1>
+                    </div>
                     <SearchByRating />
                     <SearchByPrice />
-                    <SearchByBrand/>
+                    <SearchByBrand />
                 </div>
                 <div className="flex flex-col gap-4 w-5/6 h-full  bg-white  p-4 ">
+                    <h1 className="text-base font-medium text-slate-900 uppercase">Sản Phẩm</h1>
                     <SortBar />
                     <ListProducts />
                 </div>
