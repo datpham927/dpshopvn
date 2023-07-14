@@ -26,9 +26,9 @@ const addToCart = async (req, res) => {
             message: error.message
         })
     }
-}
+} 
 
-const updateCart = async (req, res) => {
+const removeProductInCart = async (req, res) => {
     try {
         const cart = await Cart.findOneAndDelete(req.params.pid)
         res.status(200).json({
@@ -57,4 +57,4 @@ const getProductCart = async (req, res) => {
         })
     }
 }
-module.exports = { addToCart, updateCart, getProductCart }
+module.exports = { addToCart, getProductCart, removeProductInCart }

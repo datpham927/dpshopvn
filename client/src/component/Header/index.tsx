@@ -1,15 +1,15 @@
 import React, { memo } from 'react';
 import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { logo } from '../../assets';
-import { getCategories } from '../../services/apiCategory';
 import Search from './Search';
 import User from './User';
 import Cart from './Cart';
 import { Link, useNavigate } from 'react-router-dom';
-import { path } from '../../utils/const';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { getCategories } from '../../services/apiCategory';
 import { setCategories } from '../../redux/features/category/categorySlice';
+import { path } from '../../utils/const';
+import { logo } from '../../assets';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {

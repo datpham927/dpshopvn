@@ -1,17 +1,17 @@
 import actionReduce from './features/action/actionSlice';
 import userReduce from './features/user/userSlice';
 import authReduce from './features/auth/authSlice';
-import cartSlice from './features/cart/cartSlice';
 import categorySlice from './features/category/categorySlice';
 import { configureStore } from '@reduxjs/toolkit';
+import orderSlice from './features/order/orderSlice';
 
 export const store = configureStore({
     reducer: {
         action: actionReduce,
         user: userReduce,
         auth: authReduce,
-        cart: cartSlice,
         category: categorySlice,
+        order: orderSlice,
     },
 });
 

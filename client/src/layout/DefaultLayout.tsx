@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { Footer, Header, Loading, Overlay } from '../component';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { apiGetDetailUser } from '../services/apiUser';
-import { useAppDispatch } from '../redux/hooks';
-import { setDetailUser } from '../redux/features/user/userSlice';
-import { setIsLoginSuccess } from '../redux/features/auth/authSlice';
+
 import { Auth } from '../feature';
+import { useAppDispatch } from '../redux/hooks';
+import { apiGetDetailUser } from '../services/apiUser';
+import { setIsLoginSuccess } from '../redux/features/auth/authSlice';
+import { setDetailUser } from '../redux/features/user/userSlice';
+import { Footer, Header, Loading } from '../component';
 
 interface DefaultLayoutProps {
     children: React.ReactNode;

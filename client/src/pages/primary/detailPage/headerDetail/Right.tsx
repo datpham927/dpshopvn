@@ -8,17 +8,16 @@ import { ProductDetail } from '../../../../interfaces/interfaces';
 import { ButtonOutline, showNotification } from '../../../../component';
 import { apiAddToCart } from '../../../../services/apiCart';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { setAddProductInCart } from '../../../../redux/features/cart/cartSlice';
 import InfoShop from './InfoShop';
 import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 import { useParams } from 'react-router-dom';
+import { setAddProductInCart } from '../../../../redux/features/order/orderSlice';
 
 const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     const [quantity, setQuantity] = useState<number>(1);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
+    const currentUser= useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
-
-
 
     const handleAddToCart = async () => {
         if (!isLoginSuccess) {
@@ -31,6 +30,8 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
             productId: productDetail._id,
             unitPrice: productDetail.newPrice,
             totalPrice: quantity * productDetail.newPrice,
+            title: productDetail.title,
+            image_url: productDetail.image_url,
         });
         if (response?.success) {
             dispatch(setAddProductInCart(response.data));
@@ -78,8 +79,8 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                             </div>
                             <div className="flex gap-1 text-sm">
                                 Giao đến
-                                <span className="text-[15px] font-medium underline">
-                                    H. Kiến Thuỵ, X. Du Lễ, Hải Phòng
+                                <span className="text-[15px] font-medium underline text-primary">
+                                {currentUser.address}
                                 </span>
                             </div>
                             <div className="flex gap-4 mt-6 items-center font-medium">
@@ -112,13 +113,13 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                             <div className="flex gap-4 mt-4">
                                 <ButtonOutline onClick={handleAddToCart}>
                                     <ShoppingCartOutlinedIcon />
-                                    Thêm vào giỏ hàng
+                                     Thêm vào giỏ hàng
                                 </ButtonOutline>
                                 <button className="flex gap-2 text-lg px-4 py-2 rounded-sm text-white bg-red_custom hover:bg-opacity-70">
                                     Mua ngay
                                 </button>
                             </div>
-                            <div className='text-sm text-secondary font-medium'>Lượt xem: {productDetail?.views}</div>
+                            <div className="text-sm text-secondary font-medium">Lượt xem: {productDetail?.views}</div>
                         </div>
                     </div>
                     {/* ---------------- */}

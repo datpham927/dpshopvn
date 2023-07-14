@@ -6,10 +6,10 @@ import HeaderDetail from './headerDetail';
 import ReviewsProduct from './reviewsProduct';
 import ProductDescription from './productDescription';
 import Breadcrumbs from './breadcrumbs';
-import { ProductDetail } from '../../../interfaces/interfaces';
-import { useAppDispatch } from '../../../redux/hooks';
-import { setIsLoading } from '../../../redux/features/action/actionSlice';
-import { apiProductDetail } from '../../../services/apiProduct';
+import { ProductDetail } from  '../../../interfaces/interfaces';
+import { useAppDispatch } from  '../../../redux/hooks';
+import { setIsLoading } from  '../../../redux/features/action/actionSlice';
+import { apiProductDetail } from  '../../../services/apiProduct';
 
 
 const DetailPage: React.FC = () => {

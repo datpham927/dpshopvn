@@ -1,4 +1,4 @@
-import { axiosJWT, httpRequest } from '../utils/httpRequest';
+import { axiosJWT, httpRequest } from "../utils/httpRequest";
 
 const getAllReviewsById = async (pid: string, queries:object) => {
     try {

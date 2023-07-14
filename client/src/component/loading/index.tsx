@@ -1,7 +1,7 @@
 import React from 'react';
 import { Overlay } from '..';
-import { useAppSelector } from '../../redux/hooks';
 import { imgLoading } from '../../assets';
+import { useAppSelector } from '../../redux/hooks';
 const Loading: React.FC = () => {
     const { isLoading } = useAppSelector((state) => state.action);
     return (

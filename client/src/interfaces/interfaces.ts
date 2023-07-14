@@ -43,22 +43,23 @@ interface ProductDetail extends CardProductItem {
     };
 }
 
-interface UserInterface {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    isAdmin: boolean;
+interface UserProfile {
     address: string;
+    lastName: string;
+    firstName: string;
     mobile: string;
     avatar_url: string;
+    email: string;
+}
+interface UserInterface extends UserProfile {
+    _id: string;
+    isAdmin: boolean;
     confirm: boolean;
     totalProduct: number;
     createdAt: string;
     followings: Array<string>;
     followers: Array<string>;
 }
-
 interface Review {
     _id: string;
     comment: string;
@@ -82,9 +83,11 @@ interface ProductInCart {
     _id: string;
     user: string;
     shopId: string;
-    quantity: string;
+    quantity: number;
     unitPrice: number;
     totalPrice: number;
+    title: string;
+    image_url: string;
 }
 
-export type { Category, UserInterface, CardProductItem, ProductDetail, Review, ProductInCart };
+export type { Category, UserProfile, UserInterface, CardProductItem, ProductDetail, Review, ProductInCart };

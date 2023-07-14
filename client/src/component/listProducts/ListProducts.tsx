@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import queryString from 'query-string';
-import { CardProductItem } from '../../interfaces/interfaces';
-import { useAppDispatch } from '../../redux/hooks';
-import { setIsLoading } from '../../redux/features/action/actionSlice';
+import { CardProductItem } from  '../../interfaces/interfaces';
+import { useAppDispatch } from  '../../redux/hooks';
+import { setIsLoading } from  '../../redux/features/action/actionSlice';
 import { NotFound, Pagination, ProductItem } from '..';
 import { getAllProduct } from '../../services/apiProduct';
 

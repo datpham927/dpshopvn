@@ -1,6 +1,6 @@
 import React from 'react';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-import { ListCategory, SearchByBrand, SearchByPrice, SearchByRating } from '../../../../component';
+import { ListCategory, SearchByBrand, SearchByPrice, SearchByRating }  from '../../../../component';
 
 const FilterPanel: React.FC = () => {
     return (

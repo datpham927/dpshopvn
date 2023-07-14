@@ -1,7 +1,7 @@
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import { useAppDispatch, useAppSelector } from  '../../redux/hooks';
+import { setOpenFeatureAuth } from  '../../redux/features/action/actionSlice';
 import Login from './left/Login/Login';
 import Right from './Right/Right';
 import Register from './left/Register/Register';

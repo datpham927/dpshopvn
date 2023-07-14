@@ -1,5 +1,5 @@
 export { default as Header } from './header';
-export { default as Overlay } from './model/Overlay';
+export { default as Overlay } from './overlay';
 export { default as CartShockDiscount } from './cardShockDiscount';
 export { default as CategoryItem } from './categoryItem';
 export { default as Footer } from './footer';
@@ -16,4 +16,7 @@ export { default as SearchByRating } from './searchByRating';
 export { default as ListProducts } from './listProducts/ListProducts';
 export { default as SortBar } from './sortBar';
 export { default as ListCategory } from './listCategory';
+export { default as InputForm } from './inputForm';
+export { default as InputReadOnly } from './inputReadOnly';
+export { default as FormEditAddress } from './formEditAddress';
 export { showNotification } from './showNotification/showNotification';

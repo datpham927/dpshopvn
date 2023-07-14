@@ -21,7 +21,6 @@ const SearchByPrice: React.FC = () => {
             ...queryParams,
             ...optionPrice,
         };
-        console.log(updatedQueryParams)
         const newQuery = queryString.stringify(updatedQueryParams);
         navigate(`?${newQuery}`);
     };

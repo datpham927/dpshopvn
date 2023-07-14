@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { v4 as uuidv4 } from 'uuid';
 import { Autoplay, Pagination, Navigation } from 'swiper';
 import { getAllProduct } from '../../../../services/apiProduct';
-import { imgBanner1, imgBanner2 } from '../../../../assets';
 import { Link } from 'react-router-dom';
+import { imgBanner1, imgBanner2 } from '../../../../assets';
 const Banner: React.FC = () => {
     const IMAGE_BANNER = [
         { category_slug: 'Gia-Vi-va-Che-Bien', category_code: 'GAAIAG', img_url: imgBanner1 },

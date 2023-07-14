@@ -7,13 +7,13 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import MoodIcon from '@mui/icons-material/Mood';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { v4 as uuidv4 } from 'uuid';
-import { Review } from '../../interfaces/interfaces';
-import { formatStar } from '../../utils/formatStar';
-import { noUser } from '../../assets';
+import { Review } from  '../../interfaces/interfaces';
+import { formatStar } from  '../../utils/formatStar';
+import { noUser } from  '../../assets';
 
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { apiLikeProduct, apiUnlikeComment } from '../../services/apiReviews';
-import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import { useAppDispatch, useAppSelector } from  '../../redux/hooks';
+import { apiLikeProduct, apiUnlikeComment } from  '../../services/apiReviews';
+import { setOpenFeatureAuth } from  '../../redux/features/action/actionSlice';
 import { ButtonOutline } from '..';
 import { RATING_REVIEW } from '../../utils/const';
 

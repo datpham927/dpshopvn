@@ -1,5 +1,3 @@
-import { bachhoa, danhchoban, dealsieuhot, hangmoi, revodoi } from '../assets';
-
 export const path = {
     LOGIN: '/login',
     REGISTER: '/register',
@@ -9,6 +7,8 @@ export const path = {
     PAGE_BRAND: '/thuong-hieu/:brand_slug',
     PAGE_SEARCH: '/tim-kiem/:title',
     PAGE_SHOP: '/cua-hang/:name_shop/:sid',
+    PAGE_USER: '/user/account',
+    PAGE_CART: '/cart',
 };
 
 export const SEARCH_UTILITY = [
@@ -82,5 +82,28 @@ export const SORT_BAR = [
         sortBy: {
             sort: '-newPrice',
         },
+    },
+];
+
+import PersonIcon from '@mui/icons-material/Person';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import SellIcon from '@mui/icons-material/Sell';
+import { bachhoa, danhchoban, dealsieuhot, hangmoi, revodoi } from '../assets';
+
+export const SIDEBAR_USER = [
+    {
+        label: 'Thông tin tài khoản',
+        path_name: 'profile',
+        icon: <PersonIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
+    },
+    {
+        label: 'Đơn mua',
+        path_name: 'purchase',
+        icon: <ShoppingBasketIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
+    },
+    {
+        label: 'Quản lý bán hàng',
+        path_name: 'sell',
+        icon: <SellIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
     },
 ];

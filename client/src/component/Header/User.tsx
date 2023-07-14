@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import {noUser} from '../../assets';
+
+import { showNotification } from '..';
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { apiLogout } from '../../services/apiAuth';
 import { setDetailUser } from '../../redux/features/user/userSlice';
 import { setIsLoginSuccess } from '../../redux/features/auth/authSlice';
-import { showNotification } from '..';
+import { path } from '../../utils/const';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import { noUser } from '../../assets';
 const User: React.FC = () => {
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
@@ -32,7 +35,7 @@ const User: React.FC = () => {
                     onMouseLeave={() => setIsOpenMenu(false)}
                 >
                     <span className="flex items-center shrink-0 cursor-pointer">
-                        <img className="w-8 h-8  rounded-full" src={avatar_url ? avatar_url : noUser} />
+                        <img className="w-8 h-8 object-cover rounded-full" src={avatar_url ? avatar_url : noUser} />
                     </span>
                     <div className="text-sm font-normal text-white cursor-pointer ml-2 mr-4">
                         <span>{name}</span>
@@ -44,8 +47,8 @@ const User: React.FC = () => {
                         shadow-search after:border-[10px]  after:border-transparent after:border-b-white 
                         after:top-[-20px]  after:right-5 after:absolute"
                         >
-                            <a className="menu-user">Thông tin tài khoản</a>
-                            <a className="menu-user">Đơn hàng</a>
+                            <Link to={`${path.PAGE_USER}/profile`} className="menu-user">Thông tin tài khoản</Link>
+                            <Link to={`${path.PAGE_USER}/purchase`} className="menu-user">Đơn hàng </Link>
                             <span onClick={handleLogOut} className="menu-user">Đăng xuất</span>
                         </div>
                     )}

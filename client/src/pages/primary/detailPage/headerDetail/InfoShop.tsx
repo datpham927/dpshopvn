@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import MessageIcon from '@mui/icons-material/Message';
 import AddIcon from '@mui/icons-material/Add';
-import ButtonOutline from '../../../../component/buttonOutline';
 import { noUser } from '../../../../assets';
 import { useAppSelector } from '../../../../redux/hooks';
 import { apiFollowingUser, apiUnFollowingUser } from '../../../../services/apiUser';
 import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { ButtonOutline } from '../../../../component';
 
 interface InfoShop {
     _id: string;

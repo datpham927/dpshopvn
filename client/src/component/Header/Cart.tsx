@@ -1,13 +1,15 @@
 import React, { memo, useEffect } from 'react';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { apiGetProductInCart } from '../../services/apiCart';
+import { Link } from 'react-router-dom';
+import { path } from '../../utils/const';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setAddProductInCart } from '../../redux/features/cart/cartSlice';
+import { apiGetProductInCart } from '../../services/apiCart';
+import { setAddProductInCart } from '../../redux/features/order/orderSlice';
 // eslint-disable-next-line react-refresh/only-export-components
 const Cart: React.FC = () => {
     const dispatch = useAppDispatch();
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
-    const { productInCart } = useAppSelector((state) => state.cart);
+    const { productInCart } = useAppSelector((state) => state.order);
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -21,7 +23,7 @@ const Cart: React.FC = () => {
 
 
     return (
-        <div className="flex items-end  cursor-pointer">
+        <Link to={path.PAGE_CART} className="flex items-end  cursor-pointer">
             <div className="flex relative">
                 <span className="text-[32px]">
                     <ShoppingCartOutlinedIcon fontSize="medium" />
@@ -31,7 +33,7 @@ const Cart: React.FC = () => {
                 </div>
             </div>
             <span className="text-xs">Giỏ hàng</span>
-        </div>
+        </Link>
     );
 };
 

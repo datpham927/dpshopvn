@@ -6,7 +6,9 @@ const cartSchema = mongoose.Schema({
     shopId: { type: String },
     quantity: { type: Number, default: 1 },
     unitPrice: { type: Number, require: true },
-    totalPrice: { type: Number, require: true }
+    totalPrice: { type: Number, require: true },
+    title: { type: String },
+    image_url: { type: String },
 }, {
     timestamps: true
 })

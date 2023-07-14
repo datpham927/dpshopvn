@@ -5,20 +5,20 @@ import DoneIcon from '@mui/icons-material/Done';
 import PersonIcon from '@mui/icons-material/Person';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import { UserInterface } from '../../../interfaces/interfaces';
 import moment from 'moment';
 import 'moment/dist/locale/vi';
-import { apiFollowingUser, apiGetDetailShop, apiUnFollowingUser } from '../../../services/apiUser';
-import { bgHeaderShop, noUser } from '../../../assets';
-import { ButtonOutline, ListProducts, SearchByBrand, SearchByPrice, SearchByRating, SortBar } from '../../../component';
-import { useAppSelector } from '../../../redux/hooks';
-import { useDispatch } from 'react-redux';
-import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import { UserInterface } from '../../../interfaces/interfaces';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { apiFollowingUser, apiGetDetailShop, apiUnFollowingUser } from '../../../services/apiUser';
+import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
+import { ListProducts, SearchByBrand, SearchByPrice, SearchByRating, SortBar } from '../../../component';
+import { bgHeaderShop, noUser } from '../../../assets';
+import ButtonOutline from '../../../component/buttonOutline';
 
 const ShopPage: React.FC = () => {
     const [shop, setShop] = useState<UserInterface>();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const currentUser = useAppSelector((state) => state.user);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const [followers, setFollowers] = useState<Array<string>>([]);

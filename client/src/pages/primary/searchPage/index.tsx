@@ -1,6 +1,6 @@
 import React from 'react';
-import { ListProducts, SortBar } from '../../../component';
 import { useParams } from 'react-router-dom';
+import { ListProducts, SortBar } from '../../../component';
 
 const SearchPage: React.FC = () => {
     return (

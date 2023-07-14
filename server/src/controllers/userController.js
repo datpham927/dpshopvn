@@ -10,7 +10,7 @@ const updateUser = async (req, res) => {
                 message: "Missing inputs"
             })
         }
-        const user = await User.findByIdAndUpdate({ _id: userId }, req.body)
+        const user = await User.findByIdAndUpdate({ _id: userId }, req.body, { new: true })
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -20,6 +20,8 @@ const updateUser = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Update successful",
+            data: user
+
         })
     } catch (error) {
         return res.status(500).json({
@@ -207,5 +209,5 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     updateUser, updateUserByAdmin, currentUserDetail,
-    adminUserDetail, deleteUser, following, unFollowing, getAllUsers,detailShop
+    adminUserDetail, deleteUser, following, unFollowing, getAllUsers, detailShop
 }

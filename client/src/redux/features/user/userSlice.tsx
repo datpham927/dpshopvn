@@ -16,7 +16,8 @@ const initialState: UserInterface = {
     createdAt: '',
     confirm: false,
     totalProduct: 0,
-    followings:[]
+    followings: [],
+    followers: []
 };
 
 export const userSlice = createSlice({
@@ -27,7 +28,7 @@ export const userSlice = createSlice({
         setDetailUser: (state, action) => {
             const { firstName, _id, lastName, email, isAdmin,followings, address, createdAt,mobile, avatar_url, confirm, totalProduct } =
                 action.payload;
-            (state.firstName = firstName),
+                (state.firstName = firstName),
                 (state.lastName = lastName),
                 (state.createdAt = createdAt),
                 (state._id = _id),

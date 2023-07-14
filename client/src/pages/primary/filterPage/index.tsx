@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Breadcrumbs from './breadcrumbs';
 import FilterPanel from './filterPanel';
 import FilterResults from './filterResults';
-import { useAppSelector } from '../../../redux/hooks';
+import { useAppSelector } from  '../../../redux/hooks';
 
 const FilterPage: React.FC = () => {
     const { categories } = useAppSelector((state) => state.category);

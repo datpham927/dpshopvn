@@ -1,5 +1,5 @@
 import React from 'react';
-import {dogcute} from '../../../assets';
+import {dogcute} from  '../../../assets';
 
 const Right: React.FC = () => {
     return (

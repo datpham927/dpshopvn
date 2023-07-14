@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema({
     cart: { type: Array, default: [] },
     isAdmin: { type: Boolean, default: false },
     address: { type: String },
+    address_detail: { type: String },
     mobile: { type: String },
     avatar_url: { type: String },
     passwordChangedAt: { type: String },
