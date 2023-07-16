@@ -25,7 +25,7 @@ interface ProductDetail extends CardProductItem {
     brand_slug: string;
     category_code: string;
     userBought: Array<string>;
-    views?: number;
+    views: number;
     infoProduct: [
         {
             name: string;
@@ -51,7 +51,7 @@ interface UserProfile {
     avatar_url: string;
     email: string;
 }
-interface UserInterface extends UserProfile {
+interface UserDetail extends UserProfile {
     _id: string;
     isAdmin: boolean;
     confirm: boolean;
@@ -84,10 +84,34 @@ interface ProductInCart {
     user: string;
     shopId: string;
     quantity: number;
-    unitPrice: number;
     totalPrice: number;
-    title: string;
-    image_url: string;
+    productId: {
+        _id: string;
+        title: string;
+        slug: string;
+        image_url: string;
+        newPrice: number;
+        oldPrice: number;
+        discount: number;
+    };
 }
 
-export type { Category, UserProfile, UserInterface, CardProductItem, ProductDetail, Review, ProductInCart };
+interface ProductByShop {
+    _id: string;
+    user:  string;
+    shopId:  string;
+    quantity:  number;
+    totalPrice:  number;
+    deliverDate: number;
+    productId: Array<{
+        _id:  string;
+        title:  string;
+        slug:  string;
+        image_url:  string;
+        newPrice:  number;
+        oldPrice:  number;
+        discount:  number;
+    }>;
+}
+
+export type { Category, UserProfile, UserDetail, CardProductItem, ProductDetail, Review, ProductInCart, ProductByShop };

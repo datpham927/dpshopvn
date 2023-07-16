@@ -9,6 +9,8 @@ export const path = {
     PAGE_SHOP: '/cua-hang/:name_shop/:sid',
     PAGE_USER: '/user/account',
     PAGE_CART: '/cart',
+    PAGE_PAYMENT: '/payment',
+    PAGE_PAYMENT_SUCCESS: '/success',
 };
 
 export const SEARCH_UTILITY = [
@@ -88,7 +90,7 @@ export const SORT_BAR = [
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import SellIcon from '@mui/icons-material/Sell';
-import { bachhoa, danhchoban, dealsieuhot, hangmoi, revodoi } from '../assets';
+import { bachhoa, danhchoban, dealsieuhot, hangmoi, imgPayInCash, imgPayInVnpay, revodoi } from '../assets';
 
 export const SIDEBAR_USER = [
     {
@@ -107,3 +109,32 @@ export const SIDEBAR_USER = [
         icon: <SellIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
     },
 ];
+
+export const PAYMENT_METHOD = {
+    title: 'Chọn hình thức thanh toán',
+    method: [
+        {
+            code: 'CASH',
+            label: 'Thanh toán tiền mặt khi nhận hàng',
+            img: imgPayInCash,
+        },
+        {
+            code: 'VNPAY',
+            label: 'Thanh toán bằng VNPAY',
+            img: imgPayInVnpay,
+        },
+    ],
+};
+export const DELIVERY_METHOD = {
+    title: 'Chọn hình thức giao hàng',
+    method: [
+        {
+            code: 'FAST',
+            label: 'Giao tiết kiệm',
+        },
+        {
+            code: 'NOW',
+            label: 'Giao siêu tốc',
+        },
+    ],
+};

@@ -8,16 +8,17 @@ import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import moment from 'moment';
 import 'moment/dist/locale/vi';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-import { UserInterface } from '../../../interfaces/interfaces';
+import { UserDetail } from '../../../interfaces/interfaces';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { apiFollowingUser, apiGetDetailShop, apiUnFollowingUser } from '../../../services/apiUser';
 import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 import { ListProducts, SearchByBrand, SearchByPrice, SearchByRating, SortBar } from '../../../component';
 import { bgHeaderShop, noUser } from '../../../assets';
 import ButtonOutline from '../../../component/buttonOutline';
+import { formatUserName } from '../../../utils/formatUserName';
 
 const ShopPage: React.FC = () => {
-    const [shop, setShop] = useState<UserInterface>();
+    const [shop, setShop] = useState<UserDetail>();
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector((state) => state.user);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
@@ -45,7 +46,6 @@ const ShopPage: React.FC = () => {
             await apiFollowingUser(shop?._id);
         }
     };
-    const name = shop?.lastName ? `${shop?.lastName} ${shop?.firstName}` : shop?.email?.split('@')[0];
     return (
         <div className="flex flex-col w-full h-full p-3 gap-6">
             <div className="flex w-full h-full mt-6 gap-6 ">
@@ -60,7 +60,7 @@ const ShopPage: React.FC = () => {
                     <div className="flex gap-3 items-center">
                         <img src={shop?.avatar_url || noUser} className="w-[80px] h-[80px] rounded-full" />
                         <div className="flex flex-col gap-2">
-                            <h3 className="text-base font-semibold text-white">{name}</h3>
+                            <h3 className="text-base font-semibold text-white">{formatUserName(shop)}</h3>
                             <span className="text-xs text-slate-50 ">
                                 Hoạt động {moment(shop?.createdAt).fromNow()}
                             </span>
@@ -110,9 +110,9 @@ const ShopPage: React.FC = () => {
             </div>
             <div className="flex w-full h-full gap-2">
                 <div className="w-1/6  p-4  bg-white ">
-                    <div className='flex items-center gap-1 '>
-                        <FilterAltOutlinedIcon fontSize='small'/>
-                        <h1 className='uppercase font-medium text-base'> Bộ lọc tìm kiếm</h1>
+                    <div className="flex items-center gap-1 ">
+                        <FilterAltOutlinedIcon fontSize="small" />
+                        <h1 className="uppercase font-medium text-base"> Bộ lọc tìm kiếm</h1>
                     </div>
                     <SearchByRating />
                     <SearchByPrice />

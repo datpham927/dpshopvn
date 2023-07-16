@@ -19,7 +19,6 @@ const orderSchema = mongoose.Schema({
         city: { type: String, require: true },
         phone: { type: Number, require: true },
     },
-    shippingPrice: { type: Number, require: true },
     dateShipping: { type: String }
 }, {
     timestamp: true

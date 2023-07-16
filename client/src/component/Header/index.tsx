@@ -14,7 +14,6 @@ import { logo } from '../../assets';
 // eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
     useEffect(() => {
         const fetchCategory = async () => {
             const res = await getCategories();

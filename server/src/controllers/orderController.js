@@ -1,6 +1,8 @@
 const Order = require("../models/Order")
 const Product = require("../models/Product")
 const Cart = require("../models/Cart")
+const User = require("../models/User")
+const sendMail = require("../ulits/sendMail")
 
 const createOrderProduct = async (req, res) => {
     try {
@@ -10,37 +12,39 @@ const createOrderProduct = async (req, res) => {
         })
         //trả về mảng các sản phẩm trong cart
         const infoProductInCart = await Promise.all(
-            req.body.products.map(e => {
-                return Cart.findOne({ productId: e })
+            req.body.products.map(async e => {
+                console.log("Cart.findOne({ productId: e.productId._id })", await Cart.findOne({ productId: e.productId._id }))
+                return Cart.findOne({ productId: e.productId._id })
             })
         )
         //chứa sản phẩm thep shop
+        // console.log("   req.body.products", infoProductInCart)
         let productByShop = [/* {shopId: "",products: [],totalPrice: 0 }*/]
         //kiểm tra product có đủ inStock không và chia order sản phẩm theo shop
-        const checkProduct = await Promise.all(infoProductInCart.map(async c => {
+        const checkProduct = await Promise.all(infoProductInCart?.map(async c => {
             //kiểm tra shopId đã có trong mảng hay chưa
-            if (productByShop.some(p => p.shopId === c.shopId)) {
+            if (productByShop.some(p => p?.shopId === c?.shopId)) {
                 //nếu có thì lấy ra và cập nhật lại product[] và price
-                let pCart = productByShop.filter(p => p.shopId === c.shopId)[0]
-                pCart.products.push(c.productId.toString())
-                pCart.totalPrice += c.price
+                let pCart = productByShop.filter(p => p?.shopId === c?.shopId)[0]
+                pCart.products.push(c?.productId.toString())
+                pCart.totalPrice += c?.price
             } else {
                 //nếu không exits thì thêm vào trong mảng
                 productByShop.push({
-                    shopId: c.shopId,
-                    products: [c.productId.toString()],
-                    totalPrice: c.price,
+                    shopId: c?.shopId,
+                    products: [c?.productId.toString()],
+                    totalPrice: c?.price,
                 })
             }
-            const product = await Product.findOneAndUpdate({ _id: c.productId, inStock: { $gte: c.quantity } }, {
+            const product = await Product.findOneAndUpdate({ _id: c?.productId, inStock: { $gte: c?.quantity } }, {
                 $inc: {
-                    sold: +c.quantity,
-                    inStock: -c.quantity,
+                    sold: +Number(c.quantity),
+                    inStock: -Number(c.quantity),
                 }
             })
             return {
                 success: product ? true : false,
-                message: product ? "Success" : c.productId
+                message: product ? "Success" : c?.productId
             }
         }))
         const err = checkProduct.filter(e => e.success === false)
@@ -51,19 +55,21 @@ const createOrderProduct = async (req, res) => {
             })
         }
         const orderProduct = await Promise.all(productByShop.map(async e => {
-            await Cart.findOneAndDelete({ shopId: e.shopId })
+            //xóa product trong cart
+            await Cart.findOneAndDelete({ shopId: e?.shopId })
             return Order.create({
                 user: req.userId,
                 e,
                 ...req.body,
-                dateShipping: Date.now() + 5 * 24 * 60 * 60 * 1000
+                dateShipping: Date.now() + 60 * 60 * 5 * 24 * 1000
             })
         }
         ))
-
+        const currentUser = await User.findOne({ _id: req.userId })
+        sendMail({ email: currentUser.email, html: "bạn đã đặt hàng thành công", fullName: currentUser.lastName + " " + currentUser.firstName })
         res.status(200).json({
             success: orderProduct ? true : false,
-            message: orderProduct ? orderProduct : "Failed!",
+            data: orderProduct ? orderProduct : "null",
         })
     } catch (error) {
         res.status(500).json({

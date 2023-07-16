@@ -19,4 +19,6 @@ export { default as ListCategory } from './listCategory';
 export { default as InputForm } from './inputForm';
 export { default as InputReadOnly } from './inputReadOnly';
 export { default as FormEditAddress } from './formEditAddress';
+export { default as ProductInCartItem } from './productInCartItem';
+export { default as DeliveryAddress } from './deliveryAddress';
 export { showNotification } from './showNotification/showNotification';
