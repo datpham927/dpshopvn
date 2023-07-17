@@ -165,7 +165,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
                     </span>
                 </div>
                 <div className="flex justify-center items-center w-10/12 mx-auto gap-3">
-                    <img className="h-20 w-20" src={productDetail.image_url} />
+                    <img className="h-20 w-20" src={productDetail?.image_url} />
                     <span className="text-sm">{productDetail.title}</span>
                 </div>
                 <ul className="flex gap-2 justify-center">

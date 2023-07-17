@@ -3,4 +3,4 @@ export { default as DetailPage } from '../primary/detailPage';
 export { default as FilterPage } from '../primary/filterPage';
 export { default as ShopPage } from '../primary/shopPage';
 export { default as SearchPage } from '../primary/searchPage';
-export { default as CartPage } from '../user/userPage/cartPage';
+export { default as CartPage } from '../user/cartPage';

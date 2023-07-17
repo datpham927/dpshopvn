@@ -16,6 +16,7 @@ import { apiLikeProduct, apiUnlikeComment } from  '../../services/apiReviews';
 import { setOpenFeatureAuth } from  '../../redux/features/action/actionSlice';
 import { ButtonOutline } from '..';
 import { RATING_REVIEW } from '../../utils/const';
+import { formatUserName } from '../../utils/formatUserName';
 
 interface ReviewsProps {
     review: Review;
@@ -61,9 +62,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                     <div className="flex flex-col justify-center gap-1">
                         <div className="flex gap-3 items-center">
                             <h3 className="text-base font-medium">
-                                {user?.firstName
-                                    ? `${user?.lastName} ${user?.firstName}`
-                                    : user?.email?.split('@')[0]}
+                            {formatUserName(user)}:
                             </h3>
                             {isAdmin && currentUser._id === user?._id && (
                                 <span className="text-[10px] items-center  py-[1px] px-1 rounded-sm  border-[1px] border-solid border-red_custom text-red_custom">

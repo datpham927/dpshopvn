@@ -88,8 +88,10 @@ const detailProduct = async (req, res) => {
         // const option = "_id firstName lastName followers avatar_url userId email"
         const product = await Product.findById(req.params.pid).populate("user")
         //cập nhật số lượng người truy cập
-        product.views += 1
-        product.save()
+        if (product) {
+            product.views += 1
+            product.save()
+        }
         return res.status(201).json({
             success: product ? true : false,
             message: product ? "Success!" : `Id:${req.params.pid} not exists!`,
@@ -112,7 +114,6 @@ const getAllProducts = async (req, res) => {
         if (req.query.title) {
             newQueryString.title = { $regex: req.query.title }
         }
-
         if (req.query.category_code) {
             newQueryString.category_code = req.query.category_code
         }
@@ -123,7 +124,6 @@ const getAllProducts = async (req, res) => {
         } else {
             products = products.sort('-createdAt')
         }
-
         const totalProducts = await Product.countDocuments(newQueryString)
         if (totalProducts.length === 0) {
             return res.status(201).json({
@@ -159,8 +159,8 @@ const getAllProductFollowing = async (req, res) => {
     try {
         const currentUser = await User.findById(req.userId)
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        const allProduct = await Promise.all (currentUser.followings.map(e => {
-            return Product.find({ user: e}).populate("user", option)
+        const allProduct = await Promise.all(currentUser.followings.map(e => {
+            return Product.find({ user: e }).populate("user", option)
         }))
         res.status(200).json({
             success: allProduct ? true : false,

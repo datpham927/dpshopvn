@@ -8,7 +8,7 @@ import { SIDEBAR_USER } from '../../../utils/const';
 export const Sidebar: React.FC = () => {
     const currentUser = useAppSelector((state) => state.user);
     return (
-        <div className="flex flex-col w-1/5 gap-6">
+        <div className="flex flex-col w-4/12 gap-6">
             <div className="flex gap-2 items-center ml-2">
                 <div className="w-11 h-11 overflow-hidden rounded-full border-[1px] border-solid border-separate">
                     <img src={currentUser.avatar_url || noUser} className="w-full h-full object-cover block" />

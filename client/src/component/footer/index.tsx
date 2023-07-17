@@ -10,8 +10,8 @@ const Footer: React.FC = () => {
                 <span className="text-xs mx-5"> CHÍNH SÁCH VẬN CHUYỂN</span>
                 <span className="text-xs mx-5"> CHÍNH SÁCH TRẢ HÀNG VÀ HOÀN TIỀN</span>
             </div>
-            <div className="flex flex-col items-center my-7">
-                    <img src={logo_dpshopvn} className="w-60  h-full " />
+            <div className="flex flex-col items-center my-7 gap-2">
+                 <img src={logo_dpshopvn} className="w-60  h-full " />
                 <span className='text-sm'>Công ty TNHH DPSHOPVN</span>
             </div>
             <div></div>

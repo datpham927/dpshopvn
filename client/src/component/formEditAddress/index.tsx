@@ -1,21 +1,24 @@
 import React, { memo, useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { InputForm, Overlay } from '..';
+import { Overlay, showNotification } from '..';
 import { getApiPublicDistrict, getApiPublicProvince, getApiPublicWards } from '../../services/apiAddress';
 import SelectAddress from '../selectAddress';
 import { UserProfile } from '../../interfaces/interfaces';
 import InputReadOnly from '../inputReadOnly';
 import ButtonOutline from '../buttonOutline';
-import axios from 'axios';
+import { apiUpdateUser } from '../../services/apiUser';
+import { useAppDispatch } from '../../redux/hooks';
+import { setDetailUser } from '../../redux/features/user/userSlice';
 
 interface FormEditAddressProps {
     payload: UserProfile;
-    setPayload: (e: any) => void;
+    setPayload?: (e: any) => void;
     setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    isEdit?: boolean;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-const FormEditAddress: React.FC<FormEditAddressProps> = ({ payload, setPayload, setIsOpen }) => {
+const FormEditAddress: React.FC<FormEditAddressProps> = ({ payload, setPayload, setIsOpen, isEdit }) => {
     const [provinces, setProvinces] = useState<{ code: number; name: string }[]>();
     const [districts, setDistricts] = useState<{ code: number; name: string }[]>();
     const [provinceId, setProvinceId] = useState<number>();
@@ -23,7 +26,7 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({ payload, setPayload, 
     const [wardsId, setWardsId] = useState<number>();
     const [wards, setWards] = useState<{ code: number; name: string }[]>();
     const [address, setAddress] = useState<string>('');
-
+    const dispatch = useAppDispatch();
     useEffect(() => {
         setAddress(payload.address);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,18 +60,28 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({ payload, setPayload, 
     useEffect(() => {
         if (provinceId || districtId || wardsId) {
             setAddress(
-                `${wardsId ? wards?.find((e) => e?.code === Number(wardsId))?.name + ',' : ''}${
-                    districtId ? districts?.find((e) => e?.code === Number(districtId))?.name + ',' : ''
-                } ${provinceId ? provinces?.find((e) => e?.code === Number(provinceId))?.name : ''}`,
+                `${wardsId ? wards?.find((e) => e?.code === Number(wardsId))?.name + ', ' : ''}${
+                    districtId ? districts?.find((e) => e?.code === Number(districtId))?.name + ', ' : ''
+                }${provinceId ? provinces?.find((e) => e?.code === Number(provinceId))?.name : ''}`,
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [provinceId, districtId, wardsId]);
 
-    const handleSummit = (e: { stopPropagation: () => void }) => {
+    const handleSummit = async (e: { stopPropagation: () => void }) => {
         e.stopPropagation();
+        if (isEdit) {
+            const res = await apiUpdateUser({ ...payload, address });
+            if (res.success) {
+                dispatch(setDetailUser(res.data));
+                showNotification('Cập nhật thành công', true);
+            } else {
+                showNotification('Cập nhật không thành công', false);
+            }
+        } else {
+            setPayload && setPayload((prev: any) => ({ ...prev, address }));
+        }
         setIsOpen && setIsOpen(false);
-        setPayload((prev: any) => ({ ...prev, address }));
     };
 
     return (

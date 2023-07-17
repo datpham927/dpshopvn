@@ -1,8 +1,8 @@
-import { axiosJWT } from "../utils/httpRequest";
+import { axiosJWT } from '../utils/httpRequest';
 
-const apiAddToCart = async (data:object) => {
+const apiAddToCart = async (data: object) => {
     try {
-        const res = await axiosJWT.put('cart/add_to_cart',data);
+        const res = await axiosJWT.put('cart/add_to_cart', data);
         return res.data;
     } catch (error) {
         console.log(error);
@@ -13,9 +13,9 @@ const apiAddToCart = async (data:object) => {
     }
 };
 
-const apiDeleteProductInCart = async (pid:string) => {
+const apiDeleteProductInCart = async (pid: string) => {
     try {
-        const res = await axiosJWT.delete(`cart/${pid}/update`);
+        const res = await axiosJWT.delete(`cart/${pid}/delete`);
         return res.data;
     } catch (error) {
         console.log(error);
@@ -37,4 +37,4 @@ const apiGetProductInCart = async () => {
         };
     }
 };
-export {apiAddToCart,apiDeleteProductInCart,apiGetProductInCart}
+export { apiAddToCart, apiDeleteProductInCart, apiGetProductInCart };

@@ -56,3 +56,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .option-rating-review {
     @apply px-7 text-base py-2 bg-white rounded-sm  text-primary font-normal border-[1px] border-solid  capitalize   hover:bg-opacity-100;
 }
+.css-1hv8oq8-MuiStepLabel-label.MuiStepLabel-alternativeLabel {
+    margin-top:3px !important;
+    color:slategrey
+}

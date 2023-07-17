@@ -75,7 +75,7 @@ const Banner: React.FC = () => {
                                     to={`/${i.slug}/${i._id}`}
                                     className="w-full object-fill rounded-lg overflow-hidden "
                                 >
-                                    <img className="w-full object-fill" src={i.image_url} />
+                                    <img className="w-full object-fill" src={i?.image_url} />
                                 </Link>
                             </SwiperSlide>
                         );

@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { UserInterface } from '../../../interfaces/interfaces';
+import { UserDetail } from '../../../interfaces/interfaces';
 // Define a type for the slice state
 
 // Define the initial state using that type
 
-const initialState: UserInterface = {
+const initialState: UserDetail = {
     _id: '',
     firstName: '',
     lastName: '',
