@@ -21,4 +21,5 @@ export { default as InputReadOnly } from './inputReadOnly';
 export { default as FormEditAddress } from './formEditAddress';
 export { default as ProductInCartItem } from './productInCartItem';
 export { default as DeliveryAddress } from './deliveryAddress';
+export { default as OrderItem } from './orderItem';
 export { showNotification } from './showNotification/showNotification';

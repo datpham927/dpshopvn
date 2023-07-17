@@ -13,7 +13,7 @@ const Right: React.FC = () => {
     const navigate = useNavigate();
     const totalPriceMemo = useMemo(() => {
         const result = selectedProducts.reduce((total, e) => {
-            return total + e.totalPrice;
+            return total + e?.totalPrice;
         }, 0);
         return result;
     }, [selectedProducts]);

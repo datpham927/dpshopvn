@@ -24,7 +24,7 @@ const addToCart = async (req, res) => {
         res.status(200).json({
             success: populatedCart ? true : false,
             message: populatedCart ? "success" : 'failed',
-            cart: populatedCart ? populatedCart : null
+            data: populatedCart ? populatedCart : null
         })
     } catch (error) {
         res.status(500).json({

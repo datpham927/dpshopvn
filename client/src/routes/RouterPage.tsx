@@ -4,7 +4,7 @@ import { path } from '../utils/const';
 import UserProfile from '../pages/user/userPage/userProfile';
 import PurchaseManage from '../pages/user/userPage/PurchaseManage';
 import SellManage from '../pages/user/userPage/SellManage';
-import { PaymentPage, PaymentSuccessPage, UserPage } from '../pages/user';
+import { PaymentPage , UserPage } from '../pages/user';
 
 const RouterPage = () => {
     return (
@@ -26,7 +26,6 @@ const RouterPage = () => {
                 <Route path={'sell'} element={<SellManage />} />
             </Route>
             <Route path={path.PAGE_PAYMENT} element={<PaymentPage />}></Route>
-            <Route path={path.PAGE_PAYMENT_SUCCESS} element={<PaymentSuccessPage />}></Route>
         </Routes>
     );
 };

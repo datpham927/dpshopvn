@@ -9,9 +9,13 @@ import { ButtonOutline, showNotification } from '../../../../component';
 import { apiAddToCart } from '../../../../services/apiCart';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import InfoShop from './InfoShop';
-import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
+import { setIsLoading, setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 import { useNavigate, useParams } from 'react-router-dom';
-import { setAddProductInCart, setProductsByShopId, setSelectedProducts } from '../../../../redux/features/order/orderSlice';
+import {
+    setAddProductInCart,
+    setProductsByShopId,
+    setSelectedProducts,
+} from '../../../../redux/features/order/orderSlice';
 
 const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) => {
     const [quantity, setQuantity] = useState<number>(1);
@@ -19,24 +23,31 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
     const currentUser = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { selectedProducts } = useAppSelector((state) => state.order);
+    const params = useParams();
+
     const handleAddToCart = async (isBuy: boolean) => {
         if (!isLoginSuccess) {
             dispatch(setOpenFeatureAuth(true));
             return;
         }
+        dispatch(setIsLoading(true));
         const response = await apiAddToCart({
             quantity,
             shopId: productDetail.user._id,
             productId: productDetail._id,
             totalPrice: quantity * productDetail.newPrice,
         });
-
+     
+        dispatch(setIsLoading(false));
         if (response?.success) {
-            showNotification('Sản phẩm đã được thêm vào giỏ hàng', true);
             dispatch(setAddProductInCart(response.data));
+            showNotification('Sản phẩm đã được thêm vào giỏ hàng', true);
             if (isBuy) {
-                dispatch(setSelectedProducts(response.data));
-                dispatch(setProductsByShopId())
+                if (!selectedProducts.some((e) => e.productId._id === params?.pid)) {
+                    dispatch(setSelectedProducts(response.data));
+                    dispatch(setProductsByShopId());
+                }
                 navigate('/cart');
             }
         } else {
@@ -115,7 +126,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                 </div>
                             </div>
                             <div className="flex gap-4 mt-4">
-                                <ButtonOutline onClick={handleAddToCart}>
+                                <ButtonOutline onClick={() => handleAddToCart(false)}>
                                     <ShoppingCartOutlinedIcon />
                                     Thêm vào giỏ hàng
                                 </ButtonOutline>

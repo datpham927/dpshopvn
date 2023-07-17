@@ -4,13 +4,14 @@ const { verifyAdmin, verifyAccessToken } = require("../middlewares/verifyToken")
 
 
 router.post("/add", [verifyAccessToken], orderController.createOrderProduct)
+// --------------- user(shop) --------------------
 router.delete("/:oid/update", [verifyAccessToken], orderController.updateOrder)
-router.put("/:oid/is_confirm", [verifyAdmin], orderController.isConfirmOrder)
-router.put("/:oid/is_deliver", [verifyAdmin], orderController.isDeliveredOrder)
-router.put("/:oid/is_handle", [verifyAdmin], orderController.isHandleOrder)
-router.put("/:oid/is_abort", [verifyAdmin], orderController.isCanceledOrder)
+router.put("/:oid/is_confirm",  [verifyAccessToken], orderController.isConfirmOrder)
+router.put("/:oid/is_deliver", [verifyAccessToken], orderController.isDeliveredOrder)
+router.put("/:oid/is_confirm", [verifyAccessToken], orderController.isConfirmOrder)
+router.put("/:oid/is_abort",  [verifyAccessToken], orderController.isCanceledOrder)
+router.get("/all_order_bought",  [verifyAccessToken], orderController.getAllOrdersBought)
 //------------ admin ---------
-router.delete("/:oid/update", [verifyAdmin], orderController.updateOrder)
 module.exports = router
 
 

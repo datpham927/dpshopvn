@@ -1,8 +1,13 @@
 import React, { useMemo } from 'react';
 import { Step, StepLabel, Stepper } from '@mui/material';
-import { setProductsByShopId, setSelectedProductsALl } from '../../../redux/features/order/orderSlice';
-import { ProductInCartItem } from '../../../component';
+import {
+    setProductsByShopId,
+    setRemoveProductInCart,
+    setSelectedProductsALl,
+} from '../../../redux/features/order/orderSlice';
+import { ProductInCartItem, showNotification } from '../../../component';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { apiDeleteProductInCart } from '../../../services/apiCart';
 
 const Left: React.FC = () => {
     const { productInCart } = useAppSelector((state) => state.order);
@@ -11,10 +16,23 @@ const Left: React.FC = () => {
 
     const totalPriceMemo = useMemo(() => {
         const result = selectedProducts.reduce((total, e) => {
-            return total + e.totalPrice;
+            return total + e?.totalPrice;
         }, 0);
         return result;
     }, [selectedProducts]);
+
+    const handleDeleteSelectorProduct = async () => {
+        if (confirm('Bạn có muốn xóa tất cả sản phẩm đã chọn?')) {
+            await Promise.all(
+                selectedProducts.map((p) => {
+                    dispatch(setRemoveProductInCart(p));
+                    return apiDeleteProductInCart(p?._id);
+                }),
+            );
+            showNotification('Xóa thành công', true);
+        }
+    };
+
     return (
         <div className="w-4/6 relative">
             <div className="flex flex-col gap-2 sticky top-0 left-0 bg-background_primary py-3 ">
@@ -52,7 +70,9 @@ const Left: React.FC = () => {
                         <span className="text-sm text-secondary">Đơn giá</span>
                         <span className="text-sm text-secondary">Số lượng</span>
                         <span className="text-sm text-secondary">Thành tiền</span>
-                        <span className="text-sm text-secondary cursor-pointer">Xóa</span>
+                        <span className="text-sm text-secondary cursor-pointer" onClick={handleDeleteSelectorProduct}>
+                            Xóa
+                        </span>
                     </div>
                 </div>
             </div>

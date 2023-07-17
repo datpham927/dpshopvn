@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { path } from '../../utils/const';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { apiGetProductInCart } from '../../services/apiCart';
-import { setAddProductInCart } from '../../redux/features/order/orderSlice';
+import { setAddProductInCartFromApi } from '../../redux/features/order/orderSlice';
 // eslint-disable-next-line react-refresh/only-export-components
 const Cart: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -15,9 +15,9 @@ const Cart: React.FC = () => {
         const fetchApi = async () => {
             const res = await apiGetProductInCart();
             if (!res.success) return;
-           if(res.products.length>0){
-               dispatch(setAddProductInCart(res.products));
-           }
+            if (res.products.length > 0) {
+                dispatch(setAddProductInCartFromApi(res.products));
+            }
         };
         isLoginSuccess && fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps

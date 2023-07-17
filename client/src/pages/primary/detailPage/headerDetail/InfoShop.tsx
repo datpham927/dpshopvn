@@ -9,6 +9,7 @@ import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlic
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ButtonOutline } from '../../../../component';
+import { formatUserName } from '../../../../utils/formatUserName';
 
 interface InfoShop {
     _id: string;
@@ -42,7 +43,7 @@ const InfoShop: React.FC<{ props: InfoShop }> = ({ props }) => {
         <div className="w-[240px] h-auto border-[1px] border-solid py-3 border-slate-200 rounded-sm px-3">
             <div className="flex items-center w-full h-auto gap-2">
                 <img className="w-10 h-10 rounded-full" src={noUser} />
-                <div>{nameShop}</div>
+                <div>{formatUserName({ lastName, firstName, email })}</div>
             </div>
             <div className="flex my-2 gap-2 text-sm items-center mt-4">
                 Lượt theo dõi:
@@ -50,7 +51,7 @@ const InfoShop: React.FC<{ props: InfoShop }> = ({ props }) => {
             </div>
             <div className="flex gap-2">
                 <ButtonOutline>
-                    <Link to={`/cua-hang/${nameShop}/${_id}`} className='flex justify-center items-center gap-2'>
+                    <Link to={`/cua-hang/${nameShop}/${_id}`} className="flex justify-center items-center gap-2">
                         <CardGiftcardIcon fontSize="small" />
                         Xem shop
                     </Link>

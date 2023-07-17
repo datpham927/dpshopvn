@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { path } from '../../../utils/const';
 import { imgFreeShip } from '../../../assets';
 import { setCreateOrder } from '../../../services/apiOrder';
-import { setSelectedProductsEmpty } from '../../../redux/features/order/orderSlice';
+import { setRemoveProductInCart, setSelectedProductsEmpty } from '../../../redux/features/order/orderSlice';
 import { setIsLoading } from '../../../redux/features/action/actionSlice';
 
 interface RightProps {
@@ -43,28 +43,33 @@ const Right: React.FC<RightProps> = ({ methods }) => {
     }, [priceFreeShip, priceMemo, priceShip]);
 
     const handleOrderProduct = async () => {
-        if (methods.paymentMethod === 'CASH') {
-            dispatch(setIsLoading(true));
-            const res = await setCreateOrder({
-                products: selectedProducts,
-                paymentMethod: methods.paymentMethod,
-                shippingAddress: {
-                    fullName: formatUserName(currentUser),
-                    detailAddress: currentUser.address,
-                    village: currentUser.address.split(',')[0],
-                    district: currentUser.address.split(',')[1],
-                    city: currentUser.address.split(',')[2],
-                    phone: currentUser.mobile,
-                },
-            });
-            dispatch(setIsLoading(false));
-
-            if (res.success) {
-                showNotification('Đặt hàng thành công! vui lòng kiểm tra trong gmail', true);
-                navigate(path.PAGE_PAYMENT_SUCCESS);
-                dispatch(setSelectedProductsEmpty());
-            } else {
-                showNotification('Đặt hàng không thành công!', false);
+        if (confirm('Bạn có muốn đặt hàng không?')) {
+            if (methods.paymentMethod === 'CASH') {
+                dispatch(setIsLoading(true));
+                const res = await setCreateOrder({
+                    products: selectedProducts,
+                    paymentMethod: methods.paymentMethod,
+                    shippingAddress: {
+                        fullName: formatUserName(currentUser),
+                        detailAddress: currentUser.address,
+                        village: currentUser.address.split(',')[0],
+                        district: currentUser.address.split(',')[1],
+                        city: currentUser.address.split(',')[2],
+                        phone: currentUser.mobile,
+                    },
+                    shippingPrice: priceShip > priceFreeShip ? priceShip - priceFreeShip : 0,
+                });
+                dispatch(setIsLoading(false));
+                if (res.success) {
+                    showNotification('Đặt hàng thành công! vui lòng kiểm tra trong gmail', true);
+                    selectedProducts.forEach((e) => {
+                        dispatch(setRemoveProductInCart(e));
+                    });
+                    dispatch(setSelectedProductsEmpty());
+                    navigate(path.PAGE_USER);
+                } else {
+                    showNotification('Đặt hàng không thành công!', false);
+                }
             }
         }
     };

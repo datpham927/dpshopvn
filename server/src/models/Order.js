@@ -3,13 +3,17 @@ const mongoose = require("mongoose")
 
 const orderSchema = mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", require: true },
-    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+    products: [ {
+        id: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number }
+      }],
     totalPrice: { type: Number, require: true, default: 0 },
     paymentMethod: { type: String, require: true },
-    isHandle: { type: Boolean, default: false },
     isConfirm: { type: Boolean, default: false },
-    isDelivered: { type: Boolean, default: false },
+    delivery: { type: Boolean, default: false },
+    isDelivering: { type: Boolean, default: false },
     isCanceled: { type: Boolean, default: false },
+    isSuccess: { type: Boolean, default: false },
     shopId: { type: String, require: true },
     shippingAddress: {
         fullName: { type: String, require: true },
@@ -19,6 +23,7 @@ const orderSchema = mongoose.Schema({
         city: { type: String, require: true },
         phone: { type: Number, require: true },
     },
+    shippingPrice: { type: Number, require: true },
     dateShipping: { type: String }
 }, {
     timestamp: true

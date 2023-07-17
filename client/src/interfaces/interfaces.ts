@@ -17,6 +17,7 @@ interface CardProductItem {
     newPrice: number;
     _id: string;
     category_name: string;
+    quantity?: number;
 }
 
 interface ProductDetail extends CardProductItem {
@@ -98,20 +99,57 @@ interface ProductInCart {
 
 interface ProductByShop {
     _id: string;
-    user:  string;
-    shopId:  string;
-    quantity:  number;
-    totalPrice:  number;
+    user: string;
+    shopId: string;
+    quantity: number;
+    totalPrice: number;
     deliverDate: number;
     productId: Array<{
-        _id:  string;
-        title:  string;
-        slug:  string;
-        image_url:  string;
-        newPrice:  number;
-        oldPrice:  number;
-        discount:  number;
+        _id: string;
+        title: string;
+        slug: string;
+        image_url: string;
+        newPrice: number;
+        oldPrice: number;
+        discount: number;
     }>;
 }
 
-export type { Category, UserProfile, UserDetail, CardProductItem, ProductDetail, Review, ProductInCart, ProductByShop };
+interface IOrderItem {
+    shippingAddress: {
+        fullName: string;
+        detailAddress: string;
+        village: string;
+        district: string;
+        city: string;
+        phone: number;
+    };
+    _id: string;
+    user: {
+        _id: string;
+        email: string;
+        lastName: string;
+        firstName: string;
+    };
+    products: Array<CardProductItem>;
+    totalPrice: number;
+    paymentMethod: boolean;
+    isConfirm: boolean;
+    delivery: boolean;
+    isDelivering: boolean;
+    isCanceled: boolean;
+    isSuccess: boolean;
+    shippingPrice: number;
+    dateShipping: number;
+}
+export type {
+    Category,
+    UserProfile,
+    UserDetail,
+    CardProductItem,
+    ProductDetail,
+    Review,
+    ProductInCart,
+    ProductByShop,
+    IOrderItem,
+};

@@ -10,7 +10,6 @@ export const path = {
     PAGE_USER: '/user/account',
     PAGE_CART: '/cart',
     PAGE_PAYMENT: '/payment',
-    PAGE_PAYMENT_SUCCESS: '/success',
 };
 
 export const SEARCH_UTILITY = [
@@ -138,3 +137,31 @@ export const DELIVERY_METHOD = {
         },
     ],
 };
+
+
+export const PURCHASE_TAB=[
+    {
+        tab:1,
+        title:"Tất cả"
+    },
+    {
+        tab:2,
+        title:"Chờ xác nhận"
+    },
+    {
+        tab:3,
+        title:"Vận Chuyển"
+    },
+    {
+        tab:4,
+        title:"Đang giao"
+    },
+    {
+        tab:5,
+        title:"Hoàn thành"
+    },
+    {
+        tab:6,
+        title:"Đã hủy"
+    }
+]

@@ -1,15 +1,26 @@
-import { axiosJWT } from "../utils/httpRequest";
+import { axiosJWT } from '../utils/httpRequest';
 
-const setCreateOrder = async (body:any) => {
+const setCreateOrder = async (body: any) => {
     try {
-        const res = await axiosJWT.post('order/add',body);
+        const res = await axiosJWT.post('order/add', body);
         return res.data;
     } catch (error) {
         return {
-            success:false,
-            message:error
-        }
+            success: false,
+            message: error,
+        };
+    }
+};
+const getAllOrdersBought = async () => {
+    try {
+        const res = await axiosJWT.get('order/all_order_bought');
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
     }
 };
 
-export { setCreateOrder };
+export { setCreateOrder, getAllOrdersBought };

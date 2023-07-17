@@ -17,19 +17,18 @@ export const orderSlice = createSlice({
     name: 'order',
     initialState,
     reducers: {
-        setAddProductInCart: (state, action) => {
-            if (action.payload.length > 1) {
+        setAddProductInCartFromApi: (state, action) => {
+            if (action.payload?.length > 0) {
                 state.productInCart = action.payload;
+            }
+        },
+        setAddProductInCart: (state, action) => {
+            const payloadProductId = action.payload?._id;
+            const existingProductIndex = state.productInCart.findIndex((product) => product._id === payloadProductId);
+            if (existingProductIndex !== -1) {
+                state.productInCart[existingProductIndex] = { ...action.payload };
             } else {
-                const payloadProductId = action.payload?._id;
-                const existingProductIndex = state.productInCart.findIndex(
-                    (product) => product._id === payloadProductId,
-                );
-                if (existingProductIndex !== -1) {
-                    state.productInCart[existingProductIndex] = { ...action.payload };
-                } else {
-                    state.productInCart.push(action.payload);
-                }
+                state.productInCart.push(action.payload);
             }
         },
 
@@ -41,7 +40,6 @@ export const orderSlice = createSlice({
                 state.selectedProducts.push(action.payload);
             }
             localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
-            
         },
         setSelectedProductsALl: (state, action) => {
             if (state.selectedProducts.length === action.payload.length) {
@@ -50,7 +48,6 @@ export const orderSlice = createSlice({
                 state.selectedProducts = action.payload;
             }
             localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
-            
         },
         setSelectedProductsEmpty: (state) => {
             state.selectedProducts = [];
@@ -70,7 +67,6 @@ export const orderSlice = createSlice({
                 selectedProducts.totalPrice += selectedProducts.productId.newPrice;
             }
             localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
-            
         },
         setDecreaseProduct: (state, action) => {
             const { _id } = action.payload;
@@ -95,14 +91,12 @@ export const orderSlice = createSlice({
                 }
             }
             localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
-            
         },
         setRemoveProductInCart: (state, action) => {
             const { _id } = action.payload;
             state.selectedProducts = state.selectedProducts?.filter((item) => item?._id !== _id);
             state.productInCart = state.productInCart?.filter((item) => item?._id !== _id);
             localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
-            
         },
         //phân chia đơn hàng theo shop
         setProductsByShopId: (state) => {
@@ -119,7 +113,7 @@ export const orderSlice = createSlice({
                     state.productsByShopId.push({
                         _id: e._id,
                         productId: [e.productId],
-                        deliverDate: Date.now() + 60 * 60 * 24 * 6 * 1000,
+                        deliverDate: Date.now() + 60 * 60 * ((Math.random() * 10) + 3) * 24 * 1000,
                         quantity: e.quantity,
                         shopId: e?.shopId,
                         totalPrice: e.totalPrice,
@@ -133,6 +127,7 @@ export const orderSlice = createSlice({
 
 export const {
     setSelectedProducts,
+    setAddProductInCartFromApi,
     setAddProductInCart,
     setSelectedProductsALl,
     setIncreaseProduct,

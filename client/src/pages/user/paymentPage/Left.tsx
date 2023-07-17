@@ -20,7 +20,7 @@ interface LeftProps {
 }
 
 const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
-    const { productsByShopId } = useAppSelector((state) => state.order);
+    const { productsByShopId } = useAppSelector((state) => state?.order);
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(setProductsByShopId());
@@ -35,11 +35,11 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
                         {DELIVERY_METHOD.method.map((e) => (
                             <label
                                 className="flex gap-2 items-center"
-                                onClick={() => setMethods((prev) => ({ ...prev, deliveryMethod: e.code }))}
+                                onClick={() => setMethods((prev) => ({ ...prev, deliveryMethod: e?.code }))}
                             >
-                                <input type="radio" checked={methods.deliveryMethod === e.code} />
-                                <span className="text-[rgb(255,183,0)] font-black text-sm">{e.code}</span>
-                                <span className="text-sm">{e.label}</span>
+                                <input type="radio" checked={methods.deliveryMethod === e?.code} />
+                                <span className="text-[rgb(255,183,0)] font-black text-sm">{e?.code}</span>
+                                <span className="text-sm">{e?.label}</span>
                             </label>
                         ))}
                     </div>
@@ -50,17 +50,17 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
                         <div className="absolute flex gap-1 items-center top-[-15px] left-8 bg-white px-2 text-primary">
                             <BackpackIcon fontSize="small" style={{ color: 'rgb(0 136 72)' }} />
                             Gói {index + 1} : Giao vào{' '}
-                            <span className="capitalize">{moment(e.deliverDate).format('dddd, DD/MM/YYYY')}</span>
+                            <span className="capitalize">{moment(e?.deliverDate).format('dddd, DD/MM/YYYY')}</span>
                         </div>
                         <div className="mt-4">
-                            {e.productId.map((p) => (
+                            {e?.productId.map((p) => (
                                 <ProductInCartItem
                                     product={{
-                                        _id: e._id,
-                                        quantity: e.quantity,
+                                        _id: e?._id,
+                                        quantity: e?.quantity,
                                         shopId: e?.shopId,
-                                        totalPrice: e.totalPrice,
-                                        user: e.user,
+                                        totalPrice: e?.totalPrice,
+                                        user: e?.user,
                                         productId: p,
                                     }}
                                 />
@@ -75,11 +75,11 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
                         {PAYMENT_METHOD.method.map((e) => (
                             <label
                                 className="flex gap-2 items-center"
-                                onClick={() => setMethods((prev) => ({ ...prev, paymentMethod: e.code }))}
+                                onClick={() => setMethods((prev) => ({ ...prev, paymentMethod: e?.code }))}
                             >
-                                <input type="radio" checked={methods.paymentMethod === e.code} />
-                                <img className="w-8 h-8" src={e.img} />
-                                <span className="text-sm">{e.code}</span>
+                                <input type="radio" checked={methods.paymentMethod === e?.code} />
+                                <img className="w-8 h-8" src={e?.img} />
+                                <span className="text-sm">{e?.code}</span>
                             </label>
                         ))}
 
