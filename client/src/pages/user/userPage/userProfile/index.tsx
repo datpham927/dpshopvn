@@ -58,11 +58,11 @@ const UserProfile: React.FC = () => {
 
     return (
         <div className="w-full h-full bg-white overflow-hidden p-4 rounded-lg">
-            <div className="w-full h-full mb-4">
+            <div className="w-full mb-4">
                 <h1 className="text-xl ">Hồ Sơ Của Tôi</h1>
                 <span className="text-sm text-secondary ">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
             </div>
-            <div className="flex w-full h-full py-10 border-solid border-t-[1px] border-slate-200 ">
+            <div className="flex w-full   py-10 border-solid border-t-[1px] border-slate-200">
                 <div className="flex flex-col justify-center items-center w-1/2 gap-6">
                     <InputForm
                         label="Họ"

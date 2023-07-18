@@ -22,5 +22,18 @@ const getAllOrdersBought = async () => {
         };
     }
 };
+// ---------------------------
 
-export { setCreateOrder, getAllOrdersBought };
+const setCancelOrder = async (oid: string) => {
+    try {
+        const res = await axiosJWT.put(`order/${oid}/is_abort`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+
+export { setCreateOrder, getAllOrdersBought, setCancelOrder };

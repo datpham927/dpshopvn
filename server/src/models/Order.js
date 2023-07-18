@@ -10,7 +10,7 @@ const orderSchema = mongoose.Schema({
     totalPrice: { type: Number, require: true, default: 0 },
     paymentMethod: { type: String, require: true },
     isConfirm: { type: Boolean, default: false },
-    delivery: { type: Boolean, default: false },
+    isConfirmDelivery: { type: Boolean, default: false },
     isDelivering: { type: Boolean, default: false },
     isCanceled: { type: Boolean, default: false },
     isSuccess: { type: Boolean, default: false },

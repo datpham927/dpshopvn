@@ -135,7 +135,7 @@ interface IOrderItem {
     totalPrice: number;
     paymentMethod: boolean;
     isConfirm: boolean;
-    delivery: boolean;
+    isConfirmDelivery: boolean;
     isDelivering: boolean;
     isCanceled: boolean;
     isSuccess: boolean;

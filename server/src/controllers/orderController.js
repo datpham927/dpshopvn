@@ -96,7 +96,7 @@ const createOrderProduct = async (req, res) => {
 }
 const updateOrder = async (req, res) => {
     try {
-        const response = await Order.findByIdAndDelete(req.params.oId)
+        const response = await Order.findByIdAndDelete(req.params.oid)
         res.status(200).json({
             success: response ? true : false,
             message: response ? "Success" : "Failed!",
@@ -110,7 +110,7 @@ const updateOrder = async (req, res) => {
 }
 const isConfirmOrder = async (req, res) => {
     try {
-        const response = await Order.findByIdAndUpdate(req.params.oId, { isConfirm: true })
+        const response = await Order.findByIdAndUpdate(req.params.oid, { isConfirm: true })
         res.status(200).json({
             success: response ? true : false,
             message: response ? "Success" : "Failed!",
@@ -124,7 +124,7 @@ const isConfirmOrder = async (req, res) => {
 }
 const isDelivering = async (req, res) => {
     try {
-        const response = await Order.findByIdAndUpdate(req.params.oId, { isDelivering: true })
+        const response = await Order.findByIdAndUpdate(req.params.oid, { isDelivering: true })
         res.status(200).json({
             success: response ? true : false,
             message: response ? "Success" : "Failed!",
@@ -138,7 +138,21 @@ const isDelivering = async (req, res) => {
 }
 const isDeliveredOrder = async (req, res) => {
     try {
-        const response = await Order.findByIdAndUpdate(req.params.oId, { isDelivered: true })
+        const response = await Order.findByIdAndUpdate(req.params.oid, { isDelivering: true })
+        res.status(200).json({
+            success: response ? true : false,
+            message: response ? "Success" : "Failed!",
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+const isConfirmDeliveredOrder = async (req, res) => {
+    try {
+        const response = await Order.findByIdAndUpdate(req.params.oid, { isConfirmDelivery: true})
         res.status(200).json({
             success: response ? true : false,
             message: response ? "Success" : "Failed!",
@@ -153,7 +167,13 @@ const isDeliveredOrder = async (req, res) => {
 const isCanceledOrder = async (req, res) => {
     try {
         try {
-            const response = await Order.findByIdAndUpdate(req.params.oId, { isCanceled: true })
+            const response = await Order.findByIdAndUpdate(req.params.oid, {
+                isCanceled: true,
+                isConfirm: false,
+                isDelivery: false,
+                isConfirmDelivery: false,
+                isSuccess: false,
+            })
             res.status(200).json({
                 success: response ? true : false,
                 message: response ? "Success" : "Failed!",
@@ -172,7 +192,7 @@ const isCanceledOrder = async (req, res) => {
 const isSuccessOrder = async (req, res) => {
     try {
         try {
-            const response = await Order.findByIdAndUpdate(req.params.oId, { isSuccess: true })
+            const response = await Order.findByIdAndUpdate(req.params.oid, { isSuccess: true })
             res.status(200).json({
                 success: response ? true : false,
                 message: response ? "Success" : "Failed!",
@@ -232,6 +252,7 @@ module.exports = {
     isConfirmOrder,
     isDelivering,
     isDeliveredOrder,
+    isConfirmDeliveredOrder,
     isCanceledOrder,
     isSuccessOrder,
     getAllOrdersBought,
