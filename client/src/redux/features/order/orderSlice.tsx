@@ -41,7 +41,7 @@ export const orderSlice = createSlice({
             }
             localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
         },
-        setSelectedProductsALl: (state, action) => {
+        setSelectedProductsAll: (state, action) => {
             if (state.selectedProducts.length === action.payload.length) {
                 state.selectedProducts = [];
             } else {
@@ -66,7 +66,6 @@ export const orderSlice = createSlice({
                 selectedProducts.quantity += 1;
                 selectedProducts.totalPrice += selectedProducts.productId.newPrice;
             }
-            localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
         },
         setDecreaseProduct: (state, action) => {
             const { _id } = action.payload;
@@ -90,7 +89,6 @@ export const orderSlice = createSlice({
                     selectedProducts.totalPrice = selectedProducts.productId.newPrice;
                 }
             }
-            localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
         },
         setRemoveProductInCart: (state, action) => {
             const { _id } = action.payload;
@@ -105,18 +103,29 @@ export const orderSlice = createSlice({
                 if (productsByShop.some((s) => s?.shopId == e?.shopId)) {
                     const shop = state.productsByShopId.find((s) => s?.shopId == e?.shopId);
                     if (shop) {
-                        if (!shop?.productId.some((p) => p._id === e.productId._id)) {
-                            shop.productId.push(e.productId);
+                        const indexProduct = shop?.products.findIndex((p) => p._id === e.productId._id);
+                        if (indexProduct > 0) {
+                            shop.products.push({
+                                ...e.productId,
+                                quantity: e.quantity,
+                                totalPrice: e.totalPrice,
+                            });
+                        } else {
+                            shop.products[indexProduct].quantity = e.quantity;
                         }
                     }
                 } else {
                     state.productsByShopId.push({
                         _id: e._id,
-                        productId: [e.productId],
-                        deliverDate: Date.now() + 60 * 60 * ((Math.random() * 10) + 3) * 24 * 1000,
-                        quantity: e.quantity,
+                        products: [
+                            {
+                                ...e.productId,
+                                quantity: e.quantity,
+                                totalPrice: e.totalPrice,
+                            },
+                        ],
+                        deliverDate: Date.now() + 60 * 60 * (Math.random() * 10 + 3) * 24 * 1000,
                         shopId: e?.shopId,
-                        totalPrice: e.totalPrice,
                         user: e.user,
                     });
                 }
@@ -129,7 +138,7 @@ export const {
     setSelectedProducts,
     setAddProductInCartFromApi,
     setAddProductInCart,
-    setSelectedProductsALl,
+    setSelectedProductsAll,
     setIncreaseProduct,
     setDecreaseProduct,
     setRemoveProductInCart,

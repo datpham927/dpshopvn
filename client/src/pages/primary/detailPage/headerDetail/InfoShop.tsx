@@ -8,7 +8,7 @@ import { apiFollowingUser, apiUnFollowingUser } from '../../../../services/apiUs
 import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ButtonOutline } from '../../../../component';
+import { ButtonOutline, showNotification } from '../../../../component';
 import { formatUserName } from '../../../../utils/formatUserName';
 
 interface InfoShop {
@@ -17,9 +17,10 @@ interface InfoShop {
     firstName: string;
     email: string;
     followers: Array<string>;
+    avatar_url: string;
 }
 const InfoShop: React.FC<{ props: InfoShop }> = ({ props }) => {
-    const { lastName, firstName, email, followers, _id } = props;
+    const { lastName, firstName, email, followers, _id, avatar_url } = props;
     const dispatch = useDispatch();
     const currentUser = useAppSelector((state) => state.user);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
@@ -30,6 +31,10 @@ const InfoShop: React.FC<{ props: InfoShop }> = ({ props }) => {
             dispatch(setOpenFeatureAuth(true));
             return;
         }
+        if (_id === currentUser._id) {
+            showNotification('Không thể theo dõi chính bạn!', false);
+            return;
+        }
         if (currentFollowers.includes(currentUser._id)) {
             setCurrentFollowers((user) => user.filter((i) => i !== currentUser._id));
             await apiUnFollowingUser(_id);
@@ -38,11 +43,12 @@ const InfoShop: React.FC<{ props: InfoShop }> = ({ props }) => {
             await apiFollowingUser(_id);
         }
     };
-    const nameShop = lastName ? lastName + ' ' + firstName : email?.split('@')[0];
     return (
         <div className="w-[240px] h-auto border-[1px] border-solid py-3 border-slate-200 rounded-sm px-3">
             <div className="flex items-center w-full h-auto gap-2">
-                <img className="w-10 h-10 rounded-full" src={noUser} />
+                <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden">
+                    <img className="w-full h-full block object-cover" src={avatar_url ? avatar_url : noUser} />
+                </div>
                 <div>{formatUserName({ lastName, firstName, email })}</div>
             </div>
             <div className="flex my-2 gap-2 text-sm items-center mt-4">
@@ -51,7 +57,10 @@ const InfoShop: React.FC<{ props: InfoShop }> = ({ props }) => {
             </div>
             <div className="flex gap-2">
                 <ButtonOutline>
-                    <Link to={`/cua-hang/${nameShop}/${_id}`} className="flex justify-center items-center gap-2">
+                    <Link
+                        to={`/cua-hang/${formatUserName({ lastName, firstName, email })}/${_id}`}
+                        className="flex justify-center items-center gap-2"
+                    >
                         <CardGiftcardIcon fontSize="small" />
                         Xem shop
                     </Link>

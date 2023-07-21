@@ -55,7 +55,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                 <div className="w-3/12 flex gap-3 items-start">
                     <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden">
                         <img
-                            className="w-full h-full block object-contain"
+                            className="w-full h-full block object-cover"
                             src={user?.avatar_url ? user?.avatar_url : noUser}
                         />
                     </div>

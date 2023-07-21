@@ -38,7 +38,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
             productId: productDetail._id,
             totalPrice: quantity * productDetail.newPrice,
         });
-     
+
         dispatch(setIsLoading(false));
         if (response?.success) {
             dispatch(setAddProductInCart(response.data));
@@ -126,13 +126,27 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                 </div>
                             </div>
                             <div className="flex gap-4 mt-4">
-                                <ButtonOutline onClick={() => handleAddToCart(false)}>
+                                <ButtonOutline
+                                    onClick={() => {
+                                        if (productDetail.user._id === currentUser._id) {
+                                            showNotification('Không thể mua hàng chính bạn!', false);
+                                        } else {
+                                            handleAddToCart(false);
+                                        }
+                                    }}
+                                >
                                     <ShoppingCartOutlinedIcon />
                                     Thêm vào giỏ hàng
                                 </ButtonOutline>
                                 <button
                                     className="flex gap-2 text-lg px-4 py-2 rounded-sm text-white bg-red_custom hover:bg-opacity-70"
-                                    onClick={() => handleAddToCart(true)}
+                                    onClick={() => {
+                                        if (productDetail.user._id === currentUser._id) {
+                                            showNotification('Không thể mua hàng chính bạn!', false);
+                                        } else {
+                                            handleAddToCart(true);
+                                        }
+                                    }}
                                 >
                                     Mua ngay
                                 </button>

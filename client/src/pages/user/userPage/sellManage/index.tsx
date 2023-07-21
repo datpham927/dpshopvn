@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { PURCHASE_TAB } from '../../../../utils/const';
+import { PURCHASE_TAB, SELL_TAB } from '../../../../utils/const';
 import { setIsLoading } from '../../../../redux/features/action/actionSlice';
 import { useAppDispatch } from '../../../../redux/hooks';
-import { getAllOrdersBought } from '../../../../services/apiOrder';
-import { setAllOrdersBought, setLoadDataOrder } from '../../../../redux/features/orderBought/orderBoughtSlice';
+import { getAllOrderBeenBought } from '../../../../services/apiOrder';
 import RenderUi from './RenderUI';
+import { setAllOrdersSold, setLoadDataOrderSold } from '../../../../redux/features/orderSold/orderSoldSlice';
 
-const PurchaseManage: React.FC = () => {
+const SellManage: React.FC = () => {
     const [displayTab, setDisplayTab] = useState<number>(1);
     const dispatch = useAppDispatch();
     useEffect(() => {
         const fetchApi = async () => {
             dispatch(setIsLoading(true));
-            const res = await getAllOrdersBought();
+            const res = await getAllOrderBeenBought();
             if (res.data && res.success) {
-                dispatch(setAllOrdersBought(res.data));
-                dispatch(setLoadDataOrder());
+                dispatch(setAllOrdersSold(res.data));
+                dispatch(setLoadDataOrderSold());
             }
             dispatch(setIsLoading(false));
         };
@@ -24,11 +24,11 @@ const PurchaseManage: React.FC = () => {
 
     return (
         <div className="w-full h-full">
-            <h2 className="my-4 text-xl">Đơn hàng Của Tôi</h2>
-            <div className="w-full sticky top-0 grid grid-cols-6 bg-white rounded-sm overflow-hidden">
-                {PURCHASE_TAB.map((e) => (
+            <h2 className="my-4 text-xl">Quản lý bán hàng</h2>
+            <div className="w-full sticky top-0 grid grid-cols-5 bg-white rounded-sm overflow-hidden">
+                {SELL_TAB.map((e) => (
                     <div
-                        className={`flex w-full justify-center items-center py-2 border-b-[2px] border-solid cursor-pointer ${
+                        className={`flex sticky top-0 w-full justify-center  items-center py-2 border-b-[2px] border-solid cursor-pointer ${
                             displayTab === e.tab ? 'text-primary border-primary' : 'text-secondary border-transparent'
                         }`}
                         onClick={() => setDisplayTab(e.tab)}
@@ -42,4 +42,4 @@ const PurchaseManage: React.FC = () => {
     );
 };
 
-export default PurchaseManage;
+export default SellManage;

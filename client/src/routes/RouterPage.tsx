@@ -3,8 +3,9 @@ import { CartPage, DetailPage, FilterPage, HomePage, SearchPage, ShopPage } from
 import { path } from '../utils/const';
 import UserProfile from '../pages/user/userPage/userProfile';
 import PurchaseManage from '../pages/user/userPage/PurchaseManage';
-import SellManage from '../pages/user/userPage/SellManage';
 import { PaymentPage , UserPage } from '../pages/user';
+import SellManage from '../pages/user/userPage/sellManage';
+import ViewOrder from '../pages/user/userPage/viewOrder';
 
 const RouterPage = () => {
     return (
@@ -24,6 +25,7 @@ const RouterPage = () => {
                 <Route path={'profile'} element={<UserProfile />} />
                 <Route path={'purchase'} element={<PurchaseManage />} />
                 <Route path={'sell'} element={<SellManage />} />
+                <Route path={'view/:oid'} element={<ViewOrder />} />
             </Route>
             <Route path={path.PAGE_PAYMENT} element={<PaymentPage />}></Route>
         </Routes>

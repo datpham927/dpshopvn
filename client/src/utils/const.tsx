@@ -90,7 +90,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import SellIcon from '@mui/icons-material/Sell';
 import { bachhoa, danhchoban, dealsieuhot, hangmoi, imgPayInCash, imgPayInVnpay, revodoi } from '../assets';
-
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 export const SIDEBAR_USER = [
     {
         label: 'Thông tin tài khoản',
@@ -106,6 +106,10 @@ export const SIDEBAR_USER = [
         label: 'Quản lý bán hàng',
         path_name: 'sell',
         icon: <SellIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
+    },{
+        label: 'Quản lý sản phẩm',
+        path_name: 'sell',
+        icon: <ProductionQuantityLimitsIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
     },
 ];
 
@@ -138,30 +142,52 @@ export const DELIVERY_METHOD = {
     ],
 };
 
+export const PURCHASE_TAB = [
+    {
+        tab: 1,
+        title: 'Tất cả',
+    },
+    {
+        tab: 2,
+        title: 'Chờ xác nhận',
+    },
+    {
+        tab: 3,
+        title: 'Vận Chuyển',
+    },
+    {
+        tab: 4,
+        title: 'Đang giao',
+    },
+    {
+        tab: 5,
+        title: 'Hoàn thành',
+    },
+    {
+        tab: 6,
+        title: 'Đã hủy',
+    },
+];
 
-export const PURCHASE_TAB=[
+export const SELL_TAB = [
     {
-        tab:1,
-        title:"Tất cả"
+        tab: 1,
+        title: 'Tất cả',
     },
     {
-        tab:2,
-        title:"Chờ xác nhận"
+        tab: 2,
+        title: 'Xác nhận đơn hàng',
     },
     {
-        tab:3,
-        title:"Vận Chuyển"
+        tab: 3,
+        title: 'Vận Chuyển',
+    }, 
+    {
+        tab: 4,
+        title: 'Hoàn thành',
     },
     {
-        tab:4,
-        title:"Đang giao"
+        tab: 5,
+        title: 'Đã hủy',
     },
-    {
-        tab:5,
-        title:"Hoàn thành"
-    },
-    {
-        tab:6,
-        title:"Đã hủy"
-    }
-]
+];
