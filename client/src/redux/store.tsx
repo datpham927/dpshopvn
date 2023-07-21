@@ -5,6 +5,7 @@ import categorySlice from './features/category/categorySlice';
 import { configureStore } from '@reduxjs/toolkit';
 import orderSlice from './features/order/orderSlice';
 import orderBoughtSlice from './features/orderBought/orderBoughtSlice';
+import orderSoldSlice from './features/orderSold/orderSoldSlice';
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         category: categorySlice,
         order: orderSlice,
         orderBought: orderBoughtSlice,
+        orderSold: orderSoldSlice,
     },
 });
 

@@ -33,7 +33,7 @@ const Right: React.FC<RightProps> = ({ methods }) => {
     }, [selectedProducts]);
 
     useEffect(() => {
-        setPriceFreeShip(priceMemo < 299000 && priceMemo > 99000 ? 15000 : priceMemo < 99000 ? 0 : 30000);
+        setPriceFreeShip(priceMemo < 599000 && priceMemo > 99000 ? 15000 : priceMemo < 99000 ? 0 : 30000);
         const discount = methods.deliveryMethod === 'FAST' ? 4 : 6;
         setPriceShip(priceMemo >= 1000000 ? 60000 : (priceMemo * discount) / 100);
     }, [priceMemo, methods.deliveryMethod]);
@@ -66,7 +66,7 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                         dispatch(setRemoveProductInCart(e));
                     });
                     dispatch(setSelectedProductsEmpty());
-                    navigate(path.PAGE_USER);
+                    navigate(`${path.PAGE_USER}/purchase`);
                 } else {
                     showNotification('Đặt hàng không thành công!', false);
                 }

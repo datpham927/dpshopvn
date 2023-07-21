@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 import BackpackIcon from '@mui/icons-material/Backpack';
 import { ProductInCartItem } from '../../../component';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { setProductsByShopId } from '../../../redux/features/order/orderSlice';
 import moment from 'moment';
 import { DELIVERY_METHOD, PAYMENT_METHOD } from '../../../utils/const';
 
@@ -20,12 +19,9 @@ interface LeftProps {
 }
 
 const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
-    const { productsByShopId } = useAppSelector((state) => state?.order);
-    const dispatch = useAppDispatch();
-    useEffect(() => {
-        dispatch(setProductsByShopId());
-    }, []);
-
+    const { productsByShopId, selectedProducts } = useAppSelector((state) => state?.order);
+    console.log('selectedProducts', selectedProducts);
+    console.log('productsByShopId', productsByShopId);
     return (
         <div className="w-4/6 relative py-3">
             <div className="flex flex-col bg-white rounded-md gap-10 p-6 mb-2">
@@ -53,13 +49,13 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
                             <span className="capitalize">{moment(e?.deliverDate).format('dddd, DD/MM/YYYY')}</span>
                         </div>
                         <div className="mt-4">
-                            {e?.productId.map((p) => (
+                            {e?.products.map((p) => (
                                 <ProductInCartItem
                                     product={{
                                         _id: e?._id,
-                                        quantity: e?.quantity,
+                                        quantity: p.quantity,
                                         shopId: e?.shopId,
-                                        totalPrice: e?.totalPrice,
+                                        totalPrice: p.totalPrice,
                                         user: e?.user,
                                         productId: p,
                                     }}
@@ -82,15 +78,6 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
                                 <span className="text-sm">{e?.code}</span>
                             </label>
                         ))}
-
-                        {/* <label
-                            className="flex gap-2 items-center"
-                            onClick={() => setMethods((prev) => ({ ...prev, paymentMethod: 'VNPAY' }))}
-                        >
-                            <input type="radio" checked={methods.paymentMethod === 'VNPAY'} />
-                            <img className="w-8 h-8" src={imgPayInVnpay} />
-                            <span className="text-sm ">Thanh toán bằng VNPAY</span>
-                        </label> */}
                     </div>
                 </div>
             </div>

@@ -101,10 +101,8 @@ interface ProductByShop {
     _id: string;
     user: string;
     shopId: string;
-    quantity: number;
-    totalPrice: number;
     deliverDate: number;
-    productId: Array<{
+    products: Array<{
         _id: string;
         title: string;
         slug: string;
@@ -112,6 +110,8 @@ interface ProductByShop {
         newPrice: number;
         oldPrice: number;
         discount: number;
+        quantity: number;
+        totalPrice: number;
     }>;
 }
 
@@ -133,14 +133,16 @@ interface IOrderItem {
     };
     products: Array<CardProductItem>;
     totalPrice: number;
-    paymentMethod: boolean;
+    paymentMethod: string;
     isConfirm: boolean;
     isConfirmDelivery: boolean;
     isDelivering: boolean;
+    delivery: boolean;
     isCanceled: boolean;
     isSuccess: boolean;
     shippingPrice: number;
     dateShipping: number;
+    createdAt?:Date
 }
 export type {
     Category,

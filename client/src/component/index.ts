@@ -13,7 +13,7 @@ export { default as Loading } from './loading';
 export { default as SearchByBrand } from './searchByBrand';
 export { default as SearchByPrice } from './searchByPrice';
 export { default as SearchByRating } from './searchByRating';
-export { default as ListProducts } from './listProducts/ListProducts';
+export { default as ListProducts } from './renderListProducts/ListProducts';
 export { default as SortBar } from './sortBar';
 export { default as ListCategory } from './listCategory';
 export { default as InputForm } from './inputForm';

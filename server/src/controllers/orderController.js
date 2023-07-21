@@ -30,6 +30,7 @@ const createOrderProduct = async (req, res) => {
             } else {
                 //nếu không exits thì thêm vào trong mảng
                 productByShop.push({
+                    shippingPrice: c.shippingPrice,
                     shopId: c?.shopId,
                     products: [{ _id: c?.productId._id, quantity: c.quantity }],
                     totalPrice: Number(c.totalPrice),
@@ -54,14 +55,24 @@ const createOrderProduct = async (req, res) => {
             })
         }
 
+        console.log("req.body.shippingPrice", req.body.shippingPrice)
+
         const orderProduct = await Promise.all(productByShop.map(async e => {
             // xóa product trong cart
             await Cart.findOneAndDelete({ shopId: e?.shopId })
-            return Order.create({
+            console.log("e", e)
+            console.log("e.totalPrice + Number(req.body.shippingPrice)", {
                 user: req.userId,
-                totalPrice: e.totalPrice,
+                totalPrice: Number(req.body.shippingPrice) + e.totalPrice,
                 ...e,
                 ...infoUser,
+                dateShipping: Date.now() + 60 * 60 * ((Math.random() * 10) + 3) * 24 * 1000
+            })
+            return Order.create({
+                user: req.userId,
+                ...e,
+                ...infoUser,
+                totalPrice: e.totalPrice + Number(req.body.shippingPrice),
                 dateShipping: Date.now() + 60 * 60 * ((Math.random() * 10) + 3) * 24 * 1000
             })
         }
@@ -76,7 +87,7 @@ const createOrderProduct = async (req, res) => {
                 <h3  style="color: cornflowerblue;">Đặt hàng thành công</h3>
                            <p>Đơn hàng: ${i + 1}</p>
                           <p style="text-transform: uppercase;"> Mã đơn hàng: ${code}</p>
-                          <p> Thanh toán: ${formatMoney(order?.totalPrice)}</p>
+                          <p> Thanh toán: ${formatMoney(order?.totalPrice + req.body.shippingPrice)}</p>
                     </div>`,
                 fullName: currentUser.lastName + " " + currentUser.firstName
             })
@@ -152,7 +163,7 @@ const isDeliveredOrder = async (req, res) => {
 }
 const isConfirmDeliveredOrder = async (req, res) => {
     try {
-        const response = await Order.findByIdAndUpdate(req.params.oid, { isConfirmDelivery: true})
+        const response = await Order.findByIdAndUpdate(req.params.oid, { isConfirmDelivery: true })
         res.status(200).json({
             success: response ? true : false,
             message: response ? "Success" : "Failed!",
@@ -207,12 +218,30 @@ const isSuccessOrder = async (req, res) => {
 
     }
 }
+const isBuyOrder = async (req, res) => {
+    try {
+        try {
+            const response = await Order.findByIdAndUpdate(req.params.oid, { isCanceled: false })
+            res.status(200).json({
+                success: response ? true : false,
+                message: response ? "Success" : "Failed!",
+            })
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    } catch (error) {
+
+    }
+}
 
 //----------------------------------
 
 const getAllOrdersBought = async (req, res) => {
     try {
-        const orders = await Order.find({ user: req.userId });
+        const orders = await Order.find({ user: req.userId })
         const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
         const newOrder = await Promise.all(orders.map(async (order) => {
             const user = await User.findById(order?.shopId).select(("user", "_id", "email lastName firstName"))
@@ -245,6 +274,70 @@ const getAllOrdersBought = async (req, res) => {
 
 
 
+const getAllOrdersBeenBought = async (req, res) => {
+    try {
+        const orders = await Order.find({ shopId: req.userId })
+        const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
+        const newOrder = await Promise.all(orders.map(async (order) => {
+            const user = await User.findById(order?.shopId).select(("user", "_id", "email lastName firstName"))
+            const products = await Promise.all(order.products.map(async (p) => {
+                const product = await Product.findById(p._id).select(options);
+                return {
+                    ...product.toObject(),
+                    quantity: p.quantity
+                };
+            })
+            );
+            return {
+                ...order.toObject(),
+                user,
+                products
+            };
+        })
+        );
+        res.status(200).json({
+            success: newOrder ? true : false,
+            data: newOrder
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+const getDetailOrder = async (req, res) => {
+    try {
+        if (!req.params.oid) {
+            return res.status(404).json({
+                success: false,
+                data: "oid required!"
+            });
+        }    const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
+        const orders = await Order.findById(req.params.oid)
+        const products = await Promise.all(orders.products.map(async (p) => {
+            const product = await Product.findById(p._id).select(options)
+            return {
+                ...product.toObject(),
+                quantity: p.quantity
+            };
+        })
+        );
+        res.status(200).json({
+            success: orders ? true : false,
+            data: orders ? { ...orders.toObject(), products } : null
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+
+
 
 module.exports = {
     createOrderProduct,
@@ -256,4 +349,6 @@ module.exports = {
     isCanceledOrder,
     isSuccessOrder,
     getAllOrdersBought,
+    isBuyOrder, getAllOrdersBeenBought,
+    getDetailOrder
 }

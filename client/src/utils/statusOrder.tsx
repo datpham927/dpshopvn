@@ -2,21 +2,10 @@ import CheckIcon from '@mui/icons-material/Check';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import PhonePausedIcon from '@mui/icons-material/PhonePaused';
+import { IOrderItem } from '../interfaces/interfaces';
 
-export const statusOrder = ({
-    isConfirmDelivery,
-    isCanceled,
-    isConfirm,
-    isDelivering,
-    isSuccess,
-}: {
-    isConfirmDelivery: boolean;
-    delivery: boolean;
-    isCanceled: boolean;
-    isConfirm: boolean;
-    isDelivering: boolean;
-    isSuccess: boolean;
-}) => {
+export const statusOrder = (order: IOrderItem) => {
+    const { isConfirmDelivery, delivery, isCanceled, isConfirm, isDelivering, isSuccess } = order;
     if (isConfirmDelivery && isConfirm && isDelivering && isSuccess && !isCanceled) {
         return {
             title: 'Giao hàng thành công',

@@ -42,9 +42,7 @@ const UserProfile: React.FC = () => {
     };
 
     const handleOnChangeValue = (e: React.ChangeEvent<HTMLInputElement>, name_id: string): void => {
-        if (e.target.value) {
-            setPayload((prevState) => ({ ...prevState, [name_id]: e.target.value }));
-        }
+        setPayload((prevState) => ({ ...prevState, [name_id]: e.target.value }));
     };
     const handleSummit = async () => {
         const res = await apiUpdateUser(payload);
@@ -56,6 +54,7 @@ const UserProfile: React.FC = () => {
         showNotification('Cập nhật thành công', true);
     };
 
+    console.log('value', payload.lastName);
     return (
         <div className="w-full h-full bg-white overflow-hidden p-4 rounded-lg">
             <div className="w-full mb-4">

@@ -26,7 +26,7 @@ const orderSchema = mongoose.Schema({
     shippingPrice: { type: Number, require: true },
     dateShipping: { type: String }
 }, {
-    timestamp: true
+    timestamps: true
 })
 
 module.exports = mongoose.model("Order", orderSchema)

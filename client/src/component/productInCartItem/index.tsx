@@ -1,19 +1,23 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 import { ProductInCart } from '../../interfaces/interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
-import { apiDeleteProductInCart } from '../../services/apiCart';
+import { apiAddToCart, apiDeleteProductInCart } from '../../services/apiCart';
 import { showNotification } from '..';
 import {
     setDecreaseProduct,
     setIncreaseProduct,
+    setProductsByShopId,
     setRemoveProductInCart,
     setSelectedProducts,
 } from '../../redux/features/order/orderSlice';
 import { formatMoney } from '../../utils/formatMoney';
 import { IconExcept } from '../../assets';
+import useDebounce from '../../Hook/useDebounce';
+import { setIsLoading } from '../../redux/features/action/actionSlice';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean }> = ({ product, isSelector }) => {
@@ -31,6 +35,20 @@ const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean
             dispatch(setRemoveProductInCart(product));
         }
     };
+
+    const quantity=useDebounce(product.quantity,500)
+
+    useEffect(() => {
+        const fetchApiUpdateCart = async () => {
+            dispatch(setIsLoading(true))
+            await apiAddToCart(product);
+            dispatch(setProductsByShopId())
+            dispatch(setIsLoading(false))
+        };
+        fetchApiUpdateCart();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [quantity]);
+
     return (
         <div
             className={`flex bg-white px-3  justify-between rounded-lg items-center  ${
@@ -84,16 +102,26 @@ const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean
                     }`}
                 >
                     {isSelector && (
-                        <span className="text-sm" onClick={() => dispatch(setDecreaseProduct(product))}>
+                        <span
+                            className="text-sm"
+                            onClick={() => {
+                                dispatch(setDecreaseProduct(product));
+                                dispatch(setProductsByShopId());
+                            }}
+                        >
                             {IconExcept}
                         </span>
                     )}
-                    <span className="mx-2 text-sm">{product?.quantity}</span>
+                    <span className="mx-2 text-sm">
+                        {!isSelector && <CloseIcon style={{ fontSize: '12px', color: 'rgb(128 128 137)' }} />}
+                        {product?.quantity}
+                    </span>
                     {isSelector && (
                         <span
                             className="flex"
                             onClick={() => {
                                 dispatch(setIncreaseProduct(product));
+                                dispatch(setProductsByShopId());
                             }}
                         >
                             <AddIcon fontSize="small" />

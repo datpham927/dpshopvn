@@ -12,7 +12,7 @@ import { UserDetail } from '../../../interfaces/interfaces';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { apiFollowingUser, apiGetDetailShop, apiUnFollowingUser } from '../../../services/apiUser';
 import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
-import { ListProducts, SearchByBrand, SearchByPrice, SearchByRating, SortBar } from '../../../component';
+import { ListProducts, SearchByBrand, SearchByPrice, SearchByRating, SortBar, showNotification } from '../../../component';
 import { bgHeaderShop, noUser } from '../../../assets';
 import ButtonOutline from '../../../component/buttonOutline';
 import { formatUserName } from '../../../utils/formatUserName';
@@ -38,6 +38,10 @@ const ShopPage: React.FC = () => {
             dispatch(setOpenFeatureAuth(true));
             return;
         }
+        if (sid === currentUser._id) {
+            showNotification('Không thể theo dõi chính bạn!', false);
+            return;
+        }
         if (followers.includes(currentUser._id)) {
             setFollowers((user) => user.filter((i) => i !== currentUser._id));
             await apiUnFollowingUser(shop?._id);
@@ -58,7 +62,9 @@ const ShopPage: React.FC = () => {
                     }}
                 >
                     <div className="flex gap-3 items-center">
-                        <img src={shop?.avatar_url || noUser} className="w-[80px] h-[80px] rounded-full" />
+                        <div className="w-[80px] h-[80px] rounded-full overflow-hidden">
+                            <img src={shop?.avatar_url || noUser} className="w-full h-full object-cover" />
+                        </div>
                         <div className="flex flex-col gap-2">
                             <h3 className="text-base font-semibold text-white">{formatUserName(shop)}</h3>
                             <span className="text-xs text-slate-50 ">

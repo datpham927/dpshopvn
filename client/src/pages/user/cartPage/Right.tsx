@@ -18,7 +18,7 @@ const Right: React.FC = () => {
         return result;
     }, [selectedProducts]);
     const priceFreeShipMemo = useMemo(() => {
-        return totalPriceMemo < 299000 && totalPriceMemo > 99000 ? 15000 : totalPriceMemo < 99000 ? 0 : 30000;
+        return totalPriceMemo < 599000 && totalPriceMemo > 99000 ? 15000 : totalPriceMemo < 99000 ? 0 : 30000;
     }, [totalPriceMemo]);
 
     const handleBuyProducts = () => {

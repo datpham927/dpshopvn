@@ -28,7 +28,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
         }>
     >([]);
     const [reviewEdit, setReviewEdit] = useState<Review | any>();
-    const dispatch=useAppDispatch()
+    const dispatch = useAppDispatch();
     // get all review by product id
     useEffect(() => {
         const fetchApiReview = async () => {
@@ -54,13 +54,15 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
     }, [productDetail._id]);
 
     const handleDeleteComment = async (cid: string) => {
-        const res = await apiDeleteComment(cid);
-        if (!res.success) {
-            showNotification('Xóa không thành công', true);
-            return;
+        if (confirm('Bạn có muốn xóa nhận xét không?')) {
+            const res = await apiDeleteComment(cid);
+            if (!res.success) {
+                showNotification('Xóa không thành công', false);
+                return;
+            }
+            showNotification('Xóa thành công', true);
+            setReviews(() => reviews?.filter((rv) => rv._id !== cid));
         }
-        showNotification('Xóa thành công', true);
-        setReviews(() => reviews?.filter((rv) => rv._id !== cid));
     };
     const handleEditComment = () => {
         setOpenFormReview(true);

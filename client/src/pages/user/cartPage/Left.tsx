@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Step, StepLabel, Stepper } from '@mui/material';
 import {
     setProductsByShopId,
     setRemoveProductInCart,
-    setSelectedProductsALl,
+    setSelectedProductsAll,
 } from '../../../redux/features/order/orderSlice';
 import { ProductInCartItem, showNotification } from '../../../component';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
@@ -39,7 +39,7 @@ const Left: React.FC = () => {
                 <div className="bg-white p-2">
                     <Stepper
                         activeStep={
-                            totalPriceMemo < 299000 && totalPriceMemo > 99000 ? 2 : totalPriceMemo < 99000 ? 0 : 3
+                            totalPriceMemo < 599000 && totalPriceMemo > 99000 ? 2 : totalPriceMemo < 99000 ? 0 : 3
                         }
                     >
                         <Step key={1}>
@@ -60,7 +60,7 @@ const Left: React.FC = () => {
                             type="checkbox"
                             checked={selectedProducts.length === productInCart.length}
                             onChange={() => {
-                                dispatch(setSelectedProductsALl(productInCart));
+                                dispatch(setSelectedProductsAll(productInCart));
                                 dispatch(setProductsByShopId());
                             }}
                         />
@@ -85,4 +85,4 @@ const Left: React.FC = () => {
     );
 };
 
-export default Left;
+export default memo(Left);
