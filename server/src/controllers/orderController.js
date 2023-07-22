@@ -16,12 +16,10 @@ const createOrderProduct = async (req, res) => {
         const { products, ...infoUser } = req.body
 
         //chứa sản phẩm thep shop
-        // console.log("   req.body.products", infoProductInCart)
         let productByShop = [/* {shopId: "",products: [{_id:"",quantiTy:0}],totalPrice: 0 }*/]
         //kiểm tra product có đủ inStock không và chia order sản phẩm theo shop
         const checkProduct = await Promise.all(products?.map(async c => {
             //kiểm tra shopId đã có trong mảng hay chưa
-            console.log(c)
             if (productByShop.some(p => p?.shopId === c?.shopId)) {
                 //nếu có thì lấy ra và cập nhật lại product[] và price
                 let pCart = productByShop.filter(p => p?.shopId === c?.shopId)[0]
@@ -55,19 +53,11 @@ const createOrderProduct = async (req, res) => {
             })
         }
 
-        console.log("req.body.shippingPrice", req.body.shippingPrice)
 
         const orderProduct = await Promise.all(productByShop.map(async e => {
             // xóa product trong cart
             await Cart.findOneAndDelete({ shopId: e?.shopId })
-            console.log("e", e)
-            console.log("e.totalPrice + Number(req.body.shippingPrice)", {
-                user: req.userId,
-                totalPrice: Number(req.body.shippingPrice) + e.totalPrice,
-                ...e,
-                ...infoUser,
-                dateShipping: Date.now() + 60 * 60 * ((Math.random() * 10) + 3) * 24 * 1000
-            })
+
             return Order.create({
                 user: req.userId,
                 ...e,
@@ -119,9 +109,13 @@ const updateOrder = async (req, res) => {
         })
     }
 }
+
+
+
+// ---------------------
 const isConfirmOrder = async (req, res) => {
     try {
-        const response = await Order.findByIdAndUpdate(req.params.oid, { isConfirm: true })
+        const response = await Order.findByIdAndUpdate(req.params.oid, { is_confirm: true })
         res.status(200).json({
             success: response ? true : false,
             message: response ? "Success" : "Failed!",
@@ -133,37 +127,10 @@ const isConfirmOrder = async (req, res) => {
         })
     }
 }
-const isDelivering = async (req, res) => {
-    try {
-        const response = await Order.findByIdAndUpdate(req.params.oid, { isDelivering: true })
-        res.status(200).json({
-            success: response ? true : false,
-            message: response ? "Success" : "Failed!",
-        })
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
-    }
-}
-const isDeliveredOrder = async (req, res) => {
-    try {
-        const response = await Order.findByIdAndUpdate(req.params.oid, { isDelivering: true })
-        res.status(200).json({
-            success: response ? true : false,
-            message: response ? "Success" : "Failed!",
-        })
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
-    }
-}
+
 const isConfirmDeliveredOrder = async (req, res) => {
     try {
-        const response = await Order.findByIdAndUpdate(req.params.oid, { isConfirmDelivery: true })
+        const response = await Order.findOneAndUpdate({ _id: req.params.oid, is_confirm: true }, { is_confirm_delivery: true })
         res.status(200).json({
             success: response ? true : false,
             message: response ? "Success" : "Failed!",
@@ -174,67 +141,59 @@ const isConfirmDeliveredOrder = async (req, res) => {
             message: error.message
         })
     }
+}
+const isSuccessOrder = async (req, res) => {
+    try {
+        const order = await Order.findOneAndUpdate({ _id: req.params.oid, is_confirm_delivery: true }, { is_success: true, is_delivering: true });
+        await Promise.all(order.products.map(p => Product.findByIdAndUpdate(p._id, { $push: { userBought: order.user } })))
+        res.status(200).json({
+            success: order ? true : false,
+            message: order ? order : "Failed!",
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+
 }
 const isCanceledOrder = async (req, res) => {
     try {
-        try {
-            const response = await Order.findByIdAndUpdate(req.params.oid, {
-                isCanceled: true,
-                isConfirm: false,
-                isDelivery: false,
-                isConfirmDelivery: false,
-                isSuccess: false,
-            })
-            res.status(200).json({
-                success: response ? true : false,
-                message: response ? "Success" : "Failed!",
-            })
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: error.message
-            })
-        }
+        const response = await Order.findByIdAndUpdate(req.params.oid, {
+            is_canceled: true,
+            is_confirm: false,
+            is_delivery: false,
+            is_confirm_delivery: false,
+            is_success: false,
+        })
+        res.status(200).json({
+            success: response ? true : false,
+            message: response ? "Success" : "Failed!",
+        })
     } catch (error) {
-
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
     }
+
 }
 
-const isSuccessOrder = async (req, res) => {
-    try {
-        try {
-            const response = await Order.findByIdAndUpdate(req.params.oid, { isSuccess: true })
-            res.status(200).json({
-                success: response ? true : false,
-                message: response ? "Success" : "Failed!",
-            })
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: error.message
-            })
-        }
-    } catch (error) {
-
-    }
-}
 const isBuyOrder = async (req, res) => {
     try {
-        try {
-            const response = await Order.findByIdAndUpdate(req.params.oid, { isCanceled: false })
-            res.status(200).json({
-                success: response ? true : false,
-                message: response ? "Success" : "Failed!",
-            })
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: error.message
-            })
-        }
+        const response = await Order.findByIdAndUpdate(req.params.oid, { is_canceled: false })
+        res.status(200).json({
+            success: response ? true : false,
+            message: response ? "Success" : "Failed!",
+        })
     } catch (error) {
-
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
     }
+
 }
 
 //----------------------------------
@@ -255,7 +214,7 @@ const getAllOrdersBought = async (req, res) => {
             );
             return {
                 ...order.toObject(),
-                user,
+                shop: user,
                 products
             };
         })
@@ -290,7 +249,7 @@ const getAllOrdersBeenBought = async (req, res) => {
             );
             return {
                 ...order.toObject(),
-                user,
+                shop: user,
                 products
             };
         })
@@ -314,7 +273,7 @@ const getDetailOrder = async (req, res) => {
                 success: false,
                 data: "oid required!"
             });
-        }    const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
+        } const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
         const orders = await Order.findById(req.params.oid)
         const products = await Promise.all(orders.products.map(async (p) => {
             const product = await Product.findById(p._id).select(options)
@@ -343,8 +302,6 @@ module.exports = {
     createOrderProduct,
     updateOrder,
     isConfirmOrder,
-    isDelivering,
-    isDeliveredOrder,
     isConfirmDeliveredOrder,
     isCanceledOrder,
     isSuccessOrder,

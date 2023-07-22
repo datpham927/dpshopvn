@@ -110,7 +110,7 @@ interface ProductByShop {
         newPrice: number;
         oldPrice: number;
         discount: number;
-        quantity: number;
+        quantity?: number;
         totalPrice: number;
     }>;
 }
@@ -125,7 +125,7 @@ interface IOrderItem {
         phone: number;
     };
     _id: string;
-    user: {
+    shop: {
         _id: string;
         email: string;
         lastName: string;
@@ -134,12 +134,11 @@ interface IOrderItem {
     products: Array<CardProductItem>;
     totalPrice: number;
     paymentMethod: string;
-    isConfirm: boolean;
-    isConfirmDelivery: boolean;
-    isDelivering: boolean;
-    delivery: boolean;
-    isCanceled: boolean;
-    isSuccess: boolean;
+    is_confirm: boolean;
+    is_confirm_delivery: boolean;
+    is_delivering: boolean;
+    is_canceled: boolean;
+    is_success: boolean;
     shippingPrice: number;
     dateShipping: number;
     createdAt?:Date

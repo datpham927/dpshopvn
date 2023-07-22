@@ -22,7 +22,7 @@ const ListProducts: React.FC = () => {
     useEffect(() => {
         const { pricefrom, priceto, ...rest } = queries;
         const fetchProducts = async () => {
-            dispatch(setIsLoading(true));
+            //dispatch(setIsLoading(true));
             const res = await getAllProduct({
                 limit: 24,
                 ...rest,

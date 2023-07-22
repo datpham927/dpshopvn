@@ -98,21 +98,18 @@ export const orderSlice = createSlice({
         },
         //phân chia đơn hàng theo shop
         setProductsByShopId: (state) => {
-            const productsByShop = state.productsByShopId;
             state.selectedProducts.forEach((e) => {
-                if (productsByShop.some((s) => s?.shopId == e?.shopId)) {
-                    const shop = state.productsByShopId.find((s) => s?.shopId == e?.shopId);
-                    if (shop) {
-                        const indexProduct = shop?.products.findIndex((p) => p._id === e.productId._id);
-                        if (indexProduct > 0) {
-                            shop.products.push({
-                                ...e.productId,
-                                quantity: e.quantity,
-                                totalPrice: e.totalPrice,
-                            });
-                        } else {
-                            shop.products[indexProduct].quantity = e.quantity;
-                        }
+                const shop = state.productsByShopId.find((s) => s?.shopId == e?.shopId);
+                if (shop) {
+                    const indexProduct = shop?.products.find((p) => p._id === e.productId._id);
+                    if (!indexProduct) {
+                        shop.products.push({
+                            ...e.productId,
+                            quantity: e.quantity,
+                            totalPrice: e.totalPrice,
+                        });
+                    } else {
+                        indexProduct.quantity = e.quantity;
                     }
                 } else {
                     state.productsByShopId.push({

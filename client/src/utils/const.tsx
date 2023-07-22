@@ -91,25 +91,27 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import SellIcon from '@mui/icons-material/Sell';
 import { bachhoa, danhchoban, dealsieuhot, hangmoi, imgPayInCash, imgPayInVnpay, revodoi } from '../assets';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import { useAppSelector } from '../redux/hooks';
 export const SIDEBAR_USER = [
     {
         label: 'Thông tin tài khoản',
         path_name: 'profile',
-        icon: <PersonIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
+        icon: <PersonIcon fontSize="medium" style={{ color: 'rgb(155,155,155)' }} />,
     },
     {
         label: 'Đơn mua',
         path_name: 'purchase',
-        icon: <ShoppingBasketIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
+        icon: <ShoppingBasketIcon fontSize="medium" style={{ color: 'rgb(155,155,155)' }} />,
     },
     {
         label: 'Quản lý bán hàng',
         path_name: 'sell',
-        icon: <SellIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
-    },{
+        icon: <SellIcon fontSize="medium" style={{ color: 'rgb(155,155,155)' }} />,
+    },
+    {
         label: 'Quản lý sản phẩm',
         path_name: 'sell',
-        icon: <ProductionQuantityLimitsIcon fontSize="small" style={{ color: 'rgb(155,155,155)' }} />,
+        icon: <ProductionQuantityLimitsIcon fontSize="medium" style={{ color: 'rgb(155,155,155)' }} />,
     },
 ];
 
@@ -142,7 +144,8 @@ export const DELIVERY_METHOD = {
     ],
 };
 
-export const PURCHASE_TAB = [
+
+export const SELL_TAB = [
     {
         tab: 1,
         title: 'Tất cả',
@@ -157,37 +160,14 @@ export const PURCHASE_TAB = [
     },
     {
         tab: 4,
-        title: 'Đang giao',
+        title: 'Đã giao hàng',
     },
     {
         tab: 5,
-        title: 'Hoàn thành',
+        title: 'Thành công',
     },
     {
         tab: 6,
-        title: 'Đã hủy',
-    },
-];
-
-export const SELL_TAB = [
-    {
-        tab: 1,
-        title: 'Tất cả',
-    },
-    {
-        tab: 2,
-        title: 'Xác nhận đơn hàng',
-    },
-    {
-        tab: 3,
-        title: 'Vận Chuyển',
-    }, 
-    {
-        tab: 4,
-        title: 'Hoàn thành',
-    },
-    {
-        tab: 5,
         title: 'Đã hủy',
     },
 ];

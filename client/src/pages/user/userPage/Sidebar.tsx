@@ -1,13 +1,12 @@
 import React from 'react';
-import {  NavLink, useLocation, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { noUser } from '../../../assets';
 import { SIDEBAR_USER } from '../../../utils/const';
 
-
 export const Sidebar: React.FC = () => {
     const currentUser = useAppSelector((state) => state.user);
-    const location=useLocation()
+    const location = useLocation();
     return (
         <div className="flex flex-col w-full gap-6">
             <div className="flex gap-2 items-center ml-2">
@@ -28,7 +27,9 @@ export const Sidebar: React.FC = () => {
                 {SIDEBAR_USER.map((e) => (
                     <NavLink
                         to={e.path_name}
-                        className={`flex gap-2 p-2 text-sm text-gray-800 hover:bg-gray-200 cursor-pointer ${location.pathname.includes(e.path_name)?"text-primary font-semibold":""}`}
+                        className={`flex gap-4 p-2 text-sm text-gray-800 hover:bg-gray-200 cursor-pointer ${
+                            location.pathname.includes(e.path_name) ? 'bg-gray-200' : ''
+                        }`}
                     >
                         {e.icon}
                         {e.label}

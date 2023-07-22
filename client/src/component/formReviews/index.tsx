@@ -65,7 +65,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
 
-        dispatch(setIsLoading(true));
+        //dispatch(setIsLoading(true));
         setIsLoad(true);
         if (!files) return;
         const formData = new FormData();
@@ -84,7 +84,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
     };
     //  ------- post-------------
     const postComment = async () => {
-        dispatch(setIsLoading(true));
+        //dispatch(setIsLoading(true));
 
         const res = await apiPostComment({ comment: valueInput, images: imagesUrl, rating: rating }, productDetail._id);
         if (!res.success) {
@@ -101,7 +101,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
 
     //  ------- edit comment-------------
     const editComment = async () => {
-        dispatch(setIsLoading(true));
+        //dispatch(setIsLoading(true));
         const res = await apiEditComment({ comment: valueInput, images: imagesUrl, rating: rating }, reviewEdit?._id);
         if (!res.success) {
             showNotification('Cập nhật không thành công!', true);

@@ -43,9 +43,9 @@ const Right: React.FC<RightProps> = ({ methods }) => {
     }, [priceFreeShip, priceMemo, priceShip]);
 
     const handleOrderProduct = async () => {
-        if (confirm('Bạn có muốn đặt hàng không?')) {
-            if (methods.paymentMethod === 'CASH') {
-                dispatch(setIsLoading(true));
+        if (methods.paymentMethod === 'CASH') {
+            if (confirm('Bạn có muốn đặt hàng không?')) {
+                //dispatch(setIsLoading(true));
                 const res = await setCreateOrder({
                     products: selectedProducts,
                     paymentMethod: methods.paymentMethod,
@@ -125,7 +125,11 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                         className="py-3 bg-red_custom border-none  text-white mt-2 "
                         onClick={handleOrderProduct}
                     >
-                        Thanh toán
+                        {methods.paymentMethod === 'VNPAY' ? (
+                            <a href="https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"> Thanh toán</a>
+                        ) : (
+                            'Thanh toán'
+                        )}
                     </ButtonOutline>
                 </div>
             </div>

@@ -19,7 +19,7 @@ const Products: React.FC = () => {
     }, [optionTab]);
     useEffect(() => {
         const fetchProducts = async () => {
-            dispatch(setIsLoading(true));
+            //dispatch(setIsLoading(true));
             const res =
                 optionTab === 1
                     ? await getAllProduct({ limit: 30, page })
@@ -30,9 +30,9 @@ const Products: React.FC = () => {
                     : optionTab === 4
                     ? await getAllProduct({ sort: '-sold', limit: 30, page })
                     : await getAllProduct({ 'newPrice[lte]': 20000, limit: 30, page });
+            dispatch(setIsLoading(false));
             res.totalPage === page && setHiddenButton(true);
             res.success && setProduct((p) => [...p, ...res.products]);
-            dispatch(setIsLoading(false));
         };
         fetchProducts();
     }, [page, optionTab]);

@@ -46,7 +46,17 @@ const setBuyOrder = async (oid: string) => {
         };
     }
 };
-
+const getDetailOrder = async (oid: any) => {
+    try {
+        const res = await axiosJWT.get(`order/view/${oid}`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
 // ---------- sell manager-------------
 
 const getAllOrderBeenBought = async () => {
@@ -60,10 +70,9 @@ const getAllOrderBeenBought = async () => {
         };
     }
 };
-
-const getDetailOrder = async (oid: any) => {
+const setApiIsConfirm = async (oid: any) => {
     try {
-        const res = await axiosJWT.get(`order/view/${oid}`);
+        const res = await axiosJWT.put(`order/${oid}/is_confirm`);
         return res.data;
     } catch (error) {
         return {
@@ -72,4 +81,38 @@ const getDetailOrder = async (oid: any) => {
         };
     }
 };
-export { setCreateOrder, getAllOrdersBought, setCancelOrder, setBuyOrder, getAllOrderBeenBought, getDetailOrder };
+
+const setApiIsDeliver = async (oid: any) => {
+    try {
+        const res = await axiosJWT.put(`order/${oid}/confirm_delivery`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+const setApiIsSuccess = async (oid: any) => {
+    try {
+        const res = await axiosJWT.put(`order/${oid}/is_success`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+
+export {
+    setCreateOrder,
+    getAllOrdersBought,
+    setCancelOrder,
+    setBuyOrder,
+    getAllOrderBeenBought,
+    getDetailOrder,
+    setApiIsConfirm,
+    setApiIsDeliver,
+    setApiIsSuccess,
+};

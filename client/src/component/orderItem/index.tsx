@@ -17,7 +17,7 @@ import {
     setCancelOrderRedux,
     setLoadDataOrder,
 } from '../../redux/features/orderBought/orderBoughtSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { path } from '../../utils/const';
 const OrderItem: React.FC<{ order: IOrderItem; view?: boolean }> = ({ order, view }) => {
     const dispatch = useAppDispatch();
@@ -53,7 +53,7 @@ const OrderItem: React.FC<{ order: IOrderItem; view?: boolean }> = ({ order, vie
                 <div className="flex gap-1 items-center">
                     <AccessTimeIcon style={{ fontSize: '15px', color: 'rgb(0 136 72)' }} />
                     <p className="text-primary text-sm font-medium">
-                        Giao vào {moment(Number(order.dateShipping)).format('dddd, DD/MM/YYYY')}
+                        Giao vào {moment(Number(order?.dateShipping)).format('dddd, DD/MM/YYYY')}
                     </p>
                 </div>
                 <div className="flex gap-1 items-center">
@@ -67,21 +67,36 @@ const OrderItem: React.FC<{ order: IOrderItem; view?: boolean }> = ({ order, vie
                         key={uuidv4()}
                         className="flex w-full h-auto border-solid  border-b-[1px] border-separate py-3 px-4"
                     >
-                        <div className="w-[80px] h-[80px] mr-3 p-1 border-solid border-[1px] border-bgSecondary rounded-md overflow-hidden">
-                            <img className="w-full h-full object-cover" src={p.image_url} alt={p.title} />
+                        <div className="w-[70px] h-[70px] mr-3 p-1 border-solid border-[1px] border-bgSecondary rounded-md overflow-hidden">
+                            <img className="w-full h-full object-cover" src={p?.image_url} alt={p?.title} />
                         </div>
-                        <div className="w-2/3 flex flex-col gap-2 truncate">
-                            <h2>{p.title}</h2>
+                        <div className="w-2/3 flex flex-col gap-1 truncate">
+                            <h2 className="text-sm">{p?.title}</h2>
                             <div className="flex gap-1 items-center">
-                                <StoreIcon fontSize="small" style={{ color: 'rgb(128 128 137)' }} />
-                                <p className="text-sm text-secondary">{formatUserName(order.user)}</p>
+                                {!view ? (
+                                    <>
+                                        <StoreIcon fontSize="small" style={{ color: 'rgb(128 128 137)' }} />
+                                        <Link
+                                            to={`/cua-hang/${formatUserName(order.shop)}/${order.shop._id}`}
+                                            className="text-sm text-secondary"
+                                        >
+                                            {formatUserName(order?.shop)}
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p className="text-sm text-secondary">
+                                            Giao đến: {order.shippingAddress.detailAddress}
+                                        </p>
+                                    </>
+                                )}
                             </div>
                             <div className="flex gap-1 items-center text-sm text-secondary">
                                 <CloseIcon style={{ fontSize: '12px', color: 'rgb(128 128 137)' }} />
-                                {p.quantity}
+                                {p?.quantity}
                             </div>
                         </div>
-                        <div className="flex justify-end flex-1 text-primary">{formatMoney(p.newPrice)}</div>
+                        <div className="flex justify-end flex-1 text-primary">{formatMoney(p?.newPrice)}</div>
                     </div>
                 ))}
             </div>
@@ -89,21 +104,31 @@ const OrderItem: React.FC<{ order: IOrderItem; view?: boolean }> = ({ order, vie
                 {view && (
                     <div className="flex text-sm text-secondary w-full h-full justify-end">
                         Phí vận chuyển
-                        <span className="text-end text-secondary w-2/12 ">{formatMoney(order.shippingPrice)}</span>
+                        <span className="text-end text-secondary min-w-[100px]">
+                            {formatMoney(order?.shippingPrice)}
+                        </span>
                     </div>
                 )}
-                <div className="flex text-xl text-secondary w-full h-full justify-end">
-                    Tổng tiền: <span className="text-end text-red_custom  w-2/12 ">{formatMoney(order.totalPrice)}</span>
+                <div className="flex text-xl text-secondary w-full h-full justify-end gap-1">
+                    Tổng tiền:
+                    <span className="text-end text-red_custom min-w-[100px] ">{formatMoney(order?.totalPrice)}</span>
                 </div>
             </div>
             {!view && (
                 <div className="flex justify-end mt-2 gap-2">
-                    {order.isCanceled ? (
-                        <ButtonOutline onClick={() => handleBuy(order._id)}>Mua lại đơn hàng</ButtonOutline>
-                    ) : (
-                        <ButtonOutline onClick={() => handleCancelOrder(order._id)}>Hủy đơn hàng</ButtonOutline>
+                    {!order.is_success && (
+                        <>
+                            {order?.is_canceled ? (
+                                <ButtonOutline onClick={() => handleBuy(order?._id)}>Mua lại đơn hàng</ButtonOutline>
+                            ) : (
+                                <ButtonOutline onClick={() => handleCancelOrder(order?._id)}>
+                                    Hủy đơn hàng
+                                </ButtonOutline>
+                            )}
+                        </>
                     )}
-                    <ButtonOutline onClick={() => navigate(`${path.PAGE_USER}/view/${order._id}`)}>
+
+                    <ButtonOutline onClick={() => navigate(`${path.PAGE_USER}/view/${order?._id}`)}>
                         Xem chi tiết
                     </ButtonOutline>
                 </div>

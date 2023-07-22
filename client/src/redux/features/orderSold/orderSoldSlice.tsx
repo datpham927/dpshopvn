@@ -29,38 +29,69 @@ export const OrderSoldSlice = createSlice({
         },
         setLoadDataOrderSold: (state) => {
             state.allOrdersSold_isConfirm = state.allOrdersSold.filter(
-                (order) => !order.isConfirm && order.isCanceled === false,
+                (order) => !order.is_confirm && order.is_canceled === false,
             );
             state.allOrdersSold_delivery = state.allOrdersSold.filter(
-                (order) => order.isConfirm === true && order.isConfirmDelivery === false,
+                (order) => order.is_confirm === true && order.is_confirm_delivery === false,
             );
             state.allOrdersSold_isDelivering = state.allOrdersSold.filter(
-                (order) => order.isConfirmDelivery === true && order.isDelivering === false,
+                (order) => order.is_confirm_delivery === true && order.is_delivering === false,
             );
-            state.allOrdersSold_isSuccess = state.allOrdersSold.filter((order) => order.isDelivering === true);
-            state.allOrdersSold_isCanceled = state.allOrdersSold.filter((order) => order.isCanceled === true);
+            state.allOrdersSold_isSuccess = state.allOrdersSold.filter(
+                (order) => order.is_delivering === true && order.is_success === true,
+            );
+            state.allOrdersSold_isCanceled = state.allOrdersSold.filter((order) => order.is_canceled === true);
         },
         setCancelOrderSoldRedux: (state, action) => {
             const { _id } = action.payload;
             const order = state.allOrdersSold.find((or) => or._id === _id);
             if (order) {
-                order.isCanceled = true;
-                order.isConfirmDelivery = false;
-                order.isDelivering = false;
-                order.isConfirm = false;
+                order.is_canceled = true;
+                order.is_confirm_delivery = false;
+                order.is_delivering = false;
+                order.is_confirm = false;
             }
         },
         setBuyOrderRedux: (state, action) => {
             const { _id } = action.payload;
             const order = state.allOrdersSold.find((or) => or._id === _id);
             if (order) {
-                order.isCanceled = false;
+                order.is_canceled = false;
+            }
+        }, // ----------
+        setIsConfirm: (state, action) => {
+            const { _id } = action.payload;
+            const order = state.allOrdersSold.find((or) => or._id === _id);
+            if (order) {
+                order.is_confirm = true;
+            }
+        },
+        setIsDelivering: (state, action) => {
+            const { _id } = action.payload;
+            const order = state.allOrdersSold.find((or) => or._id === _id);
+            if (order) {
+                order.is_confirm_delivery = true;
+            }
+        },
+        setIsSuccess: (state, action) => {
+            const { _id } = action.payload;
+            const order = state.allOrdersSold.find((or) => or._id === _id);
+            if (order) {
+                order.is_success = true;
+                order.is_delivering = true;
             }
         },
     },
 });
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const { setAllOrdersSold, setCancelOrderSoldRedux, setLoadDataOrderSold } = OrderSoldSlice.actions;
+export const {
+    setAllOrdersSold,
+    setCancelOrderSoldRedux,
+    setLoadDataOrderSold,
+    setIsConfirm,
+    setIsDelivering,
+    setIsSuccess,
+} = OrderSoldSlice.actions;
 
 export default OrderSoldSlice.reducer;
