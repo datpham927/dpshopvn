@@ -1,43 +1,104 @@
 import React, { useEffect, useState } from 'react';
-import { PURCHASE_TAB, SELL_TAB } from '../../../../utils/const';
 import { setIsLoading } from '../../../../redux/features/action/actionSlice';
-import { useAppDispatch } from '../../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getAllOrderBeenBought } from '../../../../services/apiOrder';
 import RenderUi from './RenderUI';
 import { setAllOrdersSold, setLoadDataOrderSold } from '../../../../redux/features/orderSold/orderSoldSlice';
+import { IOrderItem } from '../../../../interfaces/interfaces';
 
 const SellManage: React.FC = () => {
+    const {
+        allOrdersSold,
+        allOrdersSold_delivery,
+        allOrdersSold_isCanceled,
+        allOrdersSold_isConfirm,
+        allOrdersSold_isDelivering,
+        allOrdersSold_isSuccess,
+    } = useAppSelector((state) => state.orderSold);
+    const SELL_TAB = [
+        {
+            tab: 1,
+            title: 'Tất cả',
+            quantity:allOrdersSold.length
+        },
+        {
+            tab: 2,
+            title: 'Chờ xác nhận',
+            quantity:allOrdersSold_isConfirm.length
+        },
+        {
+            tab: 3,
+            title: 'Vận Chuyển',
+            quantity:allOrdersSold_delivery.length
+        },
+        {
+            tab: 4,
+            title: 'Đã giao hàng',
+            quantity:allOrdersSold_isDelivering.length
+        },
+        {
+            tab: 5,
+            title: 'Thành công',
+            quantity:allOrdersSold_isSuccess.length
+        },
+        {
+            tab: 6,
+            title: 'Đã hủy',
+            quantity:allOrdersSold_isCanceled.length
+        },
+    ];
+    const [orders, setOrders] = useState<IOrderItem[]>([]);
     const [displayTab, setDisplayTab] = useState<number>(1);
     const dispatch = useAppDispatch();
     useEffect(() => {
         const fetchApi = async () => {
-            dispatch(setIsLoading(true));
             const res = await getAllOrderBeenBought();
+            dispatch(setIsLoading(false));
             if (res.data && res.success) {
                 dispatch(setAllOrdersSold(res.data));
                 dispatch(setLoadDataOrderSold());
             }
-            dispatch(setIsLoading(false));
         };
         fetchApi();
     }, []);
+    useEffect(() => {
+        switch (displayTab) {
+            case 1:
+                setOrders(allOrdersSold);
+                break;
+            case 2:
+                setOrders(allOrdersSold_isConfirm);
+                break;
+            case 3:
+                setOrders(allOrdersSold_delivery);
+                break;
+            case 4:
+                setOrders(allOrdersSold_isDelivering);
+                break;
+            case 5:
+                setOrders(allOrdersSold_isSuccess);
+                break;
+            case 6:
+                setOrders(allOrdersSold_isCanceled);
+                break;
+        }
 
+    }, [displayTab, allOrdersSold, allOrdersSold_isConfirm, allOrdersSold_delivery, allOrdersSold_isDelivering, allOrdersSold_isSuccess, allOrdersSold_isCanceled]);
     return (
         <div className="w-full h-full">
-            <h2 className="my-4 text-xl">Quản lý bán hàng</h2>
-            <div className="w-full sticky top-0 grid grid-cols-5 bg-white rounded-sm overflow-hidden">
+            <div className="w-full sticky top-0 grid grid-cols-6 bg-white rounded-sm overflow-hidden">
                 {SELL_TAB.map((e) => (
                     <div
-                        className={`flex sticky top-0 w-full justify-center  items-center py-2 border-b-[2px] border-solid cursor-pointer ${
+                        className={`flex sticky top-0 w-full justify-center text-sm  items-center py-2 border-b-[2px] border-solid cursor-pointer ${
                             displayTab === e.tab ? 'text-primary border-primary' : 'text-secondary border-transparent'
                         }`}
                         onClick={() => setDisplayTab(e.tab)}
                     >
-                        {e.title}
+                        {e.title}({e.quantity})
                     </div>
                 ))}
             </div>
-            <RenderUi tab={displayTab} />
+            <RenderUi orders={orders} tab={displayTab} />
         </div>
     );
 };

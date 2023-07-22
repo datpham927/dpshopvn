@@ -121,7 +121,12 @@ const Search: React.FC = () => {
                             {searchHistories?.map((s, i) => {
                                 return (
                                     i < limitHistory && (
-                                        <li
+                                        <Link
+                                            to={`/tim-kiem/${s.text}`}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                setOpenSearchResults(false);
+                                            }}
                                             key={uuidv4()}
                                             className="flex gap-3 justify-between hover:bg-hover cursor-pointer py-2 px-5"
                                         >
@@ -138,7 +143,7 @@ const Search: React.FC = () => {
                                             >
                                                 <CloseIcon fontSize="small" />
                                             </div>
-                                        </li>
+                                        </Link>
                                     )
                                 );
                             })}

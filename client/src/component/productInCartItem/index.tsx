@@ -40,7 +40,7 @@ const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean
 
     useEffect(() => {
         const fetchApiUpdateCart = async () => {
-            dispatch(setIsLoading(true))
+            // dispatch(setIsLoading(true))
             await apiAddToCart(product);
             dispatch(setProductsByShopId())
             dispatch(setIsLoading(false))

@@ -27,8 +27,8 @@ const Right: React.FC = () => {
                 showNotification('Vui lòng chọn sản phẩm!');
                 return;
             }
-            dispatch(setProductsByShopId());
             navigate(path.PAGE_PAYMENT);
+            dispatch(setProductsByShopId());
         } else {
             if (confirm('Vui lòng cập nhật thông tin!')) {
                 navigate(`${path.PAGE_USER}/profile`);

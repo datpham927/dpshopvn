@@ -53,7 +53,7 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
                                 <ProductInCartItem
                                     product={{
                                         _id: e?._id,
-                                        quantity: p.quantity,
+                                        quantity: p?.quantity,
                                         shopId: e?.shopId,
                                         totalPrice: p.totalPrice,
                                         user: e?.user,

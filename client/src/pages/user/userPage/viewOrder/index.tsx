@@ -26,7 +26,7 @@ const ViewOrder: React.FC = () => {
                     <div className="flex flex-col gap-1 w-full">
                         <p className="text-xl text-secondary">
                             Chi tiết đơn hàng #
-                            <span className="uppercase text-primary">{detailOrder?._id.slice(-8)}</span>
+                            <span className="uppercase text-primary">{detailOrder?._id.slice(-10)}</span>
                         </p>
                         <p className="text-sm">
                             Trạng thái: <span className="text-primary">{statusOrder(detailOrder)?.title}</span>

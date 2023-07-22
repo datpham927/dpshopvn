@@ -38,7 +38,6 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
             productId: productDetail._id,
             totalPrice: quantity * productDetail.newPrice,
         });
-
         dispatch(setIsLoading(false));
         if (response?.success) {
             dispatch(setAddProductInCart(response.data));

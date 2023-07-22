@@ -21,10 +21,10 @@ const DetailPage: React.FC = () => {
         const fetchDetail = async () => {
             dispatch(setIsLoading(true));
             const res = await apiProductDetail(pid);
+            dispatch(setIsLoading(false));
             if (res.success) {
                 setProductDetail(res.product);
             }
-            dispatch(setIsLoading(false));
         };
         fetchDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps

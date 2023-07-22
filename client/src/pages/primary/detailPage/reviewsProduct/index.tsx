@@ -136,7 +136,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
                                     setCurrentPage(0);
                                 }}
                             >
-                                {i.type} sao ({i.quantity})
+                                {i.type} sao ({i?.quantity})
                             </button>
                         ))}
                     </div>

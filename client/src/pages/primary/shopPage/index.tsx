@@ -12,7 +12,14 @@ import { UserDetail } from '../../../interfaces/interfaces';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { apiFollowingUser, apiGetDetailShop, apiUnFollowingUser } from '../../../services/apiUser';
 import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
-import { ListProducts, SearchByBrand, SearchByPrice, SearchByRating, SortBar, showNotification } from '../../../component';
+import {
+    ListProducts,
+    SearchByBrand,
+    SearchByPrice,
+    SearchByRating,
+    SortBar,
+    showNotification,
+} from '../../../component';
 import { bgHeaderShop, noUser } from '../../../assets';
 import ButtonOutline from '../../../component/buttonOutline';
 import { formatUserName } from '../../../utils/formatUserName';
@@ -98,17 +105,17 @@ const ShopPage: React.FC = () => {
                 <div className="w-2/3 px-6 text-zinc-700 grid grid-cols-2 items-center ">
                     <div className="flex items-center text-sm gap-2 py-2 h-fit">
                         <CardGiftcardIcon fontSize="small" />
-                        Sản Phẩm: <span className="text-primary ">{shop?.totalProduct}</span>
+                        Sản Phẩm: <span className="text-primary font-semibold">{shop?.totalProduct}</span>
                     </div>
-                    <div className="flex items-center text-sm gap-2 py-2 h-fit">
+                    <div className="flex items-center text-sm gap-2 py-2 h-fit font-semibold">
                         <PersonIcon fontSize="small" />
                         Người Theo Dõi: <span className="text-primary ">{followers.length}</span>
                     </div>
-                    <div className="flex items-center text-sm gap-2 py-2 h-fit">
+                    <div className="flex items-center text-sm gap-2 py-2 h-fit font-semibold">
                         <PersonIcon fontSize="small" />
                         Đang Theo: <span className="text-primary ">{shop?.followings.length}</span>
                     </div>
-                    <div className="flex items-center text-sm gap-2 py-2 h-fit">
+                    <div className="flex items-center text-sm gap-2 py-2 h-fit font-semibold">
                         <QueryBuilderIcon fontSize="small" />
                         Đã tham gia {moment(shop?.createdAt).fromNow()}
                     </div>
