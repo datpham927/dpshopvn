@@ -112,7 +112,7 @@ const getAllProducts = async (req, res) => {
         let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
         let newQueryString = JSON.parse(queriesString)
         if (req.query.title) {
-            newQueryString.title = { $regex: req.query.title }
+            newQueryString.title = { $regex: req.query.title, i }
         }
         if (req.query.category_code) {
             newQueryString.category_code = req.query.category_code
@@ -154,6 +154,71 @@ const getAllProducts = async (req, res) => {
         })
     }
 }
+
+
+const getAllProductsUser = async (req, res) => {
+    try {
+        const queries = { ...req.query }
+        const excludeFields = ["limit", "sort", "page"]
+        excludeFields?.forEach(field => delete queries[field])
+        let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
+        let newQueryString = JSON.parse(queriesString)
+        if (req.userId) {
+            newQueryString.user = req.userId
+        }
+        if (req.query.title) {
+            newQueryString.title = { $regex: req.query.title, $options: 'i' }
+        }
+        if (req.query.createdAt) {
+            const searchDate = new Date(req.query.createdAt);
+            newQueryString.createdAt = {
+                $gte: searchDate,
+                $lt: new Date(searchDate.getTime() + 24 * 60 * 60 * 1000),
+            };
+        }
+        if (req.query.category_code) {
+            newQueryString.category_code = req.query.category_code
+        }
+        let products = Product.find(newQueryString).select("-category_code -details -description -views -userId -userBought  -infoProduct")
+        if (req.query.sort) {
+            const sortBy = req.query.sort.toString().replace(",", " ")
+            products = products.sort(sortBy)
+        } else {
+            products = products.sort('-createdAt')
+        }
+        const totalProducts = await Product.countDocuments(newQueryString)
+        if (totalProducts.length === 0) {
+            return res.status(201).json({
+                success: false,
+                totalPage: 0,
+                currentPage: 0,
+                total_products: 0,
+                products: null,
+            })
+        }
+        const limit = req.query.limit
+        const page = req.query.page * 1 || 0
+        const skip = page * limit
+        products = products.limit(limit).skip(skip)
+        const newProducts = await products
+        return res.status(201).json({
+            success: newProducts ? true : false,
+            totalPage: limit ? Math.ceil(totalProducts / limit) - 1 : 0,
+            currentPage: page,
+            total_products: totalProducts,
+            products: newProducts ? newProducts : null,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
+
+
 // get product all ready following
 const getAllProductFollowing = async (req, res) => {
     try {
@@ -253,15 +318,15 @@ const insertProductsData = async (req, res) => {
                     slug: slugify(item.title),
                     star: star[indexStar], views: 10,
                     sold: item.solid ? item.solid?.replace(".", "") : 0,
-                    oldPrice: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
-                    newPrice: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
-                    inStock: 1000,
+                    old_price: item.old_price ? item.old_price?.replace(".", "") : 150000,
+                    new_price: item.new_price ? item.new_price?.replace(".", "") : 200000,
+                    in_stock: 1000,
                     discount: item.discount ? item.discount : 15,
                     category_code,
                     category_name,
                     infoProduct: convertArrToObject(item.detail),
                     user: user[i % 3],
-                    description: item.description
+                    description: item.description.join(", ")
                 }).save()
             })
         }))
@@ -285,4 +350,5 @@ module.exports = {
     updateRatingsProduct,
     getAllBrand,
     insertProductsData,
+    getAllProductsUser
 }

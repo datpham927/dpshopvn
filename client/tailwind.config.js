@@ -26,7 +26,7 @@ export default {
       },
       width: {
         search: "750px",
-        "menu_user": "240px",
+        "menu_user": "160px",
       },
       boxShadow: {
         search: "rgba(0, 0, 0, 0.28) 0px 6px 12px 0px",

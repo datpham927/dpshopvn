@@ -11,15 +11,9 @@ import { FormEditAddress, InputForm, InputReadOnly, showNotification } from '../
 const UserProfile: React.FC = () => {
     const currentUser = useAppSelector((state) => state.user);
     const [isOpenEditAddress, setIsOpenEditAddress] = useState<boolean>(false);
-    const [payload, setPayload] = useState<IUserProfile>({
-        address: '',
-        lastName: '',
-        firstName: '',
-        mobile: '',
-        avatar_url: '',
-        email: '',
-    });
+    const [payload, setPayload] = useState<IUserProfile>({} as IUserProfile);
     const dispatch = useAppDispatch();
+    
     useEffect(() => {
         setPayload(currentUser);
     }, [currentUser]);

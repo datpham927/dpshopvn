@@ -10,6 +10,7 @@ import { setDetailUser } from '../redux/features/user/userSlice';
 import { Footer, Header, Loading } from '../component';
 import { useLocation } from 'react-router-dom';
 import { path } from '../utils/const';
+import FormEditAddress from '../component/Form/FormEditAddress';
 
 interface DefaultLayoutProps {
     children: React.ReactNode;

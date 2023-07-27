@@ -5,6 +5,12 @@ import { getAllOrderBeenBought } from '../../../../services/apiOrder';
 import RenderUi from './RenderUI';
 import { setAllOrdersSold, setLoadDataOrderSold } from '../../../../redux/features/orderSold/orderSoldSlice';
 import { IOrderItem } from '../../../../interfaces/interfaces';
+import * as XLSX from 'xlsx';
+import { formatUserName } from '../../../../utils/formatUserName';
+import { statusOrder } from '../../../../utils/statusOrder';
+import { formatMoney } from '../../../../utils/formatMoney';
+import ButtonOutline from '../../../../component/buttonOutline';
+import { showNotification } from '../../../../component';
 
 const SellManage: React.FC = () => {
     const {
@@ -19,32 +25,32 @@ const SellManage: React.FC = () => {
         {
             tab: 1,
             title: 'Tất cả',
-            quantity:allOrdersSold.length
+            quantity: allOrdersSold.length,
         },
         {
             tab: 2,
             title: 'Chờ xác nhận',
-            quantity:allOrdersSold_isConfirm.length
+            quantity: allOrdersSold_isConfirm.length,
         },
         {
             tab: 3,
             title: 'Vận Chuyển',
-            quantity:allOrdersSold_delivery.length
+            quantity: allOrdersSold_delivery.length,
         },
         {
             tab: 4,
             title: 'Đã giao hàng',
-            quantity:allOrdersSold_isDelivering.length
+            quantity: allOrdersSold_isDelivering.length,
         },
         {
             tab: 5,
             title: 'Thành công',
-            quantity:allOrdersSold_isSuccess.length
+            quantity: allOrdersSold_isSuccess.length,
         },
         {
             tab: 6,
             title: 'Đã hủy',
-            quantity:allOrdersSold_isCanceled.length
+            quantity: allOrdersSold_isCanceled.length,
         },
     ];
     const [orders, setOrders] = useState<IOrderItem[]>([]);
@@ -82,14 +88,44 @@ const SellManage: React.FC = () => {
                 setOrders(allOrdersSold_isCanceled);
                 break;
         }
+    }, [
+        displayTab,
+        allOrdersSold,
+        allOrdersSold_isConfirm,
+        allOrdersSold_delivery,
+        allOrdersSold_isDelivering,
+        allOrdersSold_isSuccess,
+        allOrdersSold_isCanceled,
+    ]);
 
-    }, [displayTab, allOrdersSold, allOrdersSold_isConfirm, allOrdersSold_delivery, allOrdersSold_isDelivering, allOrdersSold_isSuccess, allOrdersSold_isCanceled]);
+    const handleExportFile = () => {
+        if (!confirm('Bạn có muốn xuất đơn hàng không?')) return;
+        const wb = XLSX.utils.book_new();
+        const products = orders.map((or) => {
+            const titleProducts = or.products.map((p) => {
+                return `${p.title} - số lượng ${p.quantity}`;
+            });
+            return {
+                'Mã hàng': or._id.slice(-10).toUpperCase(),
+                'Tên khách hàng': or.shippingAddress.fullName,
+                'Địa chỉ nhận hàng': or.shippingAddress.detailAddress,
+                'Số điện thoại': or.shippingAddress.phone,
+                'Trạng thái': statusOrder(or)?.title,
+                'Tên hàng/số lượng': titleProducts.join(', '),
+                'Tổng tiền': formatMoney(or.totalPrice),
+            };
+        });
+        const ws = XLSX.utils.json_to_sheet(products);
+        XLSX.utils.book_append_sheet(wb, ws, 'ssss');
+        XLSX.writeFile(wb, 'test.xlsx');
+        showNotification('Không có đơn hàng nào!', true);
+    };
     return (
         <div className="w-full h-full">
             <div className="w-full sticky top-0 grid grid-cols-6 bg-white rounded-sm overflow-hidden">
                 {SELL_TAB.map((e) => (
                     <div
-                        className={`flex sticky top-0 w-full justify-center text-sm  items-center py-2 border-b-[2px] border-solid cursor-pointer ${
+                        className={`flex sticky top-0 w-full justify-center text-sm py-3 items-center py-2 border-b-[2px] border-solid cursor-pointer ${
                             displayTab === e.tab ? 'text-primary border-primary' : 'text-secondary border-transparent'
                         }`}
                         onClick={() => setDisplayTab(e.tab)}
@@ -98,7 +134,14 @@ const SellManage: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <RenderUi orders={orders} tab={displayTab} />
+            <div className="w-full">
+                <RenderUi orders={orders} tab={displayTab} />
+                {orders.length > 0 && (
+                    <ButtonOutline onClick={handleExportFile} className="mx-auto">
+                        Xuất đơn hàng
+                    </ButtonOutline>
+                )}
+            </div>
         </div>
     );
 };

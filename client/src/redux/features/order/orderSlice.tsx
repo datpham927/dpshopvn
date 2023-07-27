@@ -59,12 +59,12 @@ export const orderSlice = createSlice({
             const productInCart = state.productInCart.find((e) => e._id === _id);
             if (productInCart) {
                 productInCart.quantity += 1;
-                productInCart.totalPrice += productInCart.productId.newPrice;
+                productInCart.totalPrice += productInCart.productId.new_price;
             }
             const selectedProducts = state.selectedProducts.find((e) => e._id === _id);
             if (selectedProducts) {
                 selectedProducts.quantity += 1;
-                selectedProducts.totalPrice += selectedProducts.productId.newPrice;
+                selectedProducts.totalPrice += selectedProducts.productId.new_price;
             }
         },
         setDecreaseProduct: (state, action) => {
@@ -74,19 +74,19 @@ export const orderSlice = createSlice({
             if (productInCart) {
                 if (productInCart.quantity > 1) {
                     productInCart.quantity -= 1;
-                    productInCart.totalPrice -= productInCart.productId.newPrice;
+                    productInCart.totalPrice -= productInCart.productId.new_price;
                 } else {
                     productInCart.quantity = 1;
-                    productInCart.totalPrice = productInCart.productId.newPrice;
+                    productInCart.totalPrice = productInCart.productId.new_price;
                 }
             }
             if (selectedProducts) {
                 if (selectedProducts.quantity > 1) {
                     selectedProducts.quantity -= 1;
-                    selectedProducts.totalPrice -= selectedProducts.productId.newPrice;
+                    selectedProducts.totalPrice -= selectedProducts.productId.new_price;
                 } else {
                     selectedProducts.quantity = 1;
-                    selectedProducts.totalPrice = selectedProducts.productId.newPrice;
+                    selectedProducts.totalPrice = selectedProducts.productId.new_price;
                 }
             }
         },

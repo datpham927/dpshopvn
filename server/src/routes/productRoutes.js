@@ -10,6 +10,8 @@ router.get("/:pid/detail", productController.detailProduct)
 router.get("/all", productController.getAllProducts)
 router.get("/brands", productController.getAllBrand)
 router.get("/following", [verifyAccessToken], productController.getAllProductFollowing)
+router.get("/all_by_user", [verifyAccessToken], productController.getAllProductsUser)
+
 //------ admin ---------
 router.put("/:pid/update", [verifyAdmin], productController.updateProduct)
 router.delete("/:pid/delete", [verifyAdmin], productController.deleteProduct)

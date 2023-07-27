@@ -108,7 +108,7 @@ const PurchaseManage: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <RenderUi tab={displayTab} orders={orders} />
+            <RenderUi orders={orders} />
         </div>
     );
 };
