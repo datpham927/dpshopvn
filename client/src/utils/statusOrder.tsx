@@ -16,7 +16,7 @@ export const statusOrder = (order: IOrderItem) => {
             title: 'Đang giao hàng',
             icon: <DeliveryDiningIcon style={{ fontSize: '15px', color: 'rgb(0 136 72)' }} />,
         };
-    } else if (!is_confirm_delivery) {
+    } else if (is_confirm&&!is_confirm_delivery) {
         return {
             title: 'Đợi vận chuyển',
             icon: <DeliveryDiningIcon style={{ fontSize: '15px', color: 'rgb(0 136 72)' }} />,

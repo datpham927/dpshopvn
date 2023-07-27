@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useAppSelector } from '../../../../redux/hooks';
 import { useParams } from 'react-router-dom';
-import { ListProducts, SortBar } from '../../../../component';
+import {  RenderListProducts, SortBar } from '../../../../component';
 
 const FilterResults: React.FC = () => {
     const { categories } = useAppSelector((state) => state.category);
@@ -16,7 +16,7 @@ const FilterResults: React.FC = () => {
                     <SortBar />
                 </div>
             </div>
-            <ListProducts />
+            <RenderListProducts />
         </div>
     );
 };

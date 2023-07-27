@@ -36,7 +36,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
             quantity,
             shopId: productDetail.user._id,
             productId: productDetail._id,
-            totalPrice: quantity * productDetail.newPrice,
+            totalPrice: quantity * productDetail.new_price,
         });
         dispatch(setIsLoading(false));
         if (response?.success) {
@@ -79,12 +79,12 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                     <div className="flex-1 h-full pr-3">
                         <div className="flex flex-col gap-4">
                             <div className="flex w-full gap-2 items-end bg-[#FAFAFA] p-4 rounded-md  text-red_custom">
-                                {productDetail?.newPrice && (
-                                    <div className="text-4xl font-medium">{formatMoney(productDetail?.newPrice)}</div>
+                                {productDetail?.new_price && (
+                                    <div className="text-4xl font-medium">{formatMoney(productDetail?.new_price)}</div>
                                 )}
-                                {productDetail?.oldPrice && (
+                                {productDetail?.old_price && (
                                     <div className="text-sm text-text_secondary line-through">
-                                        {formatMoney(productDetail?.oldPrice)}
+                                        {formatMoney(productDetail?.old_price)}
                                     </div>
                                 )}
                                 {productDetail?.discount && (
@@ -121,13 +121,13 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                     </button>
                                 </div>
                                 <div className="text-sm  text-text_secondary">
-                                    {productDetail?.inStock} sản phẩm có sẵn
+                                    {productDetail?.in_stock} sản phẩm có sẵn
                                 </div>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <ButtonOutline
                                     onClick={() => {
-                                        if (productDetail.user._id === currentUser._id) {
+                                        if (productDetail?.user?._id === currentUser._id) {
                                             showNotification('Không thể mua hàng chính bạn!', false);
                                         } else {
                                             handleAddToCart(false);
@@ -140,7 +140,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                 <button
                                     className="flex gap-2 text-lg px-4 py-2 rounded-sm text-white bg-red_custom hover:bg-opacity-70"
                                     onClick={() => {
-                                        if (productDetail.user._id === currentUser._id) {
+                                        if (productDetail?.user?._id === currentUser._id) {
                                             showNotification('Không thể mua hàng chính bạn!', false);
                                         } else {
                                             handleAddToCart(true);

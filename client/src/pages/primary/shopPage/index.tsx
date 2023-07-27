@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { apiFollowingUser, apiGetDetailShop, apiUnFollowingUser } from '../../../services/apiUser';
 import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 import {
-    ListProducts,
+    RenderListProducts,
     SearchByBrand,
     SearchByPrice,
     SearchByRating,
@@ -134,7 +134,7 @@ const ShopPage: React.FC = () => {
                 <div className="flex flex-col gap-4 w-5/6 h-full  bg-white  p-4 ">
                     <h1 className="text-base font-medium text-slate-900 uppercase">Sản Phẩm</h1>
                     <SortBar />
-                    <ListProducts />
+                    <RenderListProducts />
                 </div>
             </div>
         </div>

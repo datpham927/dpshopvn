@@ -4,25 +4,25 @@ interface Category {
     category_image: string;
     category_slug: string;
 }
-interface CardProductItem {
+interface IProductItem {
     image_url: string;
     images: Array<string>;
     slug: string;
     title: string;
     star: number;
     sold: number;
-    inStock: number;
+    in_stock: number;
     discount: number;
-    oldPrice: number;
-    newPrice: number;
+    old_price: number;
+    new_price: number;
     _id: string;
     category_name: string;
     quantity?: number;
+    brand?: string;
 }
 
-interface ProductDetail extends CardProductItem {
-    description: Array<string>;
-    brand: string;
+interface ProductDetail extends IProductItem {
+    description: string;
     brand_slug: string;
     category_code: string;
     userBought: Array<string>;
@@ -33,7 +33,7 @@ interface ProductDetail extends CardProductItem {
             value: string;
         },
     ];
-    user: {
+    user?: {
         _id: string;
         createdAt: string;
         firstName: string;
@@ -91,8 +91,8 @@ interface ProductInCart {
         title: string;
         slug: string;
         image_url: string;
-        newPrice: number;
-        oldPrice: number;
+        new_price: number;
+        old_price: number;
         discount: number;
     };
 }
@@ -107,8 +107,8 @@ interface ProductByShop {
         title: string;
         slug: string;
         image_url: string;
-        newPrice: number;
-        oldPrice: number;
+        new_price: number;
+        old_price: number;
         discount: number;
         quantity?: number;
         totalPrice: number;
@@ -131,7 +131,7 @@ interface IOrderItem {
         lastName: string;
         firstName: string;
     };
-    products: Array<CardProductItem>;
+    products: Array<IProductItem>;
     totalPrice: number;
     paymentMethod: string;
     is_confirm: boolean;
@@ -141,13 +141,13 @@ interface IOrderItem {
     is_success: boolean;
     shippingPrice: number;
     dateShipping: number;
-    createdAt?:Date
+    createdAt?: Date;
 }
 export type {
     Category,
     UserProfile,
     UserDetail,
-    CardProductItem,
+    IProductItem,
     ProductDetail,
     Review,
     ProductInCart,

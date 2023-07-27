@@ -3,13 +3,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import { v4 as uuidv4 } from 'uuid';
 import { getAllProduct } from '../../../../services/apiProduct';
-import { CardProductItem } from '../../../../interfaces/interfaces';
+import { IProductItem } from '../../../../interfaces/interfaces';
  
 import { useParams } from 'react-router-dom';
 import { ProductItem } from '../../../../component';
 
 export const SimilarProducts: React.FC<{ category_code: string }> = ({ category_code }) => {
-    const [products, setProducts] = useState<CardProductItem[]>([]);
+    const [products, setProducts] = useState<IProductItem[]>([]);
     useEffect(() => {
         const fetchApi = async () => {
             const res = await getAllProduct({ category_code: category_code });

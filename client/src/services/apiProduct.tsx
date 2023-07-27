@@ -13,6 +13,20 @@ const getAllProduct = async (params: object) => {
         };
     }
 };
+
+const getAllProductUser = async (params?: object) => {
+    try {
+        const res = await axiosJWT.get('product/all_by_user', {
+            params,
+        });
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
 const getAllProductFollowings = async (params?: object) => {
     try {
         const res = await axiosJWT.get('product/following', {
@@ -49,9 +63,9 @@ const apiUpdateRatingProduct = async (pid: string, rating: number) => {
     }
 };
 
-const apiGetAllBrandByCategory = async (params: object) => {
+const apiGetAllBrandByCategory = async (params?: object) => {
     try {
-        const res = await httpRequest.get(`product/brands`,  {
+        const res = await httpRequest.get(`product/brands`, {
             params,
         });
         return res.data;
@@ -63,4 +77,4 @@ const apiGetAllBrandByCategory = async (params: object) => {
     }
 };
 
-export { getAllProduct, apiProductDetail, apiUpdateRatingProduct, apiGetAllBrandByCategory ,getAllProductFollowings};
+export { getAllProduct,getAllProductUser, apiProductDetail, apiUpdateRatingProduct, apiGetAllBrandByCategory, getAllProductFollowings };

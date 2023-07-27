@@ -6,6 +6,7 @@ import PurchaseManage from '../pages/user/userPage/PurchaseManage';
 import { PaymentPage , UserPage } from '../pages/user';
 import SellManage from '../pages/user/userPage/sellManage';
 import ViewOrder from '../pages/user/userPage/viewOrder';
+import ProductManage from '../pages/user/userPage/productManage';
 
 const RouterPage = () => {
     return (
@@ -25,6 +26,7 @@ const RouterPage = () => {
                 <Route path={'profile'} element={<UserProfile />} />
                 <Route path={'purchase'} element={<PurchaseManage />} />
                 <Route path={'sell'} element={<SellManage />} />
+                <Route path={'product'} element={<ProductManage />} />
                 <Route path={'view/:oid'} element={<ViewOrder />} />
             </Route>
             <Route path={path.PAGE_PAYMENT} element={<PaymentPage />}></Route>

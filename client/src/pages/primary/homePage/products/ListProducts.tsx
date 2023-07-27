@@ -1,10 +1,10 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import ProductItem from '../../../../component/productItem';
-import { CardProductItem } from '../../../../interfaces/interfaces';
+import ProductItem from '../../../../component/item/ProductItem';
+import { IProductItem } from '../../../../interfaces/interfaces';
 
 interface props{
-    products:CardProductItem[],
+    products:IProductItem[],
     hiddenButton:boolean,
     setPage:React.Dispatch<React.SetStateAction<number>>
 }

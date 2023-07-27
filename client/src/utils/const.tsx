@@ -74,14 +74,14 @@ export const SORT_BAR = [
         id: 3,
         label: 'Giá thấp đến cao',
         sortBy: {
-            sort: 'newPrice',
+            sort: 'new_price',
         },
     },
     {
         id: 4,
         label: 'Giá cao đến thấp',
         sortBy: {
-            sort: '-newPrice',
+            sort: '-new_price',
         },
     },
 ];
@@ -110,7 +110,7 @@ export const SIDEBAR_USER = [
     },
     {
         label: 'Quản lý sản phẩm',
-        path_name: 'sell',
+        path_name: 'product',
         icon: <ProductionQuantityLimitsIcon fontSize="medium" style={{ color: 'rgb(155,155,155)' }} />,
     },
 ];

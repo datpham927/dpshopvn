@@ -17,15 +17,17 @@ const User: React.FC = () => {
     const { avatar_url, firstName, lastName, email } = useAppSelector((state) => state.user);
     const name = lastName ? `${lastName} ${firstName}` : email?.split('@')[0];
 
-  const handleLogOut=async()=>{
-        const res=await apiLogout()
-         if(!res.success) return
-         localStorage.removeItem("access_token")
-         showNotification("Đăng xuất thành công",true)
-         setIsOpenMenu(false)
-         dispatch(setDetailUser({}))
-         dispatch(setIsLoginSuccess(false))
-  }
+    const handleLogOut = async () => {
+        if (confirm('Bạn có muốn đăng xuất')) {
+            const res = await apiLogout();
+            if (!res.success) return;
+            localStorage.removeItem('access_token');
+            showNotification('Đăng xuất thành công', true);
+            setIsOpenMenu(false);
+            dispatch(setDetailUser({}));
+            dispatch(setIsLoginSuccess(false));
+        }
+    };
     return (
         <>
             {isLoginSuccess ? (
@@ -47,9 +49,18 @@ const User: React.FC = () => {
                         shadow-search after:border-[10px]  after:border-transparent after:border-b-white 
                         after:top-[-20px]  after:right-5 after:absolute"
                         >
-                            <Link to={`${path.PAGE_USER}/profile`} className="menu-user">Thông tin tài khoản</Link>
-                            <Link to={`${path.PAGE_USER}/purchase`} className="menu-user">Đơn hàng </Link>
-                            <span onClick={handleLogOut} className="menu-user">Đăng xuất</span>
+                            <Link to={`${path.PAGE_USER}/profile`} className="menu-user">
+                                Thông tin tài khoản
+                            </Link>
+                            <Link to={`${path.PAGE_USER}/sell`} className="menu-user">
+                                Quản lý đơn hàng
+                            </Link>
+                            <Link to={`${path.PAGE_USER}/purchase`} className="menu-user">
+                                Đơn mua
+                            </Link>
+                            <span onClick={handleLogOut} className="menu-user">
+                                Đăng xuất
+                            </span>
                         </div>
                     )}
                 </div>
@@ -58,7 +69,10 @@ const User: React.FC = () => {
                     <span className="flex items-center cursor-pointer">
                         <PersonOutlineOutlinedIcon fontSize="large" />
                     </span>
-                    <div className="flex flex-col mx-1 cursor-pointer" onClick={() => dispatch(setOpenFeatureAuth(true))}>
+                    <div
+                        className="flex flex-col mx-1 cursor-pointer"
+                        onClick={() => dispatch(setOpenFeatureAuth(true))}
+                    >
                         <div className="text-xs font-normal text-white">
                             <span>Đăng nhập</span> / <span>Đăng ký</span>
                         </div>

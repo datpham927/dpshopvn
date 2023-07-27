@@ -13,11 +13,12 @@ import { formatUserName } from '../../../../utils/formatUserName';
 
 interface InfoShop {
     _id: string;
-    lastName: string;
+    createdAt: string;
     firstName: string;
-    email: string;
-    followers: Array<string>;
+    lastName: string;
+    followers: string[];
     avatar_url: string;
+    email: string;
 }
 const InfoShop: React.FC<{ props: InfoShop }> = ({ props }) => {
     const { lastName, firstName, email, followers, _id, avatar_url } = props;

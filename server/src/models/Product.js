@@ -13,9 +13,9 @@ const productSchema = mongoose.Schema({
     star: { type: Number, default: 0 },
     sold: { type: Number, default: 0 },
     userBought: { type: Array, default: [] },
-    oldPrice: { type: Number, default: 0 },
-    newPrice: { type: Number, default: 0 },
-    inStock: { type: Number, default: 0 },
+    old_price: { type: Number, default: 0 },
+    new_price: { type: Number, default: 0 },
+    in_stock: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
     category_code: { type: String, default: "", require: true },
     category_name: { type: String, default: "", require: true },
@@ -25,7 +25,7 @@ const productSchema = mongoose.Schema({
     }],
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     views: { type: Number, default: 0 },// số lượng người truy cập
-    description: { type: Array, default: [] },
+    description: { type: String, default: "" },
 }, {
     timestamps: true
 })

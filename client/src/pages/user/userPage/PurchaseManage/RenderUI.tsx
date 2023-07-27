@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { OrderItem } from '../../../../component';
-import { useAppSelector } from '../../../../redux/hooks';
-import NotOrder from '../../../../component/notOrder';
+import NotOrder from '../../../../component/common/NotOrder';
 import { IOrderItem } from '../../../../interfaces/interfaces';
 
-const RenderUi: React.FC<{ orders: IOrderItem[]; tab: number }> = ({ orders, tab }) => {
+const RenderUi: React.FC<{ orders: IOrderItem[]}> = ({ orders}) => {
     return (
-        <div className="flex flex-col w-full h-full py-5 gap-6">
+        <div className="flex flex-col w-full h-full pt-5 gap-6">
             {orders.length > 0 ? orders.map((order) => <OrderItem order={order} />) : <NotOrder />}
         </div>
     );

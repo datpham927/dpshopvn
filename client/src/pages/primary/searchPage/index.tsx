@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { ListProducts, SortBar } from '../../../component';
+import { RenderListProducts, SortBar } from '../../../component';
 
 const SearchPage: React.FC = () => {
     return (
@@ -10,7 +10,7 @@ const SearchPage: React.FC = () => {
             </div>
             <div className="flex flex-col w-full h-full gap-2">
                 <SortBar />
-                <ListProducts />
+                <RenderListProducts />
             </div>
         </div>
     );

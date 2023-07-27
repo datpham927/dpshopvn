@@ -17,7 +17,7 @@ const createOrderProduct = async (req, res) => {
 
         //chứa sản phẩm thep shop
         let productByShop = [/* {shopId: "",products: [{_id:"",quantiTy:0}],totalPrice: 0 }*/]
-        //kiểm tra product có đủ inStock không và chia order sản phẩm theo shop
+        //kiểm tra product có đủ in_stock không và chia order sản phẩm theo shop
         const checkProduct = await Promise.all(products?.map(async c => {
             //kiểm tra shopId đã có trong mảng hay chưa
             if (productByShop.some(p => p?.shopId === c?.shopId)) {
@@ -34,10 +34,10 @@ const createOrderProduct = async (req, res) => {
                     totalPrice: Number(c.totalPrice),
                 })
             }
-            const product = await Product.findOneAndUpdate({ _id: c?.productId, inStock: { $gte: c?.quantity } }, {
+            const product = await Product.findOneAndUpdate({ _id: c?.productId, in_stock: { $gte: c?.quantity } }, {
                 $inc: {
                     sold: +Number(c.quantity),
-                    inStock: -Number(c.quantity),
+                    in_stock: -Number(c.quantity),
                 }
             })
             return {
@@ -144,8 +144,17 @@ const isConfirmDeliveredOrder = async (req, res) => {
 }
 const isSuccessOrder = async (req, res) => {
     try {
-        const order = await Order.findOneAndUpdate({ _id: req.params.oid, is_confirm_delivery: true }, { is_success: true, is_delivering: true });
-        await Promise.all(order.products.map(p => Product.findByIdAndUpdate(p._id, { $push: { userBought: order.user } })))
+        const order = await Order.findOneAndUpdate(
+            { _id: req.params.oid, is_confirm_delivery: true },
+            { is_success: true, is_delivering: true }
+        );
+
+        for (const p of order.products) {
+            const check = await Product.findOne({ _id: p._id, userBought: { $in: [order.user] } });
+            if (!check) {
+                await Product.findByIdAndUpdate(p._id, { $push: { userBought: order.user } });
+            }
+        }
         res.status(200).json({
             success: order ? true : false,
             message: order ? order : "Failed!",

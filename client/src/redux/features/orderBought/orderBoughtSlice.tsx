@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IOrderItem, ProductByShop, ProductInCart } from '../../../interfaces/interfaces';
+import { IOrderItem } from '../../../interfaces/interfaces';
 
 interface OrderBoughtInterface {
     allOrdersBought: Array<IOrderItem>;

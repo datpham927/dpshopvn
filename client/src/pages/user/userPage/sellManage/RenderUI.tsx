@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { OrderItem, showNotification } from '../../../../component';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import NotOrder from '../../../../component/notOrder';
+import NotOrder from '../../../../component/common/NotOrder';
 import { IOrderItem } from '../../../../interfaces/interfaces';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -22,6 +22,7 @@ import {
 } from '../../../../redux/features/orderSold/orderSoldSlice';
 import { Link } from 'react-router-dom';
 import { path } from '../../../../utils/const';
+
 const RenderUi: React.FC<{ orders: IOrderItem[]; tab: number }> = ({ orders, tab }) => {
     const dispatch = useAppDispatch();
     const handleConfirm = async (oid: string) => {
@@ -31,17 +32,16 @@ const RenderUi: React.FC<{ orders: IOrderItem[]; tab: number }> = ({ orders, tab
                 let res;
                 switch (tab) {
                     case 2:
-                        
                         res = await setApiIsConfirm(oid);
-                        dispatch(setIsConfirm({_id:oid}));
+                        dispatch(setIsConfirm({ _id: oid }));
                         break;
                     case 3:
                         res = await setApiIsDeliver(oid);
-                        dispatch(setIsDelivering({_id:oid}));
+                        dispatch(setIsDelivering({ _id: oid }));
                         break;
                     case 4:
                         res = await setApiIsSuccess(oid);
-                        dispatch(setIsSuccess({_id:oid}));
+                        dispatch(setIsSuccess({ _id: oid }));
                         break;
                     default:
                         throw new Error('Invalid tab value');
@@ -60,8 +60,9 @@ const RenderUi: React.FC<{ orders: IOrderItem[]; tab: number }> = ({ orders, tab
         }
     };
 
+
     return (
-        <div className="flex flex-col w-full h-full py-5 gap-6">
+        <div className="flex flex-col w-full h-full pt-5 gap-6">
             {orders.length > 0 ? (
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
