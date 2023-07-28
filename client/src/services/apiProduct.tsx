@@ -1,3 +1,4 @@
+import { ProductDetail } from '../interfaces/interfaces';
 import { axiosJWT, httpRequest } from '../utils/httpRequest';
 
 const getAllProduct = async (params: object) => {
@@ -77,4 +78,48 @@ const apiGetAllBrandByCategory = async (params?: object) => {
     }
 };
 
-export { getAllProduct,getAllProductUser, apiProductDetail, apiUpdateRatingProduct, apiGetAllBrandByCategory, getAllProductFollowings };
+const apiCreateProduct = async (data?: object) => {
+    try {
+        const res = await axiosJWT.post(`product/add_to_product`, data);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+const apiDeleteProduct = async (pid: string) => {
+    try {
+        const res = await axiosJWT.delete(`product/${pid}/delete`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+const apiUpdateProduct = async (data: ProductDetail) => {
+    try {
+        const res = await axiosJWT.put(`product/${data._id}/update`,data);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+
+export {
+    getAllProduct,
+    getAllProductUser,
+    apiProductDetail,
+    apiUpdateRatingProduct,
+    apiGetAllBrandByCategory,
+    getAllProductFollowings,
+    apiCreateProduct,
+    apiDeleteProduct,
+    apiUpdateProduct,
+};

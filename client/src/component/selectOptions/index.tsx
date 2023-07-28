@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 interface SelectAddressProps {
-    selectId: string | number;
+    selectId: any;
     setOptionId: (e: any) => void;
     options: any;
     col?: boolean;

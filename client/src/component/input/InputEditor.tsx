@@ -1,15 +1,16 @@
 import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import { ProductDetail } from '../../interfaces/interfaces';
 const InputEditor: React.FC<{
     value: string;
     label: string;
-    setValue: React.Dispatch<React.SetStateAction<string>>;
+    setValue: React.Dispatch<React.SetStateAction<ProductDetail>>;
 }> = ({ value, setValue, label }) => {
     return (
         <div className="flex flex-col gap-2">
             <label className="flex justify-start w-full  text-sm text-secondary">{label}</label>
             <Editor
-                onChange={(e) => setValue(e.target.getContent())}
+                onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.getContent() }))}
                 apiKey={import.meta.env.VITE_REACT_APIKEY_TINYMCE}
                 initialValue={`${value}`}
                 init={{

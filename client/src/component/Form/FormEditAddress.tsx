@@ -103,21 +103,18 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({ payload, setPayload, 
                     <div className="flex flex-col gap-3">
                         <SelectOptions
                             label="Tỉnh/Thành phố"
-                            type="province"
                             options={provinces}
                             selectId={provinces?.find((e) => e.code === provinceId)?.code}
                             setOptionId={setProvinceId}
                         />
                         <SelectOptions
                             label="Quận/Huyện"
-                            type="district"
                             options={districts}
                             selectId={districts?.find((e) => e.code === districtId)?.code}
                             setOptionId={setDistrictId}
                         />
                         <SelectOptions
                             label="Xã/Phường"
-                            type="wards"
                             options={wards}
                             selectId={wards?.find((e) => e.code === wardsId)?.code}
                             setOptionId={setWardsId}

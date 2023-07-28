@@ -20,7 +20,7 @@ const createProduct = async (req, res) => {
         return res.status(201).json({
             success: newProducts ? true : false,
             message: newProducts ? "Create success!" : 'Cannot create new product',
-            createdProduct: newProducts ? newProducts : null
+            data: newProducts ? newProducts : null
         })
     } catch (error) {
         return res.status(500).json({
@@ -41,7 +41,7 @@ const updateProduct = async (req, res) => {
         return res.status(201).json({
             success: newProducts ? true : false,
             message: newProducts ? "Update success!" : 'Cannot update product',
-            createdProduct: newProducts ? newProducts : null
+            data: newProducts ? newProducts : null
         })
     } catch (error) {
         return res.status(500).json({
@@ -61,9 +61,7 @@ const deleteProduct = async (req, res) => {
         }
         const product = await Product.findByIdAndDelete(req.params.pid)
         if (product) {
-            const user = await User.findById(product.userId)
-            user.totalProduct--
-            user.save()
+            await User.findByIdAndUpdate(product.userId, { $inc: { totalProduct: - 1 } })
         }
         return res.status(201).json({
             success: product ? true : false,
@@ -117,7 +115,7 @@ const getAllProducts = async (req, res) => {
         if (req.query.category_code) {
             newQueryString.category_code = req.query.category_code
         }
-        let products = Product.find(newQueryString).select("-category_code -details -description -views -userId -userBought  -infoProduct")
+        let products = Product.find(newQueryString).select("-category_code  -description -views -userId -userBought  -infoProduct")
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
             products = products.sort(sortBy)
@@ -179,7 +177,7 @@ const getAllProductsUser = async (req, res) => {
         if (req.query.category_code) {
             newQueryString.category_code = req.query.category_code
         }
-        let products = Product.find(newQueryString).select("-category_code -details -description -views -userId -userBought  -infoProduct")
+        let products = Product.find(newQueryString).select("-views -userId -userBought  -infoProduct")
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
             products = products.sort(sortBy)
