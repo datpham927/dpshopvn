@@ -61,7 +61,7 @@ const getDetailOrder = async (oid: any) => {
 
 const getAllOrderBeenBought = async () => {
     try {
-        const res = await axiosJWT.get(`order/all_order_sold`);
+        const res = await axiosJWT.get(`order/all_order_sold` );
         return res.data;
     } catch (error) {
         return {

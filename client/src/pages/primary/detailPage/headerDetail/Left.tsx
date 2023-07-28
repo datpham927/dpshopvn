@@ -11,7 +11,9 @@ const Left: React.FC<{ productImage: Array<string>; imageUrl: string }> = ({ pro
     }, [imageUrl]);
     return (
         <div className="flex flex-col  rounded-l-md overflow-hidden p-4 gap-4 border-r-[1px] border-solid  border-gray-300 ">
-            <img className="w-[444px] h-[444px]" src={imagePrimary} />
+            <div className="w-[444px] h-[444px]">
+                <img className="w-full h-full object-cover" src={imagePrimary} />
+            </div>
             <ul className="w-[444px]">
                 <Swiper
                     slidesPerView={6}
@@ -29,7 +31,7 @@ const Left: React.FC<{ productImage: Array<string>; imageUrl: string }> = ({ pro
                                 }`}
                                 onMouseEnter={() => setImagePrimary(i)}
                             >
-                                <img className="block w-full h-full" src={i} />
+                                <img className="block w-full h-full object-cover" src={i} />
                             </li>
                         </SwiperSlide>
                     ))}

@@ -134,7 +134,7 @@ const SellManage: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <div className="w-full">
+            <div className="flex flex-col gap-5 w-full">
                 <RenderUi orders={orders} tab={displayTab} />
                 {orders.length > 0 && (
                     <ButtonOutline onClick={handleExportFile} className="mx-auto">
