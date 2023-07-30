@@ -5,13 +5,13 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 // Define the initial state using that type
 interface actionInitial {
     openFeatureAuth: boolean;
-    isLogin: boolean; //switch to login or register model
-    isLoading: boolean;
+    isLoading: boolean; //switch to login or register model
+    featureAuth: number; //0 register 1 login 2 forgot
 }
 const initialState: actionInitial = {
     openFeatureAuth: false,
-    isLogin: false,
     isLoading: false,
+    featureAuth: 0,
 };
 
 export const actionSlice = createSlice({
@@ -21,15 +21,15 @@ export const actionSlice = createSlice({
         setOpenFeatureAuth: (state, action: PayloadAction<boolean>) => {
             state.openFeatureAuth = action.payload;
         },
-        setIsLogin: (state, action: PayloadAction<boolean>) => {
-            state.isLogin = action.payload;
-        },
-        setIsLoading: (state, action: PayloadAction<boolean>) => {
+         setIsLoading: (state, action: PayloadAction<boolean>) => {
             state.isLoading = action.payload;
+        },
+        setFeatureAuth: (state, action: PayloadAction<number>) => {
+            state.featureAuth = action.payload;
         },
     },
 });
 
-export const { setOpenFeatureAuth, setIsLogin,setIsLoading } = actionSlice.actions;
+export const { setOpenFeatureAuth, setFeatureAuth, setIsLoading } = actionSlice.actions;
 
 export default actionSlice.reducer;

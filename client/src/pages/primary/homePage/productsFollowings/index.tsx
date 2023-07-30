@@ -5,17 +5,19 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAllProductFollowings } from '../../../../services/apiProduct';
 import { IProductItem } from '../../../../interfaces/interfaces';
 import { ProductItem } from '../../../../component';
+import { useAppSelector } from '../../../../redux/hooks';
 
 const ProductFollowings: React.FC = () => {
     const [products, setProducts] = useState<IProductItem[]>([]);
+    const { isLoginSuccess } = useAppSelector((state) => state.auth);
 
     useEffect(() => {
         const fetchProducts = async () => {
             const res = await getAllProductFollowings({ limit: 20 });
             res.success && setProducts(res.products);
         };
-        fetchProducts();
-    }, []);
+        isLoginSuccess && fetchProducts();
+    }, [isLoginSuccess]);
 
     return (
         <>

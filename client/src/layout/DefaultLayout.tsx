@@ -3,14 +3,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
 import { Auth } from '../feature';
-import { useAppDispatch } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { apiGetDetailUser } from '../services/apiUser';
 import { setIsLoginSuccess } from '../redux/features/auth/authSlice';
 import { setDetailUser } from '../redux/features/user/userSlice';
 import { Footer, Header, Loading } from '../component';
 import { useLocation } from 'react-router-dom';
 import { path } from '../utils/const';
-import FormEditAddress from '../component/Form/FormEditAddress';
 
 interface DefaultLayoutProps {
     children: React.ReactNode;
@@ -26,7 +25,8 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 dispatch(setDetailUser(res.data));
             }
         };
-        fetchApiDetailUser();
+        const access_token = localStorage.getItem('access_token');
+        access_token && fetchApiDetailUser();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const toastContainer = (

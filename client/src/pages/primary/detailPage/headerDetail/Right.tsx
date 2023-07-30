@@ -34,8 +34,8 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
         dispatch(setIsLoading(true));
         const response = await apiAddToCart({
             quantity,
-            shopId: productDetail.user._id,
-            productId: productDetail._id,
+            shopId: productDetail?.user?._id,
+            productId: productDetail?._id,
             totalPrice: quantity * productDetail.new_price,
         });
         dispatch(setIsLoading(false));
@@ -114,7 +114,9 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                         {quantity}
                                     </span>
                                     <button
-                                        onClick={() => setQuantity(quantity + 1)}
+                                        onClick={() =>{
+                                            productDetail?.in_stock >quantity&& setQuantity(quantity + 1)
+                                        } }
                                         className="flex w-full justify-center items-center"
                                     >
                                         <AddIcon />
@@ -154,7 +156,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                         </div>
                     </div>
                     {/* ---------------- */}
-                    <InfoShop props={productDetail?.user} />
+                    <InfoShop user={productDetail?.user} />
                 </div>
             </div>
         </div>

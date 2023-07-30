@@ -21,8 +21,15 @@ const SearchByBrand: React.FC = () => {
         };
 
         fetchApi();
-    }, [params?.cid, params.brand_slug, params.sid]);
+    }, [params.cid, params.brand_slug, params.sid]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const queryParams = queryString.parse(location.search);
+        if (!queryParams.brand) {
+            setOptionBrands([]);
+        }
+    }, [location.search]);
     // cập nhật lại query
     useEffect(() => {
         const queryParams = queryString.parse(location.search);
@@ -32,6 +39,7 @@ const SearchByBrand: React.FC = () => {
         };
         const newQuery = queryString.stringify(updatedQueryParams);
         navigate(`?${newQuery}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [optionBrands]);
 
     return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination } from '../../../../component';
 import { getAllProductUser } from '../../../../services/apiProduct';
-import { IProductItem } from '../../../../interfaces/interfaces';
+import { IProductItem, ProductDetail } from '../../../../interfaces/interfaces';
 
 import { useAppDispatch } from '../../../../redux/hooks';
 import { setIsLoading } from '../../../../redux/features/action/actionSlice';
@@ -16,7 +16,7 @@ interface IQueries {
 }
 
 const ProductManage: React.FC = () => {
-    const [products, setProducts] = useState<IProductItem[]>([]);
+    const [products, setProducts] = useState<ProductDetail[]>([]);
     const [totalPage, setTotalPage] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [queries, setQueries] = useState<IQueries>({} as IQueries);

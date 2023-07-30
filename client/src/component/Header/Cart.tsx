@@ -10,7 +10,7 @@ const Cart: React.FC = () => {
     const dispatch = useAppDispatch();
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const { productInCart } = useAppSelector((state) => state.order);
-
+console.log("productInCart",productInCart)
     useEffect(() => {
         const fetchApi = async () => {
             const res = await apiGetProductInCart();

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { setEmail } from '../../../../redux/features/auth/authSlice';
 import { apiSendEmail } from '../../../../services/apiAuth';
-import { setIsLogin } from '../../../../redux/features/action/actionSlice';
+import { setFeatureAuth } from '../../../../redux/features/action/actionSlice';
 import { logoFb, logoGoogle } from '../../../../assets';
 
 
@@ -44,7 +44,7 @@ const sendMail: React.FC<ModeRegister> = (props) => {
     return  <div className="flex flex-col gap-2 w-4/6 p-10 ">
                 <div className="flex flex-col gap-1">
                     <h1 className="text-2xl font-semibold">Tạo tại khoản </h1>
-                    <p className="text-base">Vui lòng nhập đại chỉ gmail</p>
+                    <p className="text-base">Vui lòng nhập địa chỉ gmail</p>
                 </div>
                 <form className="flex flex-col ">
                     <div className="border-b-[1px]  py-2">
@@ -66,7 +66,7 @@ const sendMail: React.FC<ModeRegister> = (props) => {
                             Tiếp tục
                         </button>
                         <p
-                            onClick={() => dispatch(setIsLogin(true))}
+                            onClick={() => dispatch(setFeatureAuth(1))}
                             className="text-base text-primary mx-auto cursor-pointer"
                         >
                             Đăng nhập

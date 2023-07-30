@@ -49,7 +49,7 @@ const ShopPage: React.FC = () => {
             showNotification('Không thể theo dõi chính bạn!', false);
             return;
         }
-        if (followers.includes(currentUser._id)) {
+        if (followers?.includes(currentUser._id)) {
             setFollowers((user) => user.filter((i) => i !== currentUser._id));
             await apiUnFollowingUser(shop?._id);
         } else {

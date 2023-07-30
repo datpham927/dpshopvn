@@ -2,9 +2,9 @@ const { randomTokenByCrypto, hashTokenByCrypto } = require("../middlewares/crypt
 const { generateRefreshToken, generateAccessToken, verifyRefreshToken } = require("../middlewares/jwt")
 const User = require("../models/User")
 const sendMail = require("../ulits/sendMail")
-const bcrypt = require("bcrypt")
-const crypto = require("crypto")
-
+const bcrypt = require("bcrypt") //mã hóa
+const crypto = require("crypto") //random
+require("dotenv").config()
 
 //gửi email xác nhận mật khẩu,và thêm tokenConfirm vào database
 const sendVerificationEmail = async (req, res) => {
@@ -23,7 +23,7 @@ const sendVerificationEmail = async (req, res) => {
             // update token xác minh vào database (trường hợp muốn gửi lại token đến email khi token hết hạn)
             await User.findOneAndUpdate({ email, password: { $exists: false } }, {
                 verificationEmailToken: hashToken,
-                passwordTokenExpires: Date.now() + 5*60 * 1000
+                passwordTokenExpires: Date.now() + 5 * 60 * 1000
             })
         } else {
             //kiểm tra account tồn tại chưa, nếu chưa thì create
@@ -35,7 +35,7 @@ const sendVerificationEmail = async (req, res) => {
 
             await User.create({
                 email, verificationEmailToken: hashToken,
-                passwordTokenExpires: Date.now() + 5*60 * 1000
+                passwordTokenExpires: Date.now() + 5 * 60 * 1000
             }, { new: true })
         }
         sendMail({
@@ -165,7 +165,6 @@ const login = async (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         const cookie = req.cookies
-       
         if (!cookie?.refresh_token) return res.status(401).json({
             success: false,
             message: "Cookie required!"
@@ -199,7 +198,11 @@ const sendGmailForgetPassword = async (req, res) => {
         const token = randomTokenByCrypto(30)
         const hashToken = hashTokenByCrypto(token)
         const response = await User.findOne({ email })
-        if (!response) throw new Error("Account not exists!")
+        if (!response) return res.status(200).json({
+            success: false,
+            message: "Account not exists!",
+
+        })
         const user = await User.findOne({ email })
         user.passwordResetToken = hashToken;
         user.passwordTokenExpires = Date.now() + 5 * 60 * 1000
@@ -208,7 +211,7 @@ const sendGmailForgetPassword = async (req, res) => {
             email, html: `<div >
             <p >Để thay đổi mật khẩu cho tài khoản ${email} của bạn vui lòng bấm vào link bên dưới, đường link có hiệu lực trong vòng 5 phút
              </p>
-             <a href='${token}' >Click vào đây!</a>
+             <a href='${process.env.URL_CLIENT + "/reset_password/" + token}' >Click vào đây!</a>
             </div>`,
             fullName: user.lastName ? user.lastName + " " + user.firstName : email?.split("@")[0]
         })
@@ -248,21 +251,21 @@ const resetPassword = async (req, res) => {
 
 const logOut = (req, res) => {
     try {
-      res.clearCookie("refresh_token");
-      return res.status(200).json({
-        success: true,
-        message: "logout successfully",
-      });
+        res.clearCookie("refresh_token");
+        return res.status(200).json({
+            success: true,
+            message: "logout successfully",
+        });
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
-  };
+};
 
 module.exports = {
     sendVerificationEmail, confirmVerificationEmail,
     deleteUnconfirmedUser, register, login, refreshToken,
-    sendGmailForgetPassword, resetPassword,logOut
+    sendGmailForgetPassword, resetPassword, logOut
 }

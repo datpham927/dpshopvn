@@ -1,14 +1,15 @@
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { useAppDispatch, useAppSelector } from  '../../redux/hooks';
-import { setOpenFeatureAuth } from  '../../redux/features/action/actionSlice';
-import Login from './left/Login/Login';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import Login from './left/Login';
 import Right from './Right/Right';
-import Register from './left/Register/Register';
+import Register from './left/Register';
 import { Overlay } from '../../component';
+import Forgot from './left/forgot';
 
 const Auth: React.FC = () => {
-    const { openFeatureAuth, isLogin } = useAppSelector((state) => state.action);
+    const { openFeatureAuth, featureAuth } = useAppSelector((state) => state.action);
     const dispatch = useAppDispatch();
 
     const handleClose = (e: { stopPropagation: () => void }) => {
@@ -25,7 +26,7 @@ const Auth: React.FC = () => {
                 <Overlay className="z-[1000]" onClick={handleClose}>
                     <div onClick={handleOpen} className="relative w-[800px] h-auto ">
                         <div className="flex w-full h-full bg-white m-auto rounded-lg items-center overflow-hidden">
-                            {isLogin ? <Login /> : <Register />}
+                            {featureAuth == 0 ? <Register /> : featureAuth == 1 ? <Login /> : <Forgot />}
                             <Right />
                         </div>
                         {/* -------------- */}

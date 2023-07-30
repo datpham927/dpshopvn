@@ -25,4 +25,7 @@ export { default as ProductInCartItem } from './item/ProductInCartItem';
 export { default as DeliveryAddress } from './deliveryAddress';
 export { default as OrderItem } from './item/OrderItem';
 export { default as SelectOptions } from './selectOptions';
+export { default as SkeletonProducts } from './skeleton/SkeletonProducts';
+export { default as SkeletonCategory } from './skeleton/SkeletonCategory';
+export { default as SkeLetonDetailPage } from './skeleton/SkeLetonDetailPage';
 export { showNotification } from './common/showNotification';

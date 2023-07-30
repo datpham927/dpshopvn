@@ -10,6 +10,11 @@ import { setIsLoginSuccess } from '../../redux/features/auth/authSlice';
 import { path } from '../../utils/const';
 import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { noUser } from '../../assets';
+import {
+    setAddProductInCart,
+    setAddProductInCartFromApi,
+    setSelectedProductsAll,
+} from '../../redux/features/order/orderSlice';
 const User: React.FC = () => {
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
@@ -22,10 +27,12 @@ const User: React.FC = () => {
             const res = await apiLogout();
             if (!res.success) return;
             localStorage.removeItem('access_token');
-            showNotification('Đăng xuất thành công', true);
             setIsOpenMenu(false);
             dispatch(setDetailUser({}));
             dispatch(setIsLoginSuccess(false));
+            dispatch(setSelectedProductsAll([]));
+            dispatch(setAddProductInCartFromApi([]));
+            showNotification('Đăng xuất thành công', true);
         }
     };
     return (

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { apiLogin } from '../../../../services/apiAuth';
-import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
+import { setFeatureAuth, setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { setIsLoginSuccess } from '../../../../redux/features/auth/authSlice';
 import { showNotification } from '../../../../component';
- 
+
 const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [email, setEmail] = useState<string>('');
@@ -14,17 +14,17 @@ const Login: React.FC = () => {
     const [error, setError] = useState<string>('');
     const dispatch = useAppDispatch();
     const handleSummit = async (e: { preventDefault: () => void }) => {
-        e.preventDefault()
-        if(!email||!password ){
+        e.preventDefault();
+        if (!email || !password) {
             setError('Tài khoản hoặc mật khẩu không chính xác!');
-            return
+            return;
         }
         const res = await apiLogin(email, password);
         if (res.success) {
             localStorage.setItem('access_token', JSON.stringify(res.access_token));
-            showNotification('Đăng nhập thành công!',true);
+            showNotification('Đăng nhập thành công!', true);
             dispatch(setOpenFeatureAuth(false));
-            dispatch(setIsLoginSuccess(true))
+            dispatch(setIsLoginSuccess(true));
             window.location.reload();
         } else {
             setError('Tài khoản hoặc mật khẩu không chính xác!');
@@ -82,7 +82,9 @@ const Login: React.FC = () => {
                     </div>
                 </form>
                 <div className="flex flex-col gap-1 w-full h-full ">
-                    <p className="text-sm text-primary cursor-pointer">Quên mật khẩu?</p>
+                    <p className="text-sm text-primary cursor-pointer" onClick={() => dispatch(setFeatureAuth(2))}>
+                        Quên mật khẩu?
+                    </p>
                     <p className="flex gap-2 items-center text-secondary text-sm">
                         Chưa có tài khoản?
                         <span className="text-sm text-primary cursor-pointer">Tạo tài khoản</span>
