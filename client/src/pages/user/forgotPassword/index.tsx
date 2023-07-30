@@ -29,7 +29,7 @@ const ForgotPassword: React.FC = () => {
     };
 
     return (
-        <Overlay className="bg-green-200 z-[1000]">
+        <Overlay className="bg-green-100 z-[1000]">
             <div className="flex flex-col gap-2 w-2/6 p-10 bg-white rounded-md">
                 <div className="flex flex-col gap-1">
                     <p className="text-base">Vui lòng nhập mật khẩu mới</p>

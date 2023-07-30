@@ -114,9 +114,9 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                                         {quantity}
                                     </span>
                                     <button
-                                        onClick={() =>{
-                                            productDetail?.in_stock >quantity&& setQuantity(quantity + 1)
-                                        } }
+                                        onClick={() => {
+                                            productDetail?.in_stock > quantity && setQuantity(quantity + 1);
+                                        }}
                                         className="flex w-full justify-center items-center"
                                     >
                                         <AddIcon />
@@ -156,7 +156,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
                         </div>
                     </div>
                     {/* ---------------- */}
-                    <InfoShop user={productDetail?.user} />
+                    {productDetail?.user && <InfoShop shop={productDetail?.user} />}
                 </div>
             </div>
         </div>

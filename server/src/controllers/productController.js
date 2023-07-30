@@ -83,8 +83,8 @@ const detailProduct = async (req, res) => {
                 message: "Id required!"
             })
         }
-        // const option = "_id firstName lastName followers avatar_url userId email"
-        const product = await Product.findById(req.params.pid).populate("user")
+        const option = "_id firstName lastName followers avatar_url userId email"
+        const product = await Product.findById(req.params.pid).populate("user", option)
         //cập nhật số lượng người truy cập
         if (product) {
             product.views += 1
@@ -225,6 +225,7 @@ const getAllProductFollowing = async (req, res) => {
             .select("-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart")
 
         // Sử dụng Promise.all để thực hiện truy vấn song song và sử dụng populate để nạp các tài khoản user liên quan
+        const option = "_id firstName lastName followers avatar_url userId email"
         const followings = currentUser.followings;
         const productPromises = followings.map(e => {
             return Product.find({ user: e }).populate("user", option)

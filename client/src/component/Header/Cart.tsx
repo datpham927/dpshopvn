@@ -1,16 +1,17 @@
 import React, { memo, useEffect } from 'react';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { path } from '../../utils/const';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { apiGetProductInCart } from '../../services/apiCart';
 import { setAddProductInCartFromApi } from '../../redux/features/order/orderSlice';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 // eslint-disable-next-line react-refresh/only-export-components
 const Cart: React.FC = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const { productInCart } = useAppSelector((state) => state.order);
-console.log("productInCart",productInCart)
     useEffect(() => {
         const fetchApi = async () => {
             const res = await apiGetProductInCart();
@@ -24,7 +25,12 @@ console.log("productInCart",productInCart)
     }, [isLoginSuccess]);
 
     return (
-        <Link to={path.PAGE_CART} className="flex items-end  cursor-pointer">
+        <div
+            onClick={() => {
+                isLoginSuccess ? navigate(path.PAGE_CART) : dispatch(setOpenFeatureAuth(true));
+            }}
+            className="flex items-end  cursor-pointer"
+        >
             <div className="flex relative">
                 <span className="text-[32px]">
                     <ShoppingCartOutlinedIcon fontSize="medium" />
@@ -34,7 +40,7 @@ console.log("productInCart",productInCart)
                 </div>
             </div>
             <span className="text-xs">Giỏ hàng</span>
-        </Link>
+        </div>
     );
 };
 

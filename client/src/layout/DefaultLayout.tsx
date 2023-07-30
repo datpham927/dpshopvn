@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
@@ -11,12 +11,15 @@ import { Footer, Header, Loading } from '../component';
 import { useLocation } from 'react-router-dom';
 import { path } from '../utils/const';
 
+
 interface DefaultLayoutProps {
     children: React.ReactNode;
 }
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     const dispatch = useAppDispatch();
     // chi tiết user
+ 
+
     useEffect(() => {
         const fetchApiDetailUser = async () => {
             const res = await apiGetDetailUser();
