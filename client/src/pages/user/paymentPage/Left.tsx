@@ -19,9 +19,8 @@ interface LeftProps {
 }
 
 const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
-    const { productsByShopId, selectedProducts } = useAppSelector((state) => state?.order);
-    console.log('selectedProducts', selectedProducts);
-    console.log('productsByShopId', productsByShopId);
+    const { productsByShopId } = useAppSelector((state) => state?.order);
+
     return (
         <div className="w-4/6 relative py-3">
             <div className="flex flex-col bg-white rounded-md gap-10 p-6 mb-2">
@@ -53,7 +52,7 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
                                 <ProductInCartItem
                                     product={{
                                         _id: e?._id,
-                                        quantity: p?.quantity,
+                                        quantity: p.quantity ? p.quantity : 1,
                                         shopId: e?.shopId,
                                         totalPrice: p.totalPrice,
                                         user: e?.user,

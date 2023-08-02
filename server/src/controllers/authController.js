@@ -152,7 +152,7 @@ const login = async (req, res) => {
         })
         res.status(200).json({
             success: true,
-            message: "Register successfully!",
+            message: "Login successfully!",
             access_token: `Bearer ${access_token}`
         })
     } catch (error) {

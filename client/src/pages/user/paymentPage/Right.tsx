@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { ButtonOutline, DeliveryAddress, FormEditAddress, showNotification } from '../../../component';
 import { formatMoney } from '../../../utils/formatMoney';
@@ -8,7 +8,10 @@ import { path } from '../../../utils/const';
 import { imgFreeShip } from '../../../assets';
 import { setCreateOrder } from '../../../services/apiOrder';
 import { setRemoveProductInCart, setSelectedProductsEmpty } from '../../../redux/features/order/orderSlice';
-import { setIsLoading } from '../../../redux/features/action/actionSlice';
+import { setIsLoading, setSocketRef } from '../../../redux/features/action/actionSlice';
+import { INotification } from '../../../interfaces/interfaces';
+import { apiCreateNotification } from '../../../services/apiNotification';
+import { Socket, io } from 'socket.io-client';
 
 interface RightProps {
     methods: {
@@ -24,7 +27,12 @@ const Right: React.FC<RightProps> = ({ methods }) => {
     const currentUser = useAppSelector((state) => state.user);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-
+    const socketRef = useRef<Socket | null>(null);
+    // useEffect(() => {
+    //     //ws <=> http
+    //     socketRef.current = io(import.meta.env.VITE_REACT_API_URL_CLIENT);
+    //     dispatch(setSocketRef(socketRef.current));
+    // }, []);
     const priceMemo = useMemo(() => {
         const result = selectedProducts.reduce((total, e) => {
             return total + e.totalPrice;
@@ -45,7 +53,7 @@ const Right: React.FC<RightProps> = ({ methods }) => {
     const handleOrderProduct = async () => {
         if (methods.paymentMethod === 'CASH') {
             if (confirm('Bạn có muốn đặt hàng không?')) {
-                //dispatch(setIsLoading(true));
+                dispatch(setIsLoading(true));
                 const res = await setCreateOrder({
                     products: selectedProducts,
                     paymentMethod: methods.paymentMethod,
@@ -60,16 +68,30 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                     shippingPrice: priceShip > priceFreeShip ? priceShip - priceFreeShip : 0,
                 });
                 dispatch(setIsLoading(false));
-                if (res.success) {
-                    showNotification('Đặt hàng thành công! vui lòng kiểm tra trong gmail', true);
-                    selectedProducts.forEach((e) => {
-                        dispatch(setRemoveProductInCart(e));
-                    });
-                    dispatch(setSelectedProductsEmpty());
-                    navigate(`${path.PAGE_USER}/purchase`);
-                } else {
+
+                if (!res.success) {
                     showNotification('Đặt hàng không thành công!', false);
+                    return;
                 }
+                showNotification('Đặt hàng thành công! vui lòng kiểm tra trong gmail', true);
+                selectedProducts.forEach((e) => {
+                    dispatch(setRemoveProductInCart(e));
+                });
+                dispatch(setSelectedProductsEmpty());
+                // ---------------  socket  --------------- 
+                const notification: INotification = {
+                    image_url: selectedProducts[0].productId.image_url,
+                    shopId: selectedProducts[0].shopId ? selectedProducts[0].shopId : '',
+                    title: 'Bạn có đơn đặt hàng mới',
+                    userId: currentUser._id,
+                    user_name: formatUserName(currentUser),
+                    subtitle: `đã mua sản phẩm của bạn`,
+                    link: `http://localhost:5173/user/account/sell`,
+                };
+                const response = await apiCreateNotification(notification);
+                response.success && socketRef.current?.emit('sendNotification', response.data);
+                // --------------------------------------------- 
+                navigate(`${path.PAGE_USER}/purchase`);
             }
         }
     };

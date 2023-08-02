@@ -5,8 +5,9 @@ import { IOrderItem } from '../../../../interfaces/interfaces';
 import moment from 'moment';
 import { formatMoney } from '../../../../utils/formatMoney';
 import { PAYMENT_METHOD, path } from '../../../../utils/const';
-import { OrderItem, ProductInCartItem } from '../../../../component';
+import { OrderItem, ProductInCartItem, SkeletonViewOrder } from '../../../../component';
 import { statusOrder } from '../../../../utils/statusOrder';
+import { Skeleton } from '@mui/material';
 
 const ViewOrder: React.FC = () => {
     const param = useParams();
@@ -21,7 +22,7 @@ const ViewOrder: React.FC = () => {
     }, [param.oid]);
     return (
         <>
-            {detailOrder && (
+            {detailOrder ? (
                 <div className="w-full ">
                     <div className="flex flex-col gap-1 w-full">
                         <p className="text-xl text-secondary">
@@ -84,6 +85,8 @@ const ViewOrder: React.FC = () => {
                         </Link>
                     </div>
                 </div>
+            ) : (
+                 <SkeletonViewOrder/>
             )}
         </>
     );

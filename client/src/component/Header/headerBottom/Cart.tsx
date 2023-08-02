@@ -1,11 +1,11 @@
 import React, { memo, useEffect } from 'react';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useNavigate } from 'react-router-dom';
-import { path } from '../../utils/const';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { apiGetProductInCart } from '../../services/apiCart';
-import { setAddProductInCartFromApi } from '../../redux/features/order/orderSlice';
-import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import { path } from '../../../utils/const';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { apiGetProductInCart } from '../../../services/apiCart';
+import { setAddProductInCartFromApi } from '../../../redux/features/order/orderSlice';
+import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 // eslint-disable-next-line react-refresh/only-export-components
 const Cart: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -25,21 +25,18 @@ const Cart: React.FC = () => {
     }, [isLoginSuccess]);
 
     return (
-        <div
-            onClick={() => {
-                isLoginSuccess ? navigate(path.PAGE_CART) : dispatch(setOpenFeatureAuth(true));
-            }}
-            className="flex items-end  cursor-pointer"
-        >
-            <div className="flex relative">
-                <span className="text-[32px]">
-                    <ShoppingCartOutlinedIcon fontSize="medium" />
-                </span>
-                <div className="absolute  text-[13px] px-[5px] py-[1] rounded-[50%] top-[10px] right-[-8px] h-fit bg-[#A769FD]">
+        <div className="flex w-2/12 h-search  items-center justify-center pr-2">
+            <div
+                className="flex relative  text-white"
+                onClick={() => {
+                    isLoginSuccess ? navigate(path.PAGE_CART) : dispatch(setOpenFeatureAuth(true));
+                }}
+            >
+                <ShoppingCartOutlinedIcon fontSize="medium" />
+                <div className="absolute text-[13px] px-[5px] py-[1] rounded-[50%] bottom-2 right-[-8px] h-fit bg-[#A769FD]">
                     {productInCart?.length > 10 ? '9+' : productInCart?.length || 0}
                 </div>
             </div>
-            <span className="text-xs">Giỏ hàng</span>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { SetStateAction, useEffect, useRef, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import StarRateIcon from '@mui/icons-material/StarRate';
@@ -9,8 +9,12 @@ import { apiEditComment, apiPostComment } from '../../services/apiReviews';
 import { ButtonOutline, Overlay, showNotification } from '..';
 import { setIsLoading, setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { apiUploadImage } from '../../services/apiUploadPicture';
-import { ProductDetail, Review } from '../../interfaces/interfaces';
+import { INotification, ProductDetail, Review } from '../../interfaces/interfaces';
 import { RATING_REVIEW } from '../../utils/const';
+import { formatUserName } from '../../utils/formatUserName';
+import { useLocation } from 'react-router-dom';
+import { Socket } from 'socket.io-client';
+import { apiCreateNotification } from '../../services/apiNotification';
 
 interface FormReviewsProps {
     setReviews?: React.Dispatch<React.SetStateAction<Review[]>>;
@@ -29,6 +33,7 @@ interface FormReviewsProps {
     title: string | any;
     isEdit?: boolean;
     titleButton?: string;
+    socketRef: React.MutableRefObject<Socket<any, any> | null>;
 }
 const FormReviews: React.FC<FormReviewsProps> = ({
     setReviews,
@@ -40,6 +45,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
     titleButton,
     title,
     setRatings,
+    socketRef,
 }) => {
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [valueInput, setValueInput] = useState<string>('');
@@ -48,8 +54,9 @@ const FormReviews: React.FC<FormReviewsProps> = ({
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector((state) => state.user);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
-
+    const location = useLocation();
     // ----------- handel upload image -----------
+
     useEffect(() => {
         if (isEdit && reviewEdit) {
             setImagesUrl(reviewEdit?.images);
@@ -82,21 +89,34 @@ const FormReviews: React.FC<FormReviewsProps> = ({
         setIsLoad(false);
         dispatch(setIsLoading(false));
     };
+
     //  ------- post-------------
     const postComment = async () => {
-        //dispatch(setIsLoading(true));
-
+        dispatch(setIsLoading(true));
         const res = await apiPostComment({ comment: valueInput, images: imagesUrl, rating: rating }, productDetail._id);
         if (!res.success) {
             showNotification('Đánh giá không thành công!', true);
             return;
         }
+        //create notification
+        const notification: INotification = {
+            image_url: productDetail.image_url,
+            shopId: productDetail.user ? productDetail.user._id : '',
+            title: productDetail.title,
+            user_name: formatUserName(currentUser),
+            subtitle: `đã đánh giá sản phẩm của bạn`,
+            link: location.pathname,
+        };
+        const response = await apiCreateNotification(notification);
+        //--------------- socket
+        console.log('response.data', response.data);
+        response.success && socketRef.current?.emit('sendNotification', response.data);
+        // -------------------
         setReviews && setReviews((e) => [{ ...res.data, user: currentUser }, ...e]);
         setRatings && setRatings((r) => [...r, { _id: res._id, rating: rating }]);
         setOpenFormReview && setOpenFormReview(false);
         showNotification('Đánh giá thành công!', true);
         dispatch(setIsLoading(false));
-
     };
 
     //  ------- edit comment-------------
@@ -113,7 +133,6 @@ const FormReviews: React.FC<FormReviewsProps> = ({
         setOpenFormReview && setOpenFormReview(false);
         showNotification('Cập nhật thành công!', true);
         dispatch(setIsLoading(false));
-
     };
     // ------- summit -----------
     const handleSummit = async (e: { stopPropagation: () => void }) => {

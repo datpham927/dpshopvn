@@ -1,14 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Socket, io } from 'socket.io-client';
 import { apiDeleteComment, apiRatingsProduct, getAllReviewsById } from '../../../../services/apiReviews';
 import { ProductDetail, Review } from '../../../../interfaces/interfaces';
 import { formatStar } from '../../../../utils/formatStar';
 import { ButtonOutline, FormReviews, NotFound, ReviewItem, showNotification } from '../../../../component';
 import { apiUpdateRatingProduct } from '../../../../services/apiProduct';
 import Pagination from '../../../../component/pagination';
-import { setIsLoading } from '../../../../redux/features/action/actionSlice';
-import { useDispatch } from 'react-redux';
 import { useAppDispatch } from '../../../../redux/hooks';
+import { setSocketRef } from '../../../../redux/features/action/actionSlice';
 
 const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array<string> | any }> = ({
     productDetail,
@@ -27,9 +28,16 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
             _id: string;
         }>
     >([]);
+    // addNotification
     const [reviewEdit, setReviewEdit] = useState<Review | any>();
     const dispatch = useAppDispatch();
-    // get all review by product id
+    const socketRef = useRef<Socket | null>(null);
+    useEffect(() => {
+        //ws <=> http
+        socketRef.current = io("ws://localhost:4000");
+        dispatch(setSocketRef(socketRef.current));
+    }, []);
+
     useEffect(() => {
         const fetchApiReview = async () => {
             const queries =
@@ -189,6 +197,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
                     productDetail={productDetail}
                     setOpenFormReview={setOpenFormReview}
                     setRatings={setRatings}
+                    socketRef={socketRef}
                 />
             )}
 

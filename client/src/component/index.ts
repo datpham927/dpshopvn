@@ -28,4 +28,5 @@ export { default as SelectOptions } from './selectOptions';
 export { default as SkeletonProducts } from './skeleton/SkeletonProducts';
 export { default as SkeletonCategory } from './skeleton/SkeletonCategory';
 export { default as SkeLetonDetailPage } from './skeleton/SkeLetonDetailPage';
+export { default as SkeletonViewOrder } from './skeleton/SkeletonViewOrder';
 export { showNotification } from './common/showNotification';

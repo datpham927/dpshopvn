@@ -143,6 +143,17 @@ interface IOrderItem {
     dateShipping: number;
     createdAt?: Date;
 }
+
+interface INotification {
+    shopId: string;
+    image_url: string;
+    title: string;
+    subtitle: string;
+    link: string;
+    userId?: string;
+    user_name?: string;
+    is_watched?: boolean;
+}
 export type {
     Category,
     UserProfile,
@@ -153,4 +164,5 @@ export type {
     ProductInCart,
     ProductByShop,
     IOrderItem,
+    INotification,
 };

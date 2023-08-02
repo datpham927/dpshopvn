@@ -6,7 +6,7 @@ const cors = require("cors")
 require("dotenv").config()
 const mongoose = require("mongoose")
 const routes = require("./routes/index")
-const socket = require("./socket/index")
+const createSocket = require("./socket/index")
 const app = express()
 
 app.use(cors({
@@ -25,7 +25,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
     //------------ socket ---------------
 const Server = http.createServer(app)
-socket(Server)
+createSocket(Server)
 //-----------------------------------
     Server.listen(process.env.PORT, () => {
     console.log("Server is ready!")
