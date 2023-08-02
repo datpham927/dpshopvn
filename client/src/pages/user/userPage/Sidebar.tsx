@@ -28,7 +28,7 @@ export const Sidebar: React.FC = () => {
                     <NavLink
                         to={e.path_name}
                         className={`flex gap-4 p-2 text-sm text-gray-800 hover:bg-gray-200 cursor-pointer ${
-                            location.pathname.includes(e.path_name) ? 'bg-gray-200' : ''
+                            location.pathname?.includes(e.path_name) ? 'bg-gray-200' : ''
                         }`}
                     >
                         {e.icon}

@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import queryString from 'query-string';
-import { IProductItem } from  '../../interfaces/interfaces';
-import { useAppDispatch } from  '../../redux/hooks';
-import { setIsLoading } from  '../../redux/features/action/actionSlice';
-import { NotFound, Pagination, ProductItem } from '..';
+import { IProductItem } from '../../interfaces/interfaces';
+import { useAppDispatch } from '../../redux/hooks';
+import { setIsLoading } from '../../redux/features/action/actionSlice';
+import { NotFound, Pagination, ProductItem, SkeletonProducts } from '..';
 import { getAllProduct } from '../../services/apiProduct';
 
 const RenderListProducts: React.FC = () => {
@@ -15,14 +15,14 @@ const RenderListProducts: React.FC = () => {
     const [products, setProduct] = useState<IProductItem[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(Number(queries?.page) || 0);
     const [totalPage, setTotalPage] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const params = useParams();
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const { pricefrom, priceto, ...rest } = queries;
         const fetchProducts = async () => {
-            //dispatch(setIsLoading(true));
+            setIsLoading(true);
             const res = await getAllProduct({
                 limit: 24,
                 ...rest,
@@ -30,14 +30,13 @@ const RenderListProducts: React.FC = () => {
                 'new_price[gte]': pricefrom,
                 category_code: params.cid,
                 brand_slug: params.brand_slug,
-                title:params.title,
+                title: params.title,
                 user: params.sid,
             });
-            dispatch(setIsLoading(false));
+            setIsLoading(false);
             if (!res.success) return;
             setTotalPage(res.totalPage);
             setProduct(res.products);
-            
         };
         fetchProducts();
     }, [currentPage, params.cid, location.search, params.brand_slug, params.sid, params.title]);
@@ -68,21 +67,29 @@ const RenderListProducts: React.FC = () => {
 
     return (
         <div className="flex flex-col bg-white pb-8 gap-10">
-            {products?.length !== 0 ? (
-                <>
-                    <div className="grid grid-cols-6 ">
-                        {products.map((p, index) => (
-                            <ProductItem key={uuidv4()} props={p} scrollIntoView={index === 0} />
-                        ))}
+            {!isLoading ? (
+                products?.length !== 0 ? (
+                    <>
+                        <div className="grid grid-cols-6 ">
+                            {products.map((p, index) => (
+                                <ProductItem key={uuidv4()} props={p} scrollIntoView={index === 0} />
+                            ))}
+                        </div>
+                        {totalPage > 0 && (
+                            <Pagination
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                totalPage={totalPage}
+                            />
+                        )}
+                    </>
+                ) : (
+                    <div className="px-4 pt-6">
+                        <NotFound>Rất tiếc, không tìm thấy sản phẩm phù hợp với lựa chọn của bạn</NotFound>
                     </div>
-                    {totalPage > 0 && (
-                        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />
-                    )}
-                </>
+                )
             ) : (
-                <div className="px-4 pt-6">
-                    <NotFound>Rất tiếc, không tìm thấy sản phẩm phù hợp với lựa chọn của bạn</NotFound>
-                </div>
+                <SkeletonProducts index={18} />
             )}
         </div>
     );

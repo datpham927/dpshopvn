@@ -5,32 +5,34 @@ import { IProductItem } from '../../../../interfaces/interfaces';
 
 import Header from './Header';
 import ListProducts from './ListProducts';
-import { useDispatch } from 'react-redux';
-import { setIsLoading } from '../../../../redux/features/action/actionSlice';
+import { SkeletonProducts } from '../../../../component';
 
 const Products: React.FC = () => {
     const [products, setProduct] = useState<IProductItem[]>([]);
     const [hiddenButton, setHiddenButton] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(0);
+
     const [optionTab, setOptionTab] = useState<number>(1);
-    const dispatch = useDispatch();
     useEffect(() => {
         setProduct([]);
     }, [optionTab]);
     useEffect(() => {
         const fetchProducts = async () => {
-            //dispatch(setIsLoading(true));
-            const res =
+            setIsLoading(true);
+            const queries =
                 optionTab === 1
-                    ? await getAllProduct({ limit: 30, page })
+                    ? {}
                     : optionTab === 2
-                    ? await getAllProduct({ limit: 30, 'new_price[lte]': 99000, page })
+                    ? { 'new_price[lte]': 99000 }
                     : optionTab === 3
-                    ? await getAllProduct({ sort: '-createdAt', limit: 30, page })
+                    ? { sort: '-createdAt' }
                     : optionTab === 4
-                    ? await getAllProduct({ sort: '-sold', limit: 30, page })
-                    : await getAllProduct({ 'new_price[lte]': 20000, limit: 30, page });
-            dispatch(setIsLoading(false));
+                    ? { sort: '-sold' }
+                    : { 'new_price[lte]': 20000 };
+
+            const res = await getAllProduct({ limit: 30, page, ...queries });
+            setIsLoading(false);
             res.totalPage === page && setHiddenButton(true);
             res.success && setProduct((p) => [...p, ...res.products]);
         };
@@ -40,7 +42,11 @@ const Products: React.FC = () => {
     return (
         <div className="w-full h-full ">
             <Header optionTab={optionTab} setOptionTab={setOptionTab} />
-            <ListProducts hiddenButton={hiddenButton} products={products} setPage={setPage} />
+            {isLoading ? (
+                <SkeletonProducts index={12} />
+            ) : (
+                <ListProducts hiddenButton={hiddenButton} products={products} setPage={setPage} />
+            )}
         </div>
     );
 };

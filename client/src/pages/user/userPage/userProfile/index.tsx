@@ -60,13 +60,13 @@ const UserProfile: React.FC = () => {
                     <InputForm
                         label="Họ"
                         name_id="lastName"
-                        value={payload.lastName}
+                        value={payload?.lastName}
                         handleOnchange={(e: any) => handleOnChangeValue(e, 'lastName')}
                     />
                     <InputForm
                         label="Tên"
                         name_id="firstName"
-                        value={payload.firstName}
+                        value={payload?.firstName}
                         handleOnchange={(e: any) => handleOnChangeValue(e, 'firstName')}
                     />
                     <InputReadOnly label="Email" value={payload.email} />

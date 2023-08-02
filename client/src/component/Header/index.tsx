@@ -1,19 +1,36 @@
-import React, { memo } from 'react';
+import React, { memo, useRef } from 'react';
 import { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import Search from './Search';
-import User from './User';
-import Cart from './Cart';
-import { Link, useNavigate } from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getCategories } from '../../services/apiCategory';
 import { setCategories } from '../../redux/features/category/categorySlice';
-import { path } from '../../utils/const';
-import { logo } from '../../assets';
+import HeaderTop from './headerTop';
+import HeaderBottom from './headerBottom';
+import { Socket, io } from 'socket.io-client';
+import { setUserOnline } from '../../redux/features/auth/authSlice';
+import { setSocketRef } from '../../redux/features/action/actionSlice';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {
     const dispatch = useAppDispatch();
+
+    const currenUser = useAppSelector((state) => state.user);
+    const socketRef = useRef<Socket | null>(null);
+    useEffect(() => {
+        //ws <=> http
+        socketRef.current = io("http://localhost:4000");
+        dispatch(setSocketRef(socketRef.current));
+    }, []);
+    useEffect(() => {
+        if (socketRef.current) {
+            socketRef.current.emit('addUser', currenUser._id);
+            socketRef.current.on('getUser', (e) => {
+                dispatch(setUserOnline(e));
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [socketRef, currenUser]);
+
     useEffect(() => {
         const fetchCategory = async () => {
             const res = await getCategories();
@@ -22,42 +39,14 @@ const Header: React.FC = () => {
             }
         };
         fetchCategory();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const { categories } = useAppSelector((state) => state.category);
     return (
-        <header className="h-header w-full bg-primary z-[999]">
-            <div className="w-full h-full flex flex-col max-w-7xl min-w-[1280px] m-auto p-[10px] ">
-                <div className="flex w-full h-full items-center ">
-                    <div className="flex justify-between w-9/12">
-                        <Link to={path.HOME}>
-                            <img className="w-[150px] " src={logo} />
-                        </Link>
-                        <Search />
-                    </div>
-                    <div className="flex w-3/12 justify-end pr-2">
-                        <div className="flex text-white items-center gap-4 ">
-                            <User />
-                            <Cart />
-                        </div>
-                        <div></div>
-                    </div>
-                </div>
-                {/* content category */}
-                <div className="flex item-center ml-[16%] gap-4">
-                    {categories?.map(
-                        (c, i) =>
-                            i < 5 && (
-                                <Link
-                                    to={`/danh-muc/${c?.category_slug}/${c?.category_code}`}
-                                    key={uuidv4()}
-                                    className="text-[13px] text-white cursor-pointer"
-                                >
-                                    {c.category}
-                                </Link>
-                            ),
-                    )}
-                </div>
+        <header className="h-auto w-full bg-primary z-[999]">
+            <div className="w-full h-full flex flex-col max-w-7xl min-w-[1280px] m-auto ">
+                <HeaderTop />
+                <HeaderBottom />
             </div>
         </header>
     );

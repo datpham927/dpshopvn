@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { getCategories } from '../../../../services/apiCategory';
 import { Category } from '../../../../interfaces/interfaces';
-import { CategoryItem } from '../../../../component';
+import { CategoryItem, SkeletonCategory } from '../../../../component';
 const Categories: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);
     useEffect(() => {
@@ -14,9 +14,13 @@ const Categories: React.FC = () => {
     }, []);
     return (
         <div className="grid grid-cols-10 h-full bg-white py-3 rounded-md overflow-hidden ">
-            {categories?.map((c) => {
-                return <CategoryItem key={uuidv4()} props={c} />;
-            })}
+            {categories.length > 0 ? (
+                categories?.map((c) => {
+                    return <CategoryItem key={uuidv4()} props={c} />;
+                })
+            ) : (
+                <SkeletonCategory index={10} />
+            )}
         </div>
     );
 };

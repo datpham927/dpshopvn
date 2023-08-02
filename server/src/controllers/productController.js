@@ -83,8 +83,8 @@ const detailProduct = async (req, res) => {
                 message: "Id required!"
             })
         }
-        // const option = "_id firstName lastName followers avatar_url userId email"
-        const product = await Product.findById(req.params.pid).populate("user")
+        const option = "_id firstName lastName followers avatar_url userId email"
+        const product = await Product.findById(req.params.pid).populate("user", option)
         //cập nhật số lượng người truy cập
         if (product) {
             product.views += 1
@@ -110,7 +110,7 @@ const getAllProducts = async (req, res) => {
         let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
         let newQueryString = JSON.parse(queriesString)
         if (req.query.title) {
-            newQueryString.title = { $regex: req.query.title, i }
+            newQueryString.title = { $regex: req.query.title, $options: 'i' }
         }
         if (req.query.category_code) {
             newQueryString.category_code = req.query.category_code
@@ -220,16 +220,24 @@ const getAllProductsUser = async (req, res) => {
 // get product all ready following
 const getAllProductFollowing = async (req, res) => {
     try {
+        // Sử dụng projection để chỉ lấy ra những trường cần thiết
         const currentUser = await User.findById(req.userId)
-        const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        const allProduct = await Promise.all(currentUser.followings.map(e => {
+            .select("-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart")
+
+        // Sử dụng Promise.all để thực hiện truy vấn song song và sử dụng populate để nạp các tài khoản user liên quan
+        const option = "_id firstName lastName followers avatar_url userId email"
+        const followings = currentUser.followings;
+        const productPromises = followings.map(e => {
             return Product.find({ user: e }).populate("user", option)
-        }))
+        });
+
+        const allProduct = await Promise.all(productPromises);
+
         res.status(200).json({
             success: allProduct ? true : false,
             message: allProduct ? "Success" : "Failed",
             products: allProduct ? allProduct.flat() : null
-        })
+        });
 
     } catch (error) {
         return res.status(500).json({
@@ -316,8 +324,8 @@ const insertProductsData = async (req, res) => {
                     slug: slugify(item.title),
                     star: star[indexStar], views: 10,
                     sold: item.solid ? item.solid?.replace(".", "") : 0,
-                    old_price: item.old_price ? item.old_price?.replace(".", "") : 150000,
-                    new_price: item.new_price ? item.new_price?.replace(".", "") : 200000,
+                    old_price: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
+                    new_price: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
                     in_stock: 1000,
                     discount: item.discount ? item.discount : 15,
                     category_code,

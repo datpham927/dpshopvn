@@ -100,7 +100,7 @@ const RenderUi: React.FC<{ orders: IOrderItem[]; tab: number }> = ({ orders, tab
                                     </TableCell>
                                     <TableCell align="center">{formatMoney(order.totalPrice)}</TableCell>
                                     <TableCell align="center" sx={{ minWidth: '150px' }}>
-                                        {![1, 5, 6].includes(tab) && (
+                                        {![1, 5, 6]?.includes(tab) && (
                                             <p
                                                 className="text-sm text-primary underline cursor-pointer"
                                                 onClick={() => handleConfirm(order._id)}

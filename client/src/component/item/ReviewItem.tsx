@@ -40,7 +40,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
             dispatch(setOpenFeatureAuth(true));
             return;
         }
-        if (likesReviews.includes(currentUser._id)) {
+        if (likesReviews?.includes(currentUser._id)) {
             setLikesReviews(() => likesReviews.filter((e) => e != currentUser._id));
             await apiUnlikeComment(_id);
         } else {

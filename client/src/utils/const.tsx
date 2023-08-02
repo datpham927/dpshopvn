@@ -10,6 +10,7 @@ export const path = {
     PAGE_USER: '/user/account',
     PAGE_CART: '/cart',
     PAGE_PAYMENT: '/payment',
+    FORGET_PASSWORD: '/reset_password/:token',
 };
 
 export const SEARCH_UTILITY = [

@@ -28,7 +28,7 @@ const ShopPage: React.FC = () => {
     const [shop, setShop] = useState<UserDetail>();
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector((state) => state.user);
-    const { isLoginSuccess } = useAppSelector((state) => state.auth);
+    const { isLoginSuccess ,userOnline} = useAppSelector((state) => state.auth);
     const [followers, setFollowers] = useState<Array<string>>([]);
     const { sid } = useParams<{ sid: string }>();
     useEffect(() => {
@@ -49,7 +49,7 @@ const ShopPage: React.FC = () => {
             showNotification('Không thể theo dõi chính bạn!', false);
             return;
         }
-        if (followers.includes(currentUser._id)) {
+        if (followers?.includes(currentUser._id)) {
             setFollowers((user) => user.filter((i) => i !== currentUser._id));
             await apiUnFollowingUser(shop?._id);
         } else {

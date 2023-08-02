@@ -23,7 +23,7 @@ const ProductDescription: React.FC<{ productDetail: ProductDetail }> = ({ produc
             <div className="my-5 bg-white rounded-sm px-6 py-4">
                 <h1 className="text-xl  font-medium">Mô tả sản phẩm</h1>
                 <ul className="flex flex-col gap-1  mt-3">
-                    {!description.includes('<')
+                    {!description?.includes('<')
                         ? description.split(', ')?.map((item) =>
                               item === item.toUpperCase() ? (
                                   <h2 key={uuidv4()} className="text-base font-semibold mt-1">

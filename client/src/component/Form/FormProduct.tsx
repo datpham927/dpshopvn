@@ -3,7 +3,7 @@ import slugify from 'slugify';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CloseIcon from '@mui/icons-material/Close';
 import { apiCreateProduct, apiGetAllBrandByCategory, apiUpdateProduct } from '../../services/apiProduct';
-import { IProductItem, ProductDetail } from '../../interfaces/interfaces';
+import {   ProductDetail } from '../../interfaces/interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { InputEditor, InputForm, Overlay, SelectOptions, showNotification } from '..';
 import ButtonOutline from '../buttonOutline';
@@ -77,6 +77,7 @@ const FormProduct: React.FC<IFormProduct> = ({ setIsOpen, setProducts, productEd
             discount,
             old_price,
             in_stock,
+            new_price: old_price - (old_price * discount) / 100,
             images: imagesUrl,
             image_url: imagesUrl[0],
             brand: selectBrand,

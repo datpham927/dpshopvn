@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { IProductItem } from '../../../../interfaces/interfaces';
+import { ProductDetail } from '../../../../interfaces/interfaces';
 import { FormProduct } from '../../../../component';
 interface ICreateProduct {
-    setProducts: React.Dispatch<React.SetStateAction<IProductItem[]>>;
+    setProducts: React.Dispatch<React.SetStateAction<ProductDetail[]>>;
 }
 const CreateProduct: React.FC<ICreateProduct> = ({ setProducts }) => {
     const [openForm, setOpenForm] = useState<boolean>(false);

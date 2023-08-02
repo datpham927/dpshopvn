@@ -18,7 +18,7 @@ export const orderSlice = createSlice({
     initialState,
     reducers: {
         setAddProductInCartFromApi: (state, action) => {
-            if (action.payload?.length > 0) {
+            if (action.payload?.length >= 0) {
                 state.productInCart = action.payload;
             }
         },

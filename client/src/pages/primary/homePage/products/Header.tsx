@@ -1,6 +1,7 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { SEARCH_UTILITY } from '../../../../utils/const';
+import { Skeleton } from '@mui/material';
 
 interface PropsInterface {
     setOptionTab: React.Dispatch<React.SetStateAction<number>>;
@@ -8,9 +9,14 @@ interface PropsInterface {
 }
 
 const Header: React.FC<PropsInterface> = ({ setOptionTab, optionTab }) => {
+    
     return (
-        <div className="flex flex-col gap-1 w-full h-full mt-[-15px]  sticky top-0 right-0 bg-background_primary pt-4 pb-1  z-100">
-            <div className="px-4 py-2 rounded-sm text-xl font-normal bg-white">Gợi ý hôm nay</div>
+        <div className="flex flex-col gap-1 w-full h-full mt-[-15px] z-10 sticky top-0 right-0 bg-background_primary pt-4 pb-1  z-100">
+            {SEARCH_UTILITY.length > 0 ? (
+                <div className="px-4 py-2 rounded-sm text-xl font-normal bg-white">Gợi ý hôm nay</div>
+            ) : (
+                <Skeleton variant="text" width={'200px'} height={'60px'} />
+            )}
             <div className="grid grid-cols-8 gap-4 ">
                 {SEARCH_UTILITY.map((e) => (
                     <div
