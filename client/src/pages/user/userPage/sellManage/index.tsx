@@ -6,11 +6,13 @@ import RenderUi from './RenderUI';
 import { setAllOrdersSold, setLoadDataOrderSold } from '../../../../redux/features/orderSold/orderSoldSlice';
 import { IOrderItem } from '../../../../interfaces/interfaces';
 import * as XLSX from 'xlsx';
-import { formatUserName } from '../../../../utils/formatUserName';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { statusOrder } from '../../../../utils/statusOrder';
 import { formatMoney } from '../../../../utils/formatMoney';
 import ButtonOutline from '../../../../component/buttonOutline';
 import { showNotification } from '../../../../component';
+import { Link } from 'react-router-dom';
+import { path } from '../../../../utils/const';
 
 const SellManage: React.FC = () => {
     const {
@@ -121,11 +123,15 @@ const SellManage: React.FC = () => {
         showNotification('Không có đơn hàng nào!', true);
     };
     return (
-        <div className="w-full h-full">
-            <div className="w-full sticky top-0 grid grid-cols-6 bg-white rounded-sm overflow-hidden">
+        <div className="fixed-mobile w-full h-full bg-white">
+            <Link to={`${path.PAGE_USER}`} className=" absolute top-2 left-4 text-secondary laptop:hidden ">
+                <ChevronLeftIcon fontSize="large" />
+            </Link>
+            <h1 className=" my-3 text-center  text-1xl text-primary laptop:hidden ">Quản lý bán hàng</h1>
+            <div className="tablet:flex tablet:overflow-x-auto tablet:bg-white  laptop:w-full sticky top-0 grid grid-cols-6 bg-white rounded-sm overflow-hidden">
                 {SELL_TAB.map((e) => (
                     <div
-                        className={`flex sticky top-0 w-full justify-center text-sm py-3 items-center py-2 border-b-[2px] border-solid cursor-pointer ${
+                        className={`flex tablet:w-4/12 tablet:shrink-0  sticky top-0 laptop:w-full justify-center text-sm py-3 items-center py-2 border-b-[2px] border-solid cursor-pointer ${
                             displayTab === e.tab ? 'text-primary border-primary' : 'text-secondary border-transparent'
                         }`}
                         onClick={() => setDisplayTab(e.tab)}

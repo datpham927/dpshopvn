@@ -109,7 +109,7 @@ const FormProduct: React.FC<IFormProduct> = ({ setIsOpen, setProducts, productEd
             }}
         >
             <div
-                className="relative w-8/12 h-[90%] bg-white  p-6 rounded-md"
+                className="relative tablet:w-full w-8/12 h-[90%] bg-white  p-6 rounded-md"
                 onClick={(e) => {
                     e.stopPropagation();
                     setIsOpen && setIsOpen(true);

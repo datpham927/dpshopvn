@@ -4,7 +4,7 @@ import { ListCategory, SearchByBrand, SearchByPrice, SearchByRating }  from '../
 
 const FilterPanel: React.FC = () => {
     return (
-        <div className="w-2/12 pr-2 bg-white mt-1">
+        <div className="tablet:hidden w-2/12 pr-2 bg-white mt-1">
             <div className="w-full h-full  py-2 pl-4 ">
                 <div className="flex items-center gap-1">
                     <FilterAltOutlinedIcon fontSize="small" />

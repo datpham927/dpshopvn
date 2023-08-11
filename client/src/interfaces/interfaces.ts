@@ -45,17 +45,18 @@ interface ProductDetail extends IProductItem {
 }
 
 interface UserProfile {
+    _id: string;
     address: string;
     lastName: string;
     firstName: string;
-    mobile: string;
+    tablet: string;
     avatar_url: string;
     email: string;
 }
 interface UserDetail extends UserProfile {
-    _id: string;
     isAdmin: boolean;
     confirm: boolean;
+    mobile: number;
     totalProduct: number;
     createdAt: string;
     followings: Array<string>;
@@ -154,7 +155,14 @@ interface INotification {
     user_name?: string;
     is_watched?: boolean;
 }
+
+interface Conversation {
+    _id: '';
+    members: UserProfile[];
+    isWatched?: boolean;
+}
 export type {
+    Conversation,
     Category,
     UserProfile,
     UserDetail,

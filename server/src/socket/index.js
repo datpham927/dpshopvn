@@ -35,8 +35,6 @@ const createSocket = (httpServer) => {
 
         socket.on("sendNotification", (data) => {
             const user = getUserByUserId(data.shopId);
-            console.log("onlineUsers",onlineUsers)
-            console.log("data",data.shopId)
             if (user) {
                 socket.to(user.socketId).emit('getNotification', data, function (ack) {
                     if (ack) {
@@ -51,9 +49,21 @@ const createSocket = (httpServer) => {
         });
 
 
-
-
-
+         // gửi tin nhắn 
+         socket.on("sendMessage", (data) => {
+            const user = getUserByUserId(data.receiver);
+            if (user) {
+                socket.to(user.socketId).emit('getMessage', data, function (ack) {
+                    if (ack) {
+                        console.log('Tin nhắn đã được gửi thành công đến socket', user.socketId);
+                        // Xử lý logic sau khi tin nhắn được gửi thành công
+                    } else {
+                        console.log('Gửi tin nhắn thất bại đến socket', user.socketId);
+                        // Xử lý logic khi tin nhắn gửi thất bại
+                    }
+                });
+            }
+        });
         socket.on("disconnect", () => {
             removeUser(socket.id);
             io.emit("getUser", onlineUsers);

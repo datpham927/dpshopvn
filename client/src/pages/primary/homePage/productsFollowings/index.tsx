@@ -33,13 +33,27 @@ const ProductFollowings: React.FC = () => {
                     </div>
                     <div className="relative">
                         <Swiper
-                            slidesPerView={6}
                             loop={false}
                             allowTouchMove={false}
                             slidesPerGroup={3}
                             navigation={true}
                             modules={[Navigation]}
                             className="mySwiper"
+                            breakpoints={{
+                                1: {
+                                    slidesPerView: 2,
+                                    slidesPerGroup: 1,
+                                    allowTouchMove: true,
+                                },
+                                740: {
+                                    slidesPerView: 4,
+                                    slidesPerGroup: 2,
+                                },
+                                1024: {
+                                    slidesPerView: 6,
+                                    slidesPerGroup: 3,
+                                },
+                            }}
                         >
                             {products?.map((p) => {
                                 return (

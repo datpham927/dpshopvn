@@ -10,7 +10,8 @@ import { setDetailUser } from '../redux/features/user/userSlice';
 import { Footer, Header, Loading } from '../component';
 import { useLocation } from 'react-router-dom';
 import { path } from '../utils/const';
-
+import { BottomNavigate } from '../component/mobile/BottomNavigate';
+import Chat from '../component/chat';
 
 interface DefaultLayoutProps {
     children: React.ReactNode;
@@ -18,7 +19,6 @@ interface DefaultLayoutProps {
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     const dispatch = useAppDispatch();
     // chi tiết user
- 
 
     useEffect(() => {
         const fetchApiDetailUser = async () => {
@@ -47,14 +47,19 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         />
     );
     const location = useLocation();
+    const { mobile_ui } = useAppSelector((state) => state.action);
     return (
         <>
             <div className="flex flex-col w-screen h-full mx-auto  bg-background_primary">
                 {!location.pathname.includes(path.PAGE_PAYMENT) && <Header />}
-                <main className="flex flex-col h-full max-w-7xl min-w-[1280px]  px-5  mx-auto  ">{children}</main>
-                <Footer />
+                <main className="flex flex-col tablet:pb-20 bg-background_primary  h-full w-full max-w-[1280px] tablet:px-0 px-5  mx-auto  ">
+                    {children}
+                </main>
+                {!mobile_ui && <Footer />}
                 <Auth />
                 <Loading />
+                <Chat />
+                <BottomNavigate />
             </div>
             {toastContainer}
         </>

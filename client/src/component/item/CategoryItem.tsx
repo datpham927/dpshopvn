@@ -13,7 +13,7 @@ const CategoryItem: React.FC<{ props: Category }> = ({ props }) => {
             <div className="w-2/3">
                 <img className="w-full h-full  px-3 rounded-lg object-fill" src={category_image} />
             </div>
-            <p className="text-xs px-2 text-center">{category}</p>
+            <p className="text-xs px-2 text-center truncate-trailing line-clamp-2 ">{category}</p>
         </Link>
     );
 };

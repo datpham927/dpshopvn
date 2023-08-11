@@ -4,10 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import queryString from 'query-string';
 import { IProductItem } from '../../interfaces/interfaces';
-import { useAppDispatch } from '../../redux/hooks';
-import { setIsLoading } from '../../redux/features/action/actionSlice';
 import { NotFound, Pagination, ProductItem, SkeletonProducts } from '..';
 import { getAllProduct } from '../../services/apiProduct';
+import { useAppSelector } from '../../redux/hooks';
 
 const RenderListProducts: React.FC = () => {
     const location = useLocation();
@@ -70,7 +69,7 @@ const RenderListProducts: React.FC = () => {
             {!isLoading ? (
                 products?.length !== 0 ? (
                     <>
-                        <div className="grid grid-cols-6 ">
+                        <div className="grid mobile:grid-cols-2  tablet:grid-cols-4  laptop:grid-cols-6 ">
                             {products.map((p, index) => (
                                 <ProductItem key={uuidv4()} props={p} scrollIntoView={index === 0} />
                             ))}

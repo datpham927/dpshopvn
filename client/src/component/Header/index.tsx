@@ -6,25 +6,19 @@ import { getCategories } from '../../services/apiCategory';
 import { setCategories } from '../../redux/features/category/categorySlice';
 import HeaderTop from './headerTop';
 import HeaderBottom from './headerBottom';
-import { Socket, io } from 'socket.io-client';
 import { setUserOnline } from '../../redux/features/auth/authSlice';
-import { setSocketRef } from '../../redux/features/action/actionSlice';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const currenUser = useAppSelector((state) => state.user);
-    const socketRef = useRef<Socket | null>(null);
+    const { socketRef } = useAppSelector((state) => state.action);
+
     useEffect(() => {
-        //ws <=> http
-        socketRef.current = io("http://localhost:4000");
-        dispatch(setSocketRef(socketRef.current));
-    }, []);
-    useEffect(() => {
-        if (socketRef.current) {
-            socketRef.current.emit('addUser', currenUser._id);
-            socketRef.current.on('getUser', (e) => {
+        if (socketRef) {
+            socketRef.emit('addUser', currenUser._id);
+            socketRef.on('getUser', (e) => {
                 dispatch(setUserOnline(e));
             });
         }
@@ -43,8 +37,8 @@ const Header: React.FC = () => {
     }, []);
 
     return (
-        <header className="h-auto w-full bg-primary z-[999]">
-            <div className="w-full h-full flex flex-col max-w-7xl min-w-[1280px] m-auto ">
+        <header className="h-auto w-full tablet:bg-transparent tablet:bg-[url(https://salt.tikicdn.com/ts/banner/0f/65/5a/cc78315d8fe4d78ac876e8f9005a5cbb.png)] tablet:pb-2  bg-primary  ">
+            <div className="w-full h-full flex flex-col   max-w-[1280px] m-auto  ">
                 <HeaderTop />
                 <HeaderBottom />
             </div>

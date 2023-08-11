@@ -25,13 +25,24 @@ export const SimilarProducts: React.FC<{ category_code: string }> = ({ category_
                     <div className="text-2xl  px-6">Sản Phẩm Tương Tự</div>
                     <div className="flex w-full h-full">
                         <Swiper
-                            slidesPerView={6}
                             loop={false}
                             allowTouchMove={false}
                             navigation={true}
                             slidesPerGroup={3}
                             modules={[Navigation]}
                             className="mySwiper"
+                            breakpoints={{
+                                1: {
+                                    slidesPerView:2,
+                                    allowTouchMove: true,
+                                },   740: {
+                                    slidesPerView: 4,
+                                    slidesPerGroup: 2,
+                                },
+                                1024: {
+                                    slidesPerView: 6,
+                                },
+                            }}
                         >
                             {products?.map((item) => {
                                 return (

@@ -4,6 +4,7 @@ export const path = {
     HOME: '/',
     DETAILPRODUCT: '/:slug/:pid',
     PAGE_CATEGORY: '/danh-muc/:category_slug/:cid',
+    PAGE_LIST_CATEGORY:"danh-sach-danh-muc",
     PAGE_BRAND: '/thuong-hieu/:brand_slug',
     PAGE_SEARCH: '/tim-kiem/:title',
     PAGE_SHOP: '/cua-hang/:name_shop/:sid',
@@ -11,6 +12,7 @@ export const path = {
     PAGE_CART: '/cart',
     PAGE_PAYMENT: '/payment',
     FORGET_PASSWORD: '/reset_password/:token',
+    FOLLOWING:"follow"
 };
 
 export const SEARCH_UTILITY = [
@@ -172,3 +174,28 @@ export const SELL_TAB = [
         title: 'Đã hủy',
     },
 ];
+
+ 
+export const BOTTOM_NAVIGATE_MOBILE=[
+    {
+        label:"Trang chủ",
+        logo:"https://frontend.tikicdn.com/_mobile-next/static/img/home/navigation/home.png",
+        link:path.HOME
+    },{
+        label:"Danh mục",
+        logo:"https://frontend.tikicdn.com/_mobile-next/static/img/home/navigation/cate.png",
+        link:path.PAGE_LIST_CATEGORY
+    },{
+        label:"Theo dõi",
+        logo:"https://frontend.tikicdn.com/_mobile-next/static/img/home/navigation/account.png",
+        link:"/follow"
+    },{
+        label:"Chat",
+        logo:"https://salt.tikicdn.com/ts/upload/b6/cb/1d/34cbe52e6c2566c5033103c847a9d855.png",
+        link:"/message"
+    },{
+        label:"Cá nhân",
+        logo:"https://frontend.tikicdn.com/_mobile-next/static/img/home/navigation/account.png",
+        link:path.PAGE_USER
+    }
+]

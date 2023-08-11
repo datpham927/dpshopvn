@@ -7,10 +7,11 @@ import { getAllProduct } from '../../../../services/apiProduct';
 import { IProductItem } from '../../../../interfaces/interfaces';
 import { CartShockDiscount, SkeletonProducts } from '../../../../component';
 import { Skeleton } from '@mui/material';
+import { useAppSelector } from '../../../../redux/hooks';
 
 const ShockDiscount: React.FC = () => {
     const [products, setProducts] = useState<IProductItem[]>([]);
-
+    const { mobile_ui } = useAppSelector((state) => state.action);
     useEffect(() => {
         const fetchProducts = async () => {
             const res = await getAllProduct({ sort: '-discount', limit: 10 });
@@ -37,13 +38,27 @@ const ShockDiscount: React.FC = () => {
             <div className="relative">
                 {products.length > 0 ? (
                     <Swiper
-                        slidesPerView={6}
                         loop={false}
                         allowTouchMove={false}
                         slidesPerGroup={3}
                         navigation={true}
                         modules={[Navigation]}
                         className="mySwiper"
+                        breakpoints={{
+                            1: {
+                                slidesPerView: 2,
+                                slidesPerGroup: 1,
+                                allowTouchMove: true,
+                            },
+                            740: {
+                                slidesPerView: 4,
+                                slidesPerGroup: 2,
+                            },
+                            1024: {
+                                slidesPerView: 6,
+                                slidesPerGroup: 3,
+                            },
+                        }}
                     >
                         {products.map((p) => {
                             return (
@@ -54,7 +69,7 @@ const ShockDiscount: React.FC = () => {
                         })}
                     </Swiper>
                 ) : (
-                    <SkeletonProducts index={6} />
+                    <SkeletonProducts index={mobile_ui ? 2 : 6} />
                 )}
             </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
- 
+
 import { showNotification } from '../..';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
@@ -41,7 +41,7 @@ const User: React.FC = () => {
                     <span className="flex items-center shrink-0 cursor-pointer">
                         <img className="w-6 h-6 object-cover rounded-full" src={avatar_url ? avatar_url : noUser} />
                     </span>
-                    <div className="text-sm font-normal text-white cursor-pointer ml-2 mr-4">
+                    <div className="tablet:hidden text-sm font-normal text-white cursor-pointer ml-2 mr-4">
                         <span>{name}</span>
                     </div>
                     {/* menu */}
@@ -72,7 +72,8 @@ const User: React.FC = () => {
                         className="flex flex-col mx-1 cursor-pointer"
                         onClick={() => dispatch(setOpenFeatureAuth(true))}
                     >
-                        <div className="text-sm font-normal text-white">
+                        <img className="laptop:hidden w-5 h-5 rounded-full" src={noUser} />
+                        <div className="tablet:hidden text-sm font-normal text-white">
                             <span>Đăng nhập</span> / <span>Đăng ký</span>
                         </div>
                     </div>

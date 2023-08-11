@@ -36,14 +36,14 @@ const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean
         }
     };
 
-    const quantity=useDebounce(product.quantity,500)
+    const quantity = useDebounce(product.quantity, 500);
 
     useEffect(() => {
         const fetchApiUpdateCart = async () => {
             // dispatch(setIsLoading(true))
             await apiAddToCart(product);
-            dispatch(setProductsByShopId())
-            dispatch(setIsLoading(false))
+            dispatch(setProductsByShopId());
+            dispatch(setIsLoading(false));
         };
         fetchApiUpdateCart();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,11 +51,11 @@ const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean
 
     return (
         <div
-            className={`flex bg-white px-3  justify-between rounded-lg items-center  ${
+            className={`flex tablet:flex-col bg-white px-3  justify-between rounded-lg items-center  ${
                 isSelector ? 'border-solid border-b-[1px] border-separate py-6' : 'py-2'
             }`}
         >
-            <div className="w-[35%] flex gap-3">
+            <div className="tablet:w-full w-[35%] flex gap-3">
                 {isSelector && (
                     <input
                         className="cursor-pointer"
@@ -87,17 +87,21 @@ const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean
                     {product?.productId?.title}
                 </span>
             </div>
-            <div className={`w-[60%] grid ${isSelector ? 'grid-cols-4 ' : 'grid-cols-3'} text-center justify-between`}>
+            <div
+                className={`tablet:w-full tablet:flex  tablet:justify-end  w-[60%] grid ${
+                    isSelector ? 'grid-cols-4 ' : 'grid-cols-3'
+                } text-center laptop:justify-between`}
+            >
                 <div className="flex gap-1 items-center justify-center">
-                    <span className="text-sm">{formatMoney(product?.productId?.new_price)}</span>
+                    <span className="tablet:text-red_custom text-sm">{formatMoney(product?.productId?.new_price)}</span>
                     {isSelector && (
-                        <span className="text-xs text-secondary line-through">
+                        <span className="tablet:hidden text-xs text-secondary line-through">
                             {formatMoney(product?.productId?.old_price)}
                         </span>
                     )}
                 </div>
                 <div
-                    className={`flex items-center mx-auto w-fit rounded-md ${
+                    className={`flex items-center tablet:mx-6 mx-auto w-fit rounded-md ${
                         isSelector ? ' border-[1px] border-solid  border-separate ' : ''
                     }`}
                 >
@@ -128,7 +132,7 @@ const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean
                         </span>
                     )}
                 </div>
-                <span className="text-sm text-red_custom">{formatMoney(product?.totalPrice)}</span>
+                <span className="tablet:hidden text-sm text-red_custom">{formatMoney(product?.totalPrice)}</span>
                 {isSelector && (
                     <span
                         className="cursor-pointer"

@@ -109,7 +109,6 @@ const FormReviews: React.FC<FormReviewsProps> = ({
         };
         const response = await apiCreateNotification(notification);
         //--------------- socket
-        console.log('response.data', response.data);
         response.success && socketRef.current?.emit('sendNotification', response.data);
         // -------------------
         setReviews && setReviews((e) => [{ ...res.data, user: currentUser }, ...e]);
@@ -165,7 +164,7 @@ const FormReviews: React.FC<FormReviewsProps> = ({
             }}
         >
             <div
-                className="flex flex-col w-1/2 h-auto bg-white p-4 rounded-md gap-6"
+                className="flex flex-col tablet:w-full laptop:w-1/2 h-auto bg-white p-4 rounded-md gap-6"
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpenFormReview && setOpenFormReview(true);

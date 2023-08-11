@@ -44,7 +44,7 @@ const InfoShop: React.FC<{ shop: InfoShop }> = ({ shop }) => {
         }
     };
     return (
-        <div className="w-[240px] h-auto border-[1px] border-solid py-3 border-slate-200 rounded-sm px-3">
+        <div className="tablet:w-full w-[240px] h-auto border-[1px] border-solid py-3 border-slate-200 rounded-sm px-3">
             <div className="flex items-center w-full h-auto gap-2">
                 <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden">
                     <img

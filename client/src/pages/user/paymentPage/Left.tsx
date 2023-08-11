@@ -22,7 +22,7 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
     const { productsByShopId } = useAppSelector((state) => state?.order);
 
     return (
-        <div className="w-4/6 relative py-3">
+        <div className="tablet:w-full w-4/6 relative py-3">
             <div className="flex flex-col bg-white rounded-md gap-10 p-6 mb-2">
                 <div>
                     <h1 className="text-lg mb-3 font-medium">{DELIVERY_METHOD.title}</h1>

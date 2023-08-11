@@ -41,11 +41,13 @@ const Products: React.FC = () => {
 
     return (
         <div className="w-full h-full ">
-            <Header optionTab={optionTab} setOptionTab={setOptionTab} />
+            <Header optionTab={optionTab} setOptionTab={setOptionTab} isLoading={isLoading} />
             {isLoading ? (
                 <SkeletonProducts index={12} />
             ) : (
-                <ListProducts hiddenButton={hiddenButton} products={products} setPage={setPage} />
+                products.length > 0 && (
+                    <ListProducts hiddenButton={hiddenButton} products={products} setPage={setPage} />
+                )
             )}
         </div>
     );
