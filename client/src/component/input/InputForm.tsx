@@ -2,7 +2,7 @@ import React from 'react';
 
 interface InputFormProps {
     name_id: string;
-    label: string;
+    label?: string;
     value: string | number;
     col?: boolean;
     type?: string;
@@ -23,12 +23,12 @@ const InputForm: React.FC<InputFormProps> = ({
 }) => {
     return (
         <div className={`flex ${col ? 'flex-col' : ''} w-full h-auto gap-3 items-center`}>
-            <label
+        {   label&& <label
                 htmlFor={name_id}
-                className={`flex ${!col ? 'justify-end  w-1/2' : 'justify-start w-full'} text-sm text-secondary`}
+                className={`flex ${!col ? 'justify-end  w-1/2' : 'justify-start w-full'} text-sm text-secondary `}
             >
                 {label}
-            </label>
+            </label>}
             <div className="w-full">
                 <input
                     id={name_id}
@@ -39,6 +39,7 @@ const InputForm: React.FC<InputFormProps> = ({
                     type={type}
                 />
             </div>
+           
             {invalidFields?.some((i) => i.name === name_id) && (
                 <div className="flex w-full justify-start text-xs text-red_custom">Không được để trống</div>
             )}

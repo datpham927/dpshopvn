@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Link } from 'react-router-dom';
 import { Pagination } from '../../../../component';
 import { getAllProductUser } from '../../../../services/apiProduct';
 import { IProductItem, ProductDetail } from '../../../../interfaces/interfaces';
@@ -9,6 +11,7 @@ import useDebounce from '../../../../Hook/useDebounce';
 import TableProducts from './TableProducts';
 import CreateProduct from './CreateProduct';
 import FilterProduct from './FilterProduct';
+import { path } from '../../../../utils/const';
 
 interface IQueries {
     createdAt: string;
@@ -48,8 +51,11 @@ const ProductManage: React.FC = () => {
         });
     }, [currentPage]);
     return (
-        <div className="w-full h-full bg-white px-4 pb-6">
-            <h1 className="text-1xl text-primary m-5 ">Quản lý sản phẩm</h1>
+        <div className="fixed-mobile w-full h-full bg-white px-4 pb-6">
+              <Link to={`${path.PAGE_USER}`} className=" absolute top-2 left-4 text-secondary laptop:hidden ">
+                <ChevronLeftIcon fontSize="large" />
+            </Link>
+            <h1 className=" tablet:my-3 tablet:text-center  text-1xl text-primary laptop:m-5 ">Quản lý sản phẩm</h1>
             <CreateProduct  setProducts={setProducts}/>
             <FilterProduct queries={queries} setQueries={setQueries} />
             <TableProducts products={products} setProducts={setProducts} />

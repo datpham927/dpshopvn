@@ -11,13 +11,14 @@ const initialState: UserDetail = {
     email: '',
     isAdmin: false,
     address: '',
-    mobile: '',
+    tablet: '',
     avatar_url: '',
     createdAt: '',
     confirm: false,
     totalProduct: 0,
     followings: [],
-    followers: []
+    followers: [],
+    mobile:0
 };
 
 export const userSlice = createSlice({

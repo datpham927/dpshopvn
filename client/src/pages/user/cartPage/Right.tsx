@@ -38,7 +38,7 @@ const Right: React.FC = () => {
 
     return (
         <>
-            <div className="w-2/6 ">
+            <div className="tablet:w-full w-2/6 ">
                 <div className="flex w-full flex-col gap-3 bg-background_primary py-3 px-5 sticky top-0 left-0">
                     <DeliveryAddress />
                     {/* ----------------------- */}

@@ -3,7 +3,12 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardControlKeyIcon from '@mui/icons-material/KeyboardControlKey';
 import CloseIcon from '@mui/icons-material/Close';
 import { v4 as uuidv4 } from 'uuid';
-import { addSearchHistory, deleteSearchHistory, getSearchHistories, getSuggestResult } from '../../../services/apiSearch';
+import {
+    addSearchHistory,
+    deleteSearchHistory,
+    getSearchHistories,
+    getSuggestResult,
+} from '../../../services/apiSearch';
 import useDebounce from '../../../Hook/useDebounce';
 import { getAllProduct } from '../../../services/apiProduct';
 import { Link, useNavigate } from 'react-router-dom';
@@ -198,10 +203,16 @@ const Search: React.FC = () => {
     );
 
     return (
-        <div className="flex justify-between w-8/12">
+        <div className="flex justify-between  tablet:w-full w-8/12">
             <div className="flex flex-col gap-2 w-full">
                 <div className="bg-white flex  rounded-[2px] w-full h-search z-50">
-                    <div id="search" className="relative flex items-center w-full h-full pr-4 ">
+                    <div id="search" className="relative flex items-center w-full h-full tablet:p-0 pr-4 ">
+                        <button className="laptop:hidden outline-none h-full px-2" onClick={handleSummit}>
+                            <img
+                                className="w-6 h-6"
+                                src="https://salt.tikicdn.com/ts/upload/34/62/0c/6ae13efaff83c66f810c4c63942cf6c0.png"
+                            />
+                        </button>
                         <input
                             onFocus={() => {
                                 setOpenSearchResults(true);
@@ -225,7 +236,7 @@ const Search: React.FC = () => {
                         )}
                     </div>
                     <button
-                        className="outline-none bg-[rgb(9,115,69)] w-[150px] h-[40px] text-white rounded-r-[2px]"
+                        className="tablet:hidden outline-none bg-[rgb(9,115,69)] w-[150px] h-[40px] text-white rounded-r-[2px]"
                         onClick={handleSummit}
                     >
                         <SearchIcon /> <span> Tìm kiếm </span>

@@ -8,7 +8,7 @@ import { path } from '../../../utils/const';
 import { imgFreeShip } from '../../../assets';
 import { setCreateOrder } from '../../../services/apiOrder';
 import { setRemoveProductInCart, setSelectedProductsEmpty } from '../../../redux/features/order/orderSlice';
-import { setIsLoading, setSocketRef } from '../../../redux/features/action/actionSlice';
+import { setIsLoading, setNotifications, setSocketRef } from '../../../redux/features/action/actionSlice';
 import { INotification } from '../../../interfaces/interfaces';
 import { apiCreateNotification } from '../../../services/apiNotification';
 import { Socket, io } from 'socket.io-client';
@@ -19,20 +19,15 @@ interface RightProps {
         paymentMethod: string;
     };
 }
-
 const Right: React.FC<RightProps> = ({ methods }) => {
     const { selectedProducts } = useAppSelector((state) => state.order);
     const [priceShip, setPriceShip] = useState<number>(0);
     const [priceFreeShip, setPriceFreeShip] = useState<number>(0);
     const currentUser = useAppSelector((state) => state.user);
+    const {socketRef} = useAppSelector((state) => state.action);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const socketRef = useRef<Socket | null>(null);
-    // useEffect(() => {
-    //     //ws <=> http
-    //     socketRef.current = io(import.meta.env.VITE_REACT_API_URL_CLIENT);
-    //     dispatch(setSocketRef(socketRef.current));
-    // }, []);
+    
     const priceMemo = useMemo(() => {
         const result = selectedProducts.reduce((total, e) => {
             return total + e.totalPrice;
@@ -63,7 +58,7 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                         village: currentUser.address.split(',')[0],
                         district: currentUser.address.split(',')[1],
                         city: currentUser.address.split(',')[2],
-                        phone: currentUser.mobile,
+                        phone: currentUser?.mobile,
                     },
                     shippingPrice: priceShip > priceFreeShip ? priceShip - priceFreeShip : 0,
                 });
@@ -77,8 +72,8 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                 selectedProducts.forEach((e) => {
                     dispatch(setRemoveProductInCart(e));
                 });
-                dispatch(setSelectedProductsEmpty());
-                // ---------------  socket  --------------- 
+
+                // ---------------  socket  ---------------
                 const notification: INotification = {
                     image_url: selectedProducts[0].productId.image_url,
                     shopId: selectedProducts[0].shopId ? selectedProducts[0].shopId : '',
@@ -89,16 +84,17 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                     link: `http://localhost:5173/user/account/sell`,
                 };
                 const response = await apiCreateNotification(notification);
-                response.success && socketRef.current?.emit('sendNotification', response.data);
-                // --------------------------------------------- 
+                response.success && socketRef?.emit('sendNotification', response.data);
+                // ---------------------------------------------
                 navigate(`${path.PAGE_USER}/purchase`);
+                dispatch(setSelectedProductsEmpty());
             }
         }
     };
 
     return (
         <>
-            <div className="w-2/6 ">
+            <div className="tablet:w-full  w-2/6 ">
                 <div className="flex w-full flex-col gap-3 bg-background_primary py-3 px-5 sticky top-0 left-0">
                     <DeliveryAddress />
                     {/* ----------------------- */}

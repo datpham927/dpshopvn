@@ -50,9 +50,9 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
     };
     return (
         <div className="w-full h-full px-6 py-4 border-b-[1px] border-solid border-b-slate-200">
-            <div className="flex w-full h-full gap-3">
+            <div className="flex tablet:flex-col w-full h-full gap-3">
                 {/* --------- user --------- */}
-                <div className="w-3/12 flex gap-3 items-start">
+                <div className="tablet:w-full laptop:w-3/12 flex gap-3 items-start">
                     <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden">
                         <img
                             className="w-full h-full block object-cover"
@@ -77,7 +77,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                     </div>
                 </div>
                 {/* ---------- content ----- */}
-                <div className="w-9/12 flex flex-col pr-6 justify-center gap-3">
+                <div className="tablet:w-full laptop:w-9/12 flex flex-col pr-6 justify-center gap-3">
                     <div className="flex flex-col w-full h-full gap-2 ">
                         {isBought && (
                             <div className="flex w-full h-full  gap-2 items-center">
@@ -106,13 +106,27 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                    <span className="text-sm text-capitalize">{comment} </span>
                         <ul className="w-full h-full">
                             <Swiper
-                                slidesPerView={4}
                                 loop={false}
                                 allowTouchMove={false}
                                 navigation={true}
                                 spaceBetween={20}
                                 modules={[Navigation]}
                                 className="mySwiper"
+                                breakpoints={{
+                                    1: {
+                                        slidesPerView: 1,
+                                        slidesPerGroup: 1,
+                                        allowTouchMove: true,
+                                    },
+                                    740: {
+                                        slidesPerView: 2,
+                                        slidesPerGroup: 2,
+                                    },
+                                    1024: {
+                                        slidesPerView:4,
+                                        slidesPerGroup: 3,
+                                    },
+                                }}
                             >
                                 {images?.map((i) => (
                                     <SwiperSlide key={uuidv4()}>

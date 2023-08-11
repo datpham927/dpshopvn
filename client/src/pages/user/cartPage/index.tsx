@@ -14,7 +14,7 @@ const CartPage: React.FC = () => {
         <div className="w-full h-full">
             <h1 className="py-4 text-2xl">Giỏ hàng</h1>
             {productInCart?.length > 0 ? (
-                <div className="flex pb-8 gap-2">
+                <div className="flex tablet:flex-col pb-8 gap-2">
                     <Left />
                     <Right />
                 </div>

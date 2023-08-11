@@ -124,21 +124,21 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
         <div ref={reviewRef} className="flex flex-col gap-4 bg-white  py-4 px-6">
             <div className="flex flex-col w-full  gap-4 ">
                 <h1 className="text-xl font-normal">Đánh giá sản phẩm</h1>
-                <div className="flex items-center bg-blue-50 p-6 gap-10  border-solid border-[1px]  border-blue-200 rounded-sm ">
+                <div className="flex tablet:flex-col tablet:p-3 items-center bg-blue-50  laptop:p-6 gap-10  border-solid border-[1px]  border-blue-200 rounded-sm ">
                     <div className="flex flex-col gap-2 items-center justify-center">
                         <h2 className="text-2xl text-red_custom">{averageRating} trên 5</h2>
                         <div> {formatStar(averageRating, '25px')}</div>
                     </div>
-                    <div className="flex gap-5">
+                    <div className="flex tablet:gap-1 tablet:w-full tablet:h-full tablet:overflow-x-auto laptop:gap-5 ">
                         <button
-                            className={`option-rating-review   ${optionRating === 0 ? 'border-primary' : ''} `}
+                            className={`option-rating-review shrink-0 ${optionRating === 0 ? 'border-primary' : ''} `}
                             onClick={() => setOptionRating(0)}
                         >
                             Tất cả ({ratings?.length})
                         </button>
                         {starsByType?.map((i) => (
                             <button
-                                className={`option-rating-review  ${i.type === optionRating ? 'border-primary' : ''}`}
+                                className={`option-rating-review shrink-0 ${i.type === optionRating ? 'border-primary' : ''}`}
                                 onClick={() => {
                                     setOptionRating(i.type);
                                     setCurrentPage(0);

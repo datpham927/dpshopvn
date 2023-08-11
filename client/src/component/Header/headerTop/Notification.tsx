@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { Link } from 'react-router-dom';
 import {
     setNotifications,
-    setNotificationsApi,
     setUnreadNotifications,
     setUnreadNotificationsEmpty,
 } from '../../../redux/features/action/actionSlice';
@@ -31,7 +30,7 @@ const Notification: React.FC = () => {
     useEffect(() => {
         const fetchApi = async () => {
             const res = await apiGetNotification();
-            res.success && dispatch(setNotificationsApi(res.data));
+            res.success && dispatch(setNotifications(res.data));
             dispatch(setUnreadNotifications());
         };
         fetchApi();
@@ -50,7 +49,7 @@ const Notification: React.FC = () => {
             }}
         >
             <NotificationsNoneIcon fontSize="small" />
-            <span className="text-sm">Thông báo</span>
+            <span className="tablet:hidden text-sm">Thông báo</span>
             <div className="absolute text-[13px] px-[5px]  rounded-[50%] bottom-1 left-2 h-fit bg-[#A769FD]">
                 {unreadNotification.length}
             </div>
@@ -62,7 +61,7 @@ const Notification: React.FC = () => {
                 >
                     <div className=" w-full h-full overflow-hidden ">
                         <div className="flex justify-center text-secondary py-2 ">Thông báo mới nhận</div>
-                        <div className="w-[400px] h-[400px] overflow-y-scroll">
+                        <div className="mobile:w-[300px] mobile:h-[300px] w-[400px] h-[400px] overflow-y-scroll">
                             {notifications.length > 0 ? (
                                 notifications?.map((n) => (
                                     <Link

@@ -1,11 +1,11 @@
 import React, { memo, useEffect } from 'react';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useNavigate } from 'react-router-dom';
-import { path } from '../../../utils/const';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { apiGetProductInCart } from '../../../services/apiCart';
-import { setAddProductInCartFromApi } from '../../../redux/features/order/orderSlice';
-import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
+import { path } from '../../utils/const';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { apiGetProductInCart } from '../../services/apiCart';
+import { setAddProductInCartFromApi } from '../../redux/features/order/orderSlice';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 // eslint-disable-next-line react-refresh/only-export-components
 const Cart: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -25,7 +25,7 @@ const Cart: React.FC = () => {
     }, [isLoginSuccess]);
 
     return (
-        <div className="flex w-2/12 h-search  items-center justify-center pr-2">
+        <div className="flex laptop:w-2/12 laptop:h-search items-center justify-center pr-2">
             <div
                 className="flex relative  text-white"
                 onClick={() => {

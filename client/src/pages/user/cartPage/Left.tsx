@@ -34,7 +34,7 @@ const Left: React.FC = () => {
     };
 
     return (
-        <div className="w-4/6 relative">
+        <div className="tablet:w-full w-4/6 relative">
             <div className="flex flex-col gap-2 sticky top-0 left-0 bg-background_primary py-3 ">
                 <div className="bg-white p-2">
                     <Stepper
@@ -66,7 +66,7 @@ const Left: React.FC = () => {
                         />
                         <span className="text-sm text-secondary ml-1">Tất cả ({productInCart?.length} sản phẩm)</span>
                     </div>
-                    <div className="w-[60%] grid grid-cols-4 text-center">
+                    <div className="tablet:hidden w-[60%] grid grid-cols-4 text-center">
                         <span className="text-sm text-secondary">Đơn giá</span>
                         <span className="text-sm text-secondary">Số lượng</span>
                         <span className="text-sm text-secondary">Thành tiền</span>

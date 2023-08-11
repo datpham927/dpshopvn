@@ -48,7 +48,7 @@ const OrderItem: React.FC<{ order: IOrderItem; view?: boolean }> = ({ order, vie
     };
 
     return (
-        <div className="flex flex-col  py-3 px-4 bg-white rounded-md overflow-hidden">
+        <div className="flex flex-col shrink-0 py-3 px-4 bg-white rounded-md overflow-hidden">
             <div className="flex flex-col gap-1">
                 <div className="flex gap-1 items-center">
                     <AccessTimeIcon style={{ fontSize: '15px', color: 'rgb(0 136 72)' }} />
@@ -71,7 +71,7 @@ const OrderItem: React.FC<{ order: IOrderItem; view?: boolean }> = ({ order, vie
                         <div className="w-[70px] h-[70px] mr-3 p-1 border-solid border-[1px] border-bgSecondary rounded-md overflow-hidden">
                             <img className="w-full h-full object-cover" src={p?.image_url} alt={p?.title} />
                         </div>
-                        <div className="w-2/3 flex flex-col gap-1 truncate">
+                        <div className="tablet:w-auto w-2/3 flex flex-col gap-1 truncate">
                             <h2 className="text-sm">{p?.title}</h2>
                             <div className="flex gap-1 items-center">
                                 {!view ? (
@@ -97,7 +97,7 @@ const OrderItem: React.FC<{ order: IOrderItem; view?: boolean }> = ({ order, vie
                                 {p?.quantity}
                             </div>
                         </div>
-                        <div className="flex justify-end flex-1 text-primary">{formatMoney(p?.new_price)}</div>
+                        <div className="tablet:hidden flex justify-end flex-1 text-primary">{formatMoney(p?.new_price)}</div>
                     </Link>
                 ))}
             </div>

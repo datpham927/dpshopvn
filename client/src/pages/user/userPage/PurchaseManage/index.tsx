@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Link } from 'react-router-dom';
 import { setIsLoading } from '../../../../redux/features/action/actionSlice';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { getAllOrdersBought } from '../../../../services/apiOrder';
 import { setAllOrdersBought, setLoadDataOrder } from '../../../../redux/features/orderBought/orderBoughtSlice';
 import RenderUi from './RenderUI';
 import { IOrderItem } from '../../../../interfaces/interfaces';
+import { path } from '../../../../utils/const';
 
 const PurchaseManage: React.FC = () => {
     const {
@@ -95,11 +98,15 @@ const PurchaseManage: React.FC = () => {
     }, []);
 
     return (
-        <div className="w-full h-full">
-            <div className="w-full sticky top-0 grid grid-cols-6 bg-white rounded-sm overflow-hidden">
+        <div className="fixed-mobile w-full h-full bg-background_primary">
+            <Link to={`${path.PAGE_USER}`} className=" absolute top-2 left-4 text-secondary laptop:hidden ">
+                <ChevronLeftIcon fontSize="large" />
+            </Link>
+            <h1 className=" py-3 text-center  text-1xl text-primary laptop:hidden bg-white ">Danh sách đơn hàng</h1>
+            <div className="tablet:flex tablet:overflow-x-auto w-full sticky top-0 laptop:grid laptop:grid-cols-6 bg-white rounded-sm overflow-hidden">
                 {PURCHASE_TAB.map((e) => (
                     <div
-                        className={`flex w-full justify-center text-sm  items-center py-3 border-b-[2px] border-solid cursor-pointer ${
+                        className={`flex tablet:w-4/12 shrink-0 laptop:w-full justify-center text-sm  items-center py-3 border-b-[2px] border-solid cursor-pointer ${
                             displayTab === e.tab ? 'text-primary border-primary' : 'text-secondary border-transparent'
                         }`}
                         onClick={() => setDisplayTab(e.tab)}

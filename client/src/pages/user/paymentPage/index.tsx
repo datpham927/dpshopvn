@@ -21,7 +21,7 @@ const PaymentPage: React.FC = () => {
     return (
         <div>
             <Header />
-            <div className="flex py-4 gap-2">
+            <div className="flex tablet:flex-col py-4 gap-2">
                 <Left methods={methods} setMethods={setMethods} />
                 <Right methods={methods} />
             </div>

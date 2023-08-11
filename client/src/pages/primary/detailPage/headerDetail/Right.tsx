@@ -24,6 +24,7 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { selectedProducts } = useAppSelector((state) => state.order);
+    const { mobile_ui } = useAppSelector((state) => state.action);
     const params = useParams();
 
     const handleAddToCart = async (isBuy: boolean) => {
@@ -60,106 +61,113 @@ const Right: React.FC<{ productDetail: ProductDetail }> = ({ productDetail }) =>
     }, [pid]);
 
     return (
-        <div className="flex  h-full flex-1">
-            <div className="flex flex-col flex-1 h-full p-4 gap-4">
-                <div className="flex flex-col w-full h-auto gap-1">
-                    <p className="flex gap-1 text-[13px]">
-                        Thương hiệu:
-                        <a href={`/thuong-hieu/${productDetail.brand_slug}`} className="text-primary">
-                            {productDetail?.brand}
-                        </a>
-                    </p>
-                    <h1 className="text-2xl font-normal"> {productDetail?.title}</h1>
-                    <div className="flex gap-2 items-center">
-                        <div className="flex"> {formatStar(productDetail?.star || 0, '20px')}</div>
-                        <h3 className="text-text_secondary text-[15px]">Đã bán {productDetail?.sold}</h3>
-                    </div>
-                </div>
-                <div className="flex">
-                    <div className="flex-1 h-full pr-3">
-                        <div className="flex flex-col gap-4">
-                            <div className="flex w-full gap-2 items-end bg-[#FAFAFA] p-4 rounded-md  text-red_custom">
-                                {productDetail?.new_price && (
-                                    <div className="text-4xl font-medium">{formatMoney(productDetail?.new_price)}</div>
-                                )}
-                                {productDetail?.old_price && (
-                                    <div className="text-sm text-text_secondary line-through">
-                                        {formatMoney(productDetail?.old_price)}
-                                    </div>
-                                )}
-                                {productDetail?.discount && (
-                                    <div className="text-sm font-semibold">-{productDetail?.discount}%</div>
-                                )}
-                            </div>
-                            <div className="flex gap-1 text-sm">
-                                Giao đến
-                                <span className="text-[15px] font-medium underline text-primary">
-                                    {currentUser.address}
-                                </span>
-                            </div>
-                            <div className="flex gap-4 mt-6 items-center font-medium">
-                                <h2 className="text-sm text-text_secondary">Số lượng</h2>
-                                <div className="flex items-center border-[1px] border-solid border-slate-300 w-[100px]  rounded-sm">
-                                    <button
-                                        onClick={() => {
-                                            if (quantity > 1) {
-                                                setQuantity(quantity - 1);
-                                            }
-                                        }}
-                                        className="flex w-full justify-center items-center"
-                                    >
-                                        {IconExcept}
-                                    </button>
-                                    <span className="px-4 py-1 border-solid border-l-[1px] border-r-[1px] border-slate-300 ">
-                                        {quantity}
-                                    </span>
-                                    <button
-                                        onClick={() => {
-                                            productDetail?.in_stock > quantity && setQuantity(quantity + 1);
-                                        }}
-                                        className="flex w-full justify-center items-center"
-                                    >
-                                        <AddIcon />
-                                    </button>
-                                </div>
-                                <div className="text-sm  text-text_secondary">
-                                    {productDetail?.in_stock} sản phẩm có sẵn
-                                </div>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <ButtonOutline
-                                    onClick={() => {
-                                        if (productDetail?.user?._id === currentUser._id) {
-                                            showNotification('Không thể mua hàng chính bạn!', false);
-                                        } else {
-                                            handleAddToCart(false);
-                                        }
-                                    }}
-                                >
-                                    <ShoppingCartOutlinedIcon />
-                                    Thêm vào giỏ hàng
-                                </ButtonOutline>
-                                <button
-                                    className="flex gap-2 text-lg px-4 py-2 rounded-sm text-white bg-red_custom hover:bg-opacity-70"
-                                    onClick={() => {
-                                        if (productDetail?.user?._id === currentUser._id) {
-                                            showNotification('Không thể mua hàng chính bạn!', false);
-                                        } else {
-                                            handleAddToCart(true);
-                                        }
-                                    }}
-                                >
-                                    Mua ngay
-                                </button>
-                            </div>
-                            <div className="text-sm text-secondary font-medium">Lượt xem: {productDetail?.views}</div>
+        <>
+            <div className="flex  h-full flex-1">
+                <div className="flex flex-col flex-1 h-full p-4 gap-4">
+                    <div className="flex flex-col w-full h-auto gap-1">
+                        <p className="flex gap-1 text-[13px]">
+                            Thương hiệu:
+                            <a href={`/thuong-hieu/${productDetail.brand_slug}`} className="text-primary">
+                                {productDetail?.brand}
+                            </a>
+                        </p>
+                        <h1 className="text-2xl font-normal"> {productDetail?.title}</h1>
+                        <div className="flex gap-2 items-center">
+                            <div className="flex"> {formatStar(productDetail?.star || 0, '20px')}</div>
+                            <h3 className="text-text_secondary text-[15px]">Đã bán {productDetail?.sold}</h3>
                         </div>
                     </div>
-                    {/* ---------------- */}
-                    {productDetail?.user && <InfoShop shop={productDetail?.user} />}
+                    <div className="flex">
+                        <div className="flex-1 h-full pr-3">
+                            <div className="flex flex-col gap-4">
+                                <div className="flex w-full gap-2 items-end bg-[#FAFAFA] p-4 rounded-md  text-red_custom">
+                                    {productDetail?.new_price && (
+                                        <div className="text-4xl font-medium">
+                                            {formatMoney(productDetail?.new_price)}
+                                        </div>
+                                    )}
+                                    {productDetail?.old_price && (
+                                        <div className="text-sm text-text_secondary line-through">
+                                            {formatMoney(productDetail?.old_price)}
+                                        </div>
+                                    )}
+                                    {productDetail?.discount && (
+                                        <div className="text-sm font-semibold">-{productDetail?.discount}%</div>
+                                    )}
+                                </div>
+                                <div className="flex gap-1 text-sm">
+                                    Giao đến
+                                    <span className="text-[15px] font-medium underline text-primary">
+                                        {currentUser.address}
+                                    </span>
+                                </div>
+                                <div className="flex gap-4 mt-6 items-center font-medium">
+                                    <h2 className="text-sm text-text_secondary shrink-0">Số lượng</h2>
+                                    <div className="flex items-center border-[1px] border-solid border-slate-300 w-[100px]  rounded-sm">
+                                        <button
+                                            onClick={() => {
+                                                if (quantity > 1) {
+                                                    setQuantity(quantity - 1);
+                                                }
+                                            }}
+                                            className="flex w-full justify-center items-center"
+                                        >
+                                            {IconExcept}
+                                        </button>
+                                        <span className="px-4 py-1 border-solid border-l-[1px] border-r-[1px] border-slate-300 ">
+                                            {quantity}
+                                        </span>
+                                        <button
+                                            onClick={() => {
+                                                productDetail?.in_stock > quantity && setQuantity(quantity + 1);
+                                            }}
+                                            className="flex w-full justify-center items-center"
+                                        >
+                                            <AddIcon />
+                                        </button>
+                                    </div>
+                                    <div className="text-sm text-text_secondary shrink-0">
+                                        {productDetail?.in_stock} sản phẩm có sẵn
+                                    </div>
+                                </div>
+                                <div className="flex gap-4 mt-4">
+                                    <ButtonOutline
+                                        onClick={() => {
+                                            if (productDetail?.user?._id === currentUser._id) {
+                                                showNotification('Không thể mua hàng chính bạn!', false);
+                                            } else {
+                                                handleAddToCart(false);
+                                            }
+                                        }}
+                                    >
+                                        <ShoppingCartOutlinedIcon />
+                                        Thêm vào giỏ hàng
+                                    </ButtonOutline>
+                                    <button
+                                        className="flex gap-2 text-lg px-4 py-2 rounded-sm text-white bg-red_custom hover:bg-opacity-70"
+                                        onClick={() => {
+                                            if (productDetail?.user?._id === currentUser._id) {
+                                                showNotification('Không thể mua hàng chính bạn!', false);
+                                            } else {
+                                                handleAddToCart(true);
+                                            }
+                                        }}
+                                    >
+                                        Mua ngay
+                                    </button>
+                                </div>
+                                <div className="text-sm text-secondary font-medium">
+                                    Lượt xem: {productDetail?.views}
+                                </div>
+                            </div>
+                        </div>
+                        {/* ---------------- */}
+                        {productDetail?.user && !mobile_ui && <InfoShop shop={productDetail?.user} />}
+                    </div>
                 </div>
             </div>
-        </div>
+            {productDetail?.user && mobile_ui && <InfoShop shop={productDetail?.user} />}
+        </>
     );
 };
 

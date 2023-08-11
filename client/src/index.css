@@ -11,6 +11,7 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 }
+
 body {
     box-sizing: border-box;
     margin: 0;
@@ -45,10 +46,10 @@ body {
     background-color: black;
     opacity: 0.5;
 }
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 .menu-user {
     @apply text-sm hover:bg-color_hover px-3 py-2 cursor-pointer;
@@ -56,7 +57,10 @@ input[type="number"]::-webkit-outer-spin-button {
 .option-rating-review {
     @apply px-7 text-base py-2 bg-white rounded-sm  text-primary font-normal border-[1px] border-solid  capitalize   hover:bg-opacity-100;
 }
+.fixed-mobile {
+    @apply  tablet:fixed  tablet:top-0  tablet:right-0  tablet:w-full tablet:h-full tablet:z-[1000] ;
+}
 .css-1hv8oq8-MuiStepLabel-label.MuiStepLabel-alternativeLabel {
-    margin-top:3px !important;
-    color:slategrey
+    margin-top: 3px !important;
+    color: slategrey;
 }

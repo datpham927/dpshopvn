@@ -20,7 +20,7 @@ const SortBar: React.FC = () => {
         const newQuery = queryString.stringify(updatedQueryParams);
         navigate(`?${newQuery}`);
     }, [sortBy]);
-    
+
     useEffect(() => {
         setSortBy('');
     }, [params.cid]);
@@ -28,19 +28,21 @@ const SortBar: React.FC = () => {
     return (
         <>
             <div className="flex items-center  gap-3 px-3 py-2 bg-[#EDEDED]">
-                <div className="text-sm font-normal">Sắp xếp theo</div>
-                {SORT_BAR?.map((i) => (
-                    <div
-                        onClick={() => {
-                            setSortBy(i?.sortBy.sort);
-                        }}
-                        className={`text-sm font-normal py-2 px-4 rounded-sm cursor-pointer ${
-                            i?.sortBy.sort === sortBy ? 'bg-primary text-white font-semibold' : '  bg-white'
-                        }`}
-                    >
-                        {i?.label}
-                    </div>
-                ))}
+                <div className="text-sm font-normal shrink-0">Sắp xếp theo</div>
+                <div className='flex tablet:overflow-y-auto gap-3'>
+                    {SORT_BAR?.map((i) => (
+                        <div
+                            onClick={() => {
+                                setSortBy(i?.sortBy.sort);
+                            }}
+                            className={`text-sm shrink-0 font-normal py-2 px-4 rounded-sm cursor-pointer ${
+                                i?.sortBy.sort === sortBy ? 'bg-primary text-white font-semibold' : '  bg-white'
+                            }`}
+                        >
+                            {i?.label}
+                        </div>
+                    ))}
+                </div>
             </div>
             {(star || pricefrom || priceto || brand) && (
                 <div className="flex gap-3">

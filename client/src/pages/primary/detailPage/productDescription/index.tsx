@@ -11,10 +11,10 @@ const ProductDescription: React.FC<{ productDetail: ProductDetail }> = ({ produc
                 <div className="my-5 bg-white rounded-sm  px-6 py-4">
                     <h1 className="text-xl font-semibold">Thông tin chi tiết</h1>
                     <table className="w-full my-3 rounded-sm">
-                        {infoProduct?.map((e) => (
-                            <tbody key={uuidv4()} className=" h-[40px] bg-primary-bg">
-                                <td className="text-sm w-2/12 px-2 bg-[rgb(239,239,239)] ">{e.name}</td>
-                                <td className="text-sm w-10/12 px-3 ">{e.value}</td>
+                        {infoProduct?.map((e,index) => (
+                            <tbody key={uuidv4()} className="h-[40px] bg-primary-bg">
+                                <td className="text-sm tablet:w-5/12  laptop:w-2/12 px-2 bg-[rgb(239,239,239)] ">{e.name}</td>
+                                <td className={`text-sm tablet:w-7/12 laptop:w-10/12 px-3 shrink-0 ${index%2==0?"bg-slate-50":""}`}>{e.value}</td>
                             </tbody>
                         ))}
                     </table>

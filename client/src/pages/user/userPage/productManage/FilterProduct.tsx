@@ -19,28 +19,30 @@ interface IFilterProduct {
     >;
 }
 const FilterProduct: React.FC<IFilterProduct> = ({ queries, setQueries }) => {
-    console.log(queries);
     return (
-        <div className="grid grid-cols-2 w-full my-6 justify-between items-center ">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={['DatePicker']}>
+        <div className="mobile:flex mobile:flex-col mobile:gap-2 grid grid-cols-2 w-full my-6 justify-between items-center ">
+            <div className='flex w-full h-full gap-2'>
+            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                <DemoContainer components={['DatePicker']} >
                     <DatePicker
                         label="Ngày đăng sản phẩm"
                         value={queries.createdAt}
                         onChange={(e: any) => setQueries((prev) => ({ ...prev, createdAt: e.format('MM/DD/YYYY') }))}
                     />
-                    <div
+                   
+                </DemoContainer>
+            </LocalizationProvider>
+            <div
                         onClick={(e: any) => setQueries((prev) => ({ ...prev, createdAt: '' }))}
-                        className="text-primary font-medium cursor-pointer flex items-center"
+                        className="flex text-primary font-medium cursor-pointer items-center"
                     >
                         Mặc định
                     </div>
-                </DemoContainer>
-            </LocalizationProvider>
+            </div>
             <InputForm
-                label="Tìm kiếm"
+                
                 name_id="search"
-                placeholder='Tên sản phẩm'
+                placeholder="Tên sản phẩm"
                 value={queries.title}
                 handleOnchange={(e) => setQueries((prev) => ({ ...prev, title: e.target.value }))}
             />
