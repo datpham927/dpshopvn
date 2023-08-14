@@ -86,15 +86,16 @@ const PurchaseManage: React.FC = () => {
 
     useEffect(() => {
         const fetchApi = async () => {
-            //dispatch(setIsLoading(true));
+            dispatch(setIsLoading(true));
             const res = await getAllOrdersBought();
+            dispatch(setIsLoading(false));
             if (res.data && res.success) {
                 dispatch(setAllOrdersBought(res.data));
                 dispatch(setLoadDataOrder());
             }
-            dispatch(setIsLoading(false));
         };
         fetchApi();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

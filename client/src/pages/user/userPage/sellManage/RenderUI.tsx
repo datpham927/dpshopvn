@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { OrderItem, showNotification } from '../../../../component';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import NotOrder from '../../../../component/common/NotOrder';
+import NotExit from '../../../../component/common/NotExit';
 import { IOrderItem } from '../../../../interfaces/interfaces';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -121,7 +121,7 @@ const RenderUi: React.FC<{ orders: IOrderItem[]; tab: number }> = ({ orders, tab
                     </Table>
                 </TableContainer>
             ) : (
-                <NotOrder />
+                <NotExit />
             )}
         </div>
     );

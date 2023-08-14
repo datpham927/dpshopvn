@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "react-csv": "^2.2.2",
-    "socket.io-client": "^4.6.1"
-  }
-}

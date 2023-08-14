@@ -94,7 +94,7 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import SellIcon from '@mui/icons-material/Sell';
 import { bachhoa, danhchoban, dealsieuhot, hangmoi, imgPayInCash, imgPayInVnpay, revodoi } from '../assets';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-import { useAppSelector } from '../redux/hooks';
+
 export const SIDEBAR_USER = [
     {
         label: 'Thông tin tài khoản',

@@ -27,6 +27,7 @@ export { default as imgPayInVnpay } from './image/vnpay.png';
 export { default as imgFreeShip } from './image/freeship.png';
 export { default as imgCartEmpty } from './image/cartEmpty.png';
 export { default as header_mobile } from './image/header_mobile.png';
+export { default as notExit } from './image/notExit.png';
 export const IconExcept = (
     <svg
         xmlns="http://www.w3.org/2000/svg"

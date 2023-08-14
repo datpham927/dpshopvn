@@ -7,8 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { formatMoney } from '../../../../utils/formatMoney';
-import { IProductItem, ProductDetail } from '../../../../interfaces/interfaces';
-import NotOrder from '../../../../component/common/NotOrder';
+import {   ProductDetail } from '../../../../interfaces/interfaces';
+import NotExit from '../../../../component/common/NotExit';
 import { apiDeleteProduct } from '../../../../services/apiProduct';
 import { FormProduct, showNotification } from '../../../../component';
 
@@ -111,7 +111,7 @@ const TableProducts: React.FC<ITableProducts> = ({ products, setProducts }) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {products.length == 0 && <NotOrder label="Không có sản phẩm nào" />}
+                {products.length == 0 && <NotExit label="Không có sản phẩm nào" />}
             </div>
             {openForm && <FormProduct setIsOpen={setOpenForm} setProducts={setProducts} productEdit={productEdit} />}
         </>

@@ -3,7 +3,7 @@ import { getAllProductFollowings } from '../../services/apiProduct';
 import { IProductItem } from '../../interfaces/interfaces';
 import { useAppSelector } from '../../redux/hooks';
 import { ProductItem, SkeletonProducts } from '../../component';
-import NotOrder from '../../component/common/NotOrder';
+import NotExit from '../../component/common/NotExit';
 
 const ProductsByFollowing = () => {
     const [products, setProducts] = useState<IProductItem[]>([]);
@@ -26,7 +26,7 @@ const ProductsByFollowing = () => {
                 products.length > 0 ? (
                     products.map((p) => <ProductItem key={p?._id} props={p} />)
                 ) : (
-                    <NotOrder />
+                    <NotExit />
                 )
             ) : (
                 <SkeletonProducts index={12} />

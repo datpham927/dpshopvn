@@ -60,6 +60,7 @@ const SellManage: React.FC = () => {
     const dispatch = useAppDispatch();
     useEffect(() => {
         const fetchApi = async () => {
+            dispatch(setIsLoading(true));
             const res = await getAllOrderBeenBought();
             dispatch(setIsLoading(false));
             if (res.data && res.success) {
@@ -67,6 +68,7 @@ const SellManage: React.FC = () => {
                 dispatch(setLoadDataOrderSold());
             }
         };
+      
         fetchApi();
     }, []);
     useEffect(() => {

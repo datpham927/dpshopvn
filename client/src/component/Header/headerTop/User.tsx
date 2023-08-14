@@ -47,7 +47,7 @@ const User: React.FC = () => {
                     {/* menu */}
                     {isOpenMenu && (
                         <div
-                            className="absolute z-[1000] flex flex-col top-full right-1/2 w-menu_user bg-white py-3 text-black rounded-xl
+                            className="absolute z-[1000] flex flex-col top-[calc(100%+10px)] right-1/2 w-menu_user bg-white py-3 text-black rounded-xl
                         shadow-search after:border-[10px]  after:border-transparent after:border-b-white 
                         after:top-[-20px]  after:right-5 after:absolute"
                         >
