@@ -47,16 +47,15 @@ interface ProductDetail extends IProductItem {
 interface UserProfile {
     _id: string;
     address: string;
+    mobile: number;
     lastName: string;
     firstName: string;
-    tablet: string;
     avatar_url: string;
     email: string;
 }
 interface UserDetail extends UserProfile {
     isAdmin: boolean;
     confirm: boolean;
-    mobile: number;
     totalProduct: number;
     createdAt: string;
     followings: Array<string>;
@@ -158,8 +157,11 @@ interface INotification {
 
 interface Conversation {
     _id: '';
-    members: UserProfile[];
-    isWatched?: boolean;
+    members: Array<{
+        user: UserProfile;
+        isWatched: boolean;
+    }>;
+    updatedAt:string
 }
 export type {
     Conversation,

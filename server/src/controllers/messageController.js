@@ -10,6 +10,14 @@ const addMessage = async (req, res) => {
             message: "conversationId was required"
         })
         const response = await Message.create({ conversationId, sender: req.userId, ...req.body })
+        await Conversation.findOneAndUpdate(
+            { _id: conversationId, "members.user": req.body.receiver },
+            { $set: { "members.$.isWatched": false } },
+        )
+        await Conversation.findOneAndUpdate(
+            { _id: conversationId, "members.user": req.useId },
+            { $set: { "members.$.isWatched": true } },
+        )
         res.status(200).json({
             success: response ? true : false,
             data: response ? response : null
@@ -29,11 +37,14 @@ const getAllMessageByConversationId = async (req, res) => {
             success: false,
             message: "conversationId was required"
         })
-        const conversation = await Message.find({ conversationId })
-        const s = await Conversation.findByIdAndUpdate(conversationId, { $set: { isWatched: true } }, { new: true });
+        const messages = await Message.find({ conversationId })
+        await Conversation.findOneAndUpdate(
+            { _id: conversationId, "members.user": req.userId },
+            { $set: { "members.$.isWatched": true } },
+        )
         res.status(200).json({
-            success: conversation ? true : false,
-            data: conversation ? conversation : null
+            success: messages ? true : false,
+            data: messages ? messages : null
         })
     } catch (error) {
         return res.status(500).json({

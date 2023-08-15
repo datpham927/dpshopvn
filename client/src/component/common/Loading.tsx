@@ -1,6 +1,6 @@
 import React from 'react';
 import { Overlay } from '..';
-import { imgLoading } from '../../assets';
+import ReactLoading from 'react-loading';
 import { useAppSelector } from '../../redux/hooks';
 const Loading: React.FC = () => {
     const { isLoading } = useAppSelector((state) => state.action);
@@ -8,7 +8,7 @@ const Loading: React.FC = () => {
         <>
             {isLoading && (
                 <Overlay className="z-[1000]">
-                    <img className="w-[100px] h-[100px]" src={imgLoading} />
+                 <ReactLoading type="cylon" color="rgb(0,247,0)" />
                 </Overlay>
             )}
         </>

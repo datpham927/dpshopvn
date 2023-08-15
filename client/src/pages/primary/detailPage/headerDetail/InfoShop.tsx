@@ -5,11 +5,16 @@ import AddIcon from '@mui/icons-material/Add';
 import { noUser } from '../../../../assets';
 import { useAppSelector } from '../../../../redux/hooks';
 import { apiFollowingUser, apiUnFollowingUser } from '../../../../services/apiUser';
-import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
+import {
+    setIsOpenChat,
+    setLoadDataConversation,
+    setOpenFeatureAuth,
+} from '../../../../redux/features/action/actionSlice';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ButtonOutline, showNotification } from '../../../../component';
 import { formatUserName } from '../../../../utils/formatUserName';
+import { createConversation } from '../../../../services/apiConversation';
 
 interface InfoShop {
     _id: string;
@@ -42,6 +47,16 @@ const InfoShop: React.FC<{ shop: InfoShop }> = ({ shop }) => {
             setCurrentFollowers((user) => [...user, currentUser._id]);
             await apiFollowingUser(shop?._id);
         }
+    };
+
+    const handleCLickChat = async () => {
+        if (shop?._id === currentUser._id) {
+            showNotification('Không thể chat!', false);
+            return;
+        }
+        await createConversation(shop._id);
+        dispatch(setIsOpenChat(true));
+        dispatch(setLoadDataConversation());
     };
     return (
         <div className="tablet:w-full w-[240px] h-auto border-[1px] border-solid py-3 border-slate-200 rounded-sm px-3">
@@ -91,11 +106,10 @@ const InfoShop: React.FC<{ shop: InfoShop }> = ({ shop }) => {
                     )}
                 </ButtonOutline>
             </div>
-            {/* <button className="flex gap-1 mt-4 text-sm w-full justify-center font-medium  items-center p-2 rounded-[4px]  border-[1px] border-solid border-red_custom text-red_custom  hover:bg-opacity-70">
-        <MessageIcon fontSize="small" />
-        Chat ngay
-    </button> */}
-            <ButtonOutline className="w-full border-red_custom mt-4  justify-center text-red_custom">
+            <ButtonOutline
+                className="w-full border-red_custom mt-4  justify-center text-red_custom"
+                onClick={   handleCLickChat }
+            >
                 <MessageIcon fontSize="small" />
                 Chat ngay
             </ButtonOutline>

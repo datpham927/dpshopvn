@@ -12,6 +12,7 @@ import ForgotPassword from '../pages/user/forgotPassword';
 import MenuUserOption from '../pages/mobile/MenuUserOption';
 import CategoriesListPage from '../pages/mobile/CategoriesListPage';
 import ProductsByFollowing from '../pages/mobile/ProductsByFollowing';
+import ChatModal from '../component/chat/chatModal';
 
 const RouterPage = () => {
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
@@ -48,6 +49,7 @@ const RouterPage = () => {
                     <Route path={`${path.PAGE_USER}/view/:oid`} element={<ViewOrder />} />
                     <Route path={`${path.PAGE_LIST_CATEGORY}`} element={<CategoriesListPage />} />
                     <Route path={`${path.FOLLOWING}`} element={<ProductsByFollowing />} />
+                    <Route path={`${path.MESSAGE}`} element={<ChatModal />} />
                 </>
             )}
             <Route path={path.PAGE_CART} element={isLoginSuccess ? <CartPage /> : <Navigate to="/" />}></Route>

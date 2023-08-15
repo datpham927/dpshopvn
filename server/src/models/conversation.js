@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 
 const ConversationSchema = new mongoose.Schema(
     {
-        members: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-        isWatched: { type: Boolean, default: false }
+        members: [{ user: { type: mongoose.Schema.Types.ObjectId, ref: "user" }, isWatched: { type: Boolean, default: true } }],
     },
     { timestamps: true }
 );

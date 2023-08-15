@@ -14,6 +14,7 @@ interface actionInitial {
     notifications: INotification[];
     unreadNotification: INotification[];
     conversations: Conversation[];
+    loadDataConversation: boolean;
     isOpenChat: boolean;
 }
 const initialState: actionInitial = {
@@ -27,6 +28,7 @@ const initialState: actionInitial = {
     unreadNotification: [],
     conversations: [],
     isOpenChat: false,
+    loadDataConversation: false,
 };
 
 export const actionSlice = createSlice({
@@ -72,6 +74,17 @@ export const actionSlice = createSlice({
                 state.conversations.unshift(action.payload);
             }
         },
+        setIsWatchedConversations: (state, action) => {
+            const { conversationId, userId, isWatched } = action.payload;
+            const conversation = state.conversations.find((c) => c._id === conversationId);
+            const member = conversation?.members.find((m) => m.user._id === userId);
+            if (member) {
+                member.isWatched = isWatched;
+            }
+        },
+        setLoadDataConversation: (state) => {
+            state.loadDataConversation = !state.loadDataConversation;
+        },
     },
 });
 export const {
@@ -85,6 +98,8 @@ export const {
     setUnreadNotifications,
     setUnreadNotificationsEmpty,
     setConversations,
+    setIsWatchedConversations,
+    setLoadDataConversation
 } = actionSlice.actions;
 
 export default actionSlice.reducer;

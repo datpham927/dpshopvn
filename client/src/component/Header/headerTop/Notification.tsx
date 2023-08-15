@@ -9,7 +9,7 @@ import {
     setUnreadNotificationsEmpty,
 } from '../../../redux/features/action/actionSlice';
 import { apiGetNotification, apiIsWatched } from '../../../services/apiNotification';
-import NotOrder from '../../common/NotOrder';
+import NotExit from '../../common/NotExit';
 
 const Notification: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
@@ -88,7 +88,7 @@ const Notification: React.FC = () => {
                                     </Link>
                                 ))
                             ) : (
-                                <NotOrder label="không có thông báo nào" />
+                                <NotExit label="không có thông báo nào" />
                             )}
                         </div>
                     </div>

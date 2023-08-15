@@ -27,7 +27,7 @@ const Cart: React.FC = () => {
     return (
         <div className="flex laptop:w-2/12 laptop:h-search items-center justify-center pr-2">
             <div
-                className="flex relative  text-white"
+                className="flex relative  text-white cursor-pointer"
                 onClick={() => {
                     isLoginSuccess ? navigate(path.PAGE_CART) : dispatch(setOpenFeatureAuth(true));
                 }}

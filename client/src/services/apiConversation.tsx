@@ -1,8 +1,8 @@
 import { axiosJWT } from '../utils/httpRequest';
 
-const CreateConversation = async (receiver: string) => {
+const createConversation = async (receiver: string) => {
     try {
-        const res = await axiosJWT.post('conversation/create_conversation', receiver);
+        const res = await axiosJWT.post('conversation/create_conversation', { receiver });
         return res.data;
     } catch (error) {
         return {
@@ -24,9 +24,9 @@ const getAllConversation = async () => {
 };
 
 // ------------
-const addMessage = async (conversationId: string, text: string) => {
+const addMessage = async (conversationId: string, text: string, receiver: any) => {
     try {
-        const res = await axiosJWT.post(`message/${conversationId}/add_message`, { text });
+        const res = await axiosJWT.post(`message/${conversationId}/add_message`, { text, receiver });
         return res.data;
     } catch (error) {
         return {
@@ -47,4 +47,4 @@ const getAllMessageByConversationId = async (conversationId: string) => {
     }
 };
 // eslint-disable-next-line react-refresh/only-export-components
-export { CreateConversation, getAllConversation, addMessage, getAllMessageByConversationId };
+export { createConversation, getAllConversation, addMessage, getAllMessageByConversationId };
