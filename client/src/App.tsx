@@ -28,7 +28,7 @@ function App() {
 
     useEffect(() => {
         //ws <=> http
-        socketRef.current = io('http://localhost:4000'); //kết nối
+        socketRef.current = io(import.meta.env.VITE_REACT_API_URL_BACKEND_SOCKET); //kết nối
         dispatch(setSocketRef(socketRef.current));
         return () => {
             if (socketRef.current) {

@@ -1,11 +1,12 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import ReactLoading from 'react-loading';
-import Message from './Message';
+import SendIcon from '@mui/icons-material/Send';
 import { addMessage, getAllMessageByConversationId } from '../../../services/apiConversation';
 import { useAppSelector } from '../../../redux/hooks';
 import ButtonOutline from '../../buttonOutline';
 import { Conversation } from '../../../interfaces/interfaces';
 import NotExit from '../../common/NotExit';
+import MessageItem from '../../item/MessageItem';
 
 interface Message {
     sender: string;
@@ -74,19 +75,19 @@ const ChatRight: React.FC<{ conversation: Conversation; isOpen: boolean }> = ({ 
         <>
             {isOpenBox && (
                 <div
-                    className={`w-[400px] h-[100%] flex-1 ${
-                        isOpen ? 'animate-active-openBoxChat' : 'animate-active-openBoxChatOff'
+                    className={`tablet:w-full   h-[100%] ${
+                        isOpen ? 'animate-active-openBoxChat w-[400px]' : 'animate-active-openBoxChatOff'
                     }`}
                 >
                     {!isLoading ? (
                         conversation ? (
                             <div className="h-full w-full ">
-                                <div className="p-3  h-[calc(100%-150px)] justify-end w-full overflow-y-scroll ">
+                                <div className="p-3 tablet:h-[calc(100%-120px)] h-[calc(100%-150px)] justify-end w-full overflow-y-scroll ">
                                     <div className="flex flex-col gap-3 h-auto justify-end w-full ">
                                         {messages.length > 0 ? (
                                             messages?.map((message) => (
                                                 <div ref={scroll}>
-                                                    <Message
+                                                    <MessageItem
                                                         own={message.sender === currentUser._id}
                                                         message={message}
                                                     />
@@ -97,17 +98,24 @@ const ChatRight: React.FC<{ conversation: Conversation; isOpen: boolean }> = ({ 
                                         )}
                                     </div>
                                 </div>
-                                <div className="flex items-center px-3 py-1 border-solid border-t-[1px] border-t-gray-200">
+                                <div className="flex items-center px-3 py-1 border-solid border-y-[1px] border-y-gray-200">
                                     <textarea
                                         placeholder="Nhập nội dung tin nhắn"
                                         value={value}
                                         onChange={(e) => setValue(e.currentTarget.value)}
                                         className="w-full outline-none text-sm "
                                     ></textarea>
+                                    <ButtonOutline className="laptop:hidden  " onClick={handleSend}>
+                                    <SendIcon />
+                                </ButtonOutline>
                                 </div>
-                                <ButtonOutline className="w-full bg-primary text-white" onClick={handleSend}>
+                                <ButtonOutline
+                                    className="tablet:hidden w-full bg-primary text-white"
+                                    onClick={handleSend}
+                                >
                                     Gửi
                                 </ButtonOutline>
+                                
                             </div>
                         ) : (
                             <NotExit label="Xin chào" />

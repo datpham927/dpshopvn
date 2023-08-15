@@ -34,7 +34,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
     const socketRef = useRef<Socket | null>(null);
     useEffect(() => {
         //ws <=> http
-        socketRef.current = io("ws://localhost:4000");
+        socketRef.current = io(import.meta.env.VITE_REACT_API_URL_BACKEND_SOCKET);
         dispatch(setSocketRef(socketRef.current));
     }, []);
 

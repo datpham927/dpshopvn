@@ -3,17 +3,15 @@ import MessageIcon from '@mui/icons-material/Message';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EastIcon from '@mui/icons-material/East';
 import WestIcon from '@mui/icons-material/West';
-import ChatLeft from './ChatLeft';
-import ChatRight from './ChatRight';
+
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setConversations, setIsOpenChat, setLoadDataConversation } from '../../redux/features/action/actionSlice';
 import { Conversation } from '../../interfaces/interfaces';
 import { getAllConversation } from '../../services/apiConversation';
+import ChatModal from './chatModal';
 
 const Chat: React.FC = () => {
-    const [conversation, setConversation] = useState<Conversation | any>({} as Conversation);
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [isOpenBoxChat, setIsOpenBoxChat] = useState<boolean>(false);
     const [unseenConversations, setUnseenConversations] = useState<number>(0);
     const dispatch = useAppDispatch();
     const { isOpenChat } = useAppSelector((state) => state.action);
@@ -23,9 +21,9 @@ const Chat: React.FC = () => {
 
     useEffect(() => {
         socketRef?.on('getMessage', () => {
-            dispatch(setLoadDataConversation())
+            dispatch(setLoadDataConversation());
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socketRef]);
     useEffect(() => {
         const unseenConversations = conversations.filter(
@@ -34,7 +32,7 @@ const Chat: React.FC = () => {
         setUnseenConversations(unseenConversations.length);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [conversations]);
-    console.log(conversations)
+    console.log(conversations);
 
     useEffect(() => {
         if (isOpenChat) {
@@ -44,7 +42,6 @@ const Chat: React.FC = () => {
         setTimeout(() => {
             setIsOpen(isOpenChat);
         }, 200);
-        setConversation(null);
     }, [isOpenChat]);
 
     useEffect(() => {
@@ -55,9 +52,9 @@ const Chat: React.FC = () => {
         fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loadDataConversation]);
-   
+    
     return (
-        <div className="fixed bottom-1 right-5 z-[1000] ">
+        <div className="tablet:hidden fixed bottom-1 right-5 z-[1000] ">
             <div
                 className="relative p-3 bg-primary rounded-full text-white cursor-pointer"
                 onClick={() => dispatch(setIsOpenChat(true))}
@@ -69,42 +66,7 @@ const Chat: React.FC = () => {
                     </div>
                 )}
             </div>
-            {isOpen && (
-                <div
-                    className={`absolute bottom-0 right-0 w-auto h-[460px] bg-white shadow-search rounded-md  duration-1000 origin-bottom-right  ${
-                        isOpenChat ? 'animate-active-openChat' : 'animate-active-openChatOff'
-                    }`}
-                >
-                    <div className="flex justify-between px-4 py-1 border-solid border-b-[1px] border-b-gray-200">
-                        <div className="text-lg font-medium text-primary">Chat</div>
-                        <div className="flex gap-2 ">
-                            <div
-                                className="text-secondary cursor-pointer"
-                                onClick={() => setIsOpenBoxChat(!isOpenBoxChat)}
-                            >
-                                {isOpenBoxChat ? <WestIcon fontSize="small" /> : <EastIcon fontSize="small" />}
-                            </div>
-                            <div
-                                className="text-secondary cursor-pointer"
-                                onClick={() => {
-                                    dispatch(setIsOpenChat(false));
-                                    setIsOpenBoxChat(false);
-                                }}
-                            >
-                                <ExpandMoreIcon fontSize="large" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex ww-full h-full">
-                        <ChatLeft
-                            setConversation={setConversation}
-                            conversation={conversation}
-                            setIsOpenBoxChat={setIsOpenBoxChat}
-                        />
-                        <ChatRight conversation={conversation} isOpen={isOpenBoxChat} />
-                    </div>
-                </div>
-            )}
+            {isOpen && <ChatModal />}
         </div>
     );
 };

@@ -1,20 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { InputForm } from '../..';
-import ConversationItem from './ConversationItem';
 import { Conversation } from '../../../interfaces/interfaces';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { setIsWatchedConversations } from '../../../redux/features/action/actionSlice';
 import { formatUserName } from '../../../utils/formatUserName';
 import NotExit from '../../common/NotExit';
+import ConversationItem from '../../item/ConversationItem';
 
 interface ChatLeft {
     setConversation: React.Dispatch<React.SetStateAction<Conversation>>;
     setIsOpenBoxChat: React.Dispatch<React.SetStateAction<boolean>>;
     conversation: Conversation;
+    isOpenBoxChat:boolean
 }
 
-const ChatLeft: React.FC<ChatLeft> = ({ setConversation, conversation, setIsOpenBoxChat }) => {
+const ChatLeft: React.FC<ChatLeft> = ({ setConversation, conversation, setIsOpenBoxChat ,isOpenBoxChat}) => {
     const [value, setValue] = useState<string>('');
     const [conversationsNew, setConversationsNew] = useState<Conversation[]>([]);
     const dispatch = useAppDispatch();
@@ -33,7 +34,7 @@ const ChatLeft: React.FC<ChatLeft> = ({ setConversation, conversation, setIsOpen
 
 
     return (
-        <div className="w-[300px] h-full border-solid border-r-[1px] border-r-gray-200">
+        <div className={`${isOpenBoxChat?"tablet:hidden":""} tablet:w-full w-[300px] h-full border-solid border-r-[1px] border-r-gray-200`}>
             <div className="p-2">
                 <InputForm
                     name_id="search"

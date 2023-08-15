@@ -1,8 +1,10 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Conversation, UserProfile } from '../../../interfaces/interfaces';
-import { formatUserName } from '../../../utils/formatUserName';
-import { noUser } from '../../../assets';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+ 
 import moment from 'moment';
+import { Conversation, UserProfile } from '../../interfaces/interfaces';
+import { formatUserName } from '../../utils/formatUserName';
+import { noUser } from '../../assets';
 
 interface ConversationItemProps {
     conversation: Conversation;
@@ -41,6 +43,9 @@ const ConversationItem: React.FC<ConversationItemProps> = ({ conversation, isAct
                 <p className="text-xs w-auto text-secondary  truncate-trailing line-clamp-1">
                     {moment(conversation?.updatedAt).fromNow()}
                 </p>
+            </div>
+            <div className='laptop:hidden text-secondary'>
+                <KeyboardArrowRightIcon />
             </div>
         </div>
     );

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { apiUploadImage } from '../../../../services/apiUploadPicture';
 import { showNotification } from '../../../../component';
-import { loading2, noUser } from '../../../../assets';
+import ReactLoading from 'react-loading';
+import { noUser } from '../../../../assets';
 import { UserProfile } from '../../../../interfaces/interfaces';
 interface AvatarProps {
     setPayload: React.Dispatch<React.SetStateAction<UserProfile>>;
@@ -29,7 +30,9 @@ const Avatar: React.FC<AvatarProps> = ({ setPayload, payload }) => {
         <div className="flex flex-col w-full items-center gap-4 ">
             <div className="w-48 h-48 rounded-full overflow-hidden mx-auto  border-[1px] border-solid border-separate">
                 {isLoadingImg ? (
-                    <img src={loading2} />
+                    <div className="w-full flex justify-center h-full items-center">
+                        <ReactLoading type="cylon" color="rgb(0, 136, 72)" />
+                    </div>
                 ) : (
                     <img className="w-full h-full object-cover block" src={payload.avatar_url || noUser} />
                 )}

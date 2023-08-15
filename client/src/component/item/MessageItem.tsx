@@ -12,7 +12,7 @@ interface MessageProps {
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-const Message: React.FC<MessageProps> = ({ own, message }) => {
+const MessageItem: React.FC<MessageProps> = ({ own, message }) => {
     return (
         <div className={`flex flex-col w-full h-auto ${own ? 'items-end' : ''}`}>
             <div className="flex items-center ">
@@ -24,4 +24,4 @@ const Message: React.FC<MessageProps> = ({ own, message }) => {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export default memo(Message);
+export default memo(MessageItem);
