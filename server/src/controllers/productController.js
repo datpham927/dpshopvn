@@ -281,69 +281,69 @@ const getAllBrand = async (req, res) => {
 }
 
 // insert products data    
-const Bo_qua_tang = require("../../dataInsert/Bo-qua-tang.json")
-const Cham_soc_thu_cung = require("../../dataInsert/Cham-soc-thu-cung.json")
-const DJo_An_Vat = require("../../dataInsert/DJo-An-Vat.json")
-const DJau_andamp_Hat_Cac_Loai = require("../../dataInsert/DJau-andamp-Hat-Cac-Loai.json")
-const DJo_Uong_Khong_Con = require("../../dataInsert/DJo-Uong-Khong-Con.json")
-const DJo_uong_Pha_che_dang_bot = require("../../dataInsert/DJo-uong-Pha-che-dang-bot.json")
-const DJo_uong_co_con = require("../../dataInsert/DJo-uong-co-con.json")
-const Gia_Vi_va_Che_Bien = require("../../dataInsert/Gia-Vi-va-Che-Bien.json")
-const Sua_va_cac_San_pham_tu_sua = require("../../dataInsert/Sua-va-cac-San-pham-tu-sua.json")
-const Thuc_pham_DJong_hop_va_Kho = require("../../dataInsert/Thuc-pham-DJong-hop-va-Kho.json")
-const data = [Bo_qua_tang,
-    Cham_soc_thu_cung, DJo_An_Vat,
-    DJo_Uong_Khong_Con, DJo_uong_Pha_che_dang_bot,
-    DJo_uong_co_con, Gia_Vi_va_Che_Bien,
-    Sua_va_cac_San_pham_tu_sua, Thuc_pham_DJong_hop_va_Kho,
-    DJau_andamp_Hat_Cac_Loai
-]
-const convertArrToObject = require("../ulits/convertArrToObject")
-const { categories } = require("../ulits/const")
-const autoCode = require("../ulits/autoCode")
-const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82", "64611f4510487bbfc0707e7b"]
+// const Bo_qua_tang = require("../../dataInsert/Bo-qua-tang.json")
+// const Cham_soc_thu_cung = require("../../dataInsert/Cham-soc-thu-cung.json")
+// const DJo_An_Vat = require("../../dataInsert/DJo-An-Vat.json")
+// const DJau_andamp_Hat_Cac_Loai = require("../../dataInsert/DJau-andamp-Hat-Cac-Loai.json")
+// const DJo_Uong_Khong_Con = require("../../dataInsert/DJo-Uong-Khong-Con.json")
+// const DJo_uong_Pha_che_dang_bot = require("../../dataInsert/DJo-uong-Pha-che-dang-bot.json")
+// const DJo_uong_co_con = require("../../dataInsert/DJo-uong-co-con.json")
+// const Gia_Vi_va_Che_Bien = require("../../dataInsert/Gia-Vi-va-Che-Bien.json")
+// const Sua_va_cac_San_pham_tu_sua = require("../../dataInsert/Sua-va-cac-San-pham-tu-sua.json")
+// const Thuc_pham_DJong_hop_va_Kho = require("../../dataInsert/Thuc-pham-DJong-hop-va-Kho.json")
+// const data = [Bo_qua_tang,
+//     Cham_soc_thu_cung, DJo_An_Vat,
+//     DJo_Uong_Khong_Con, DJo_uong_Pha_che_dang_bot,
+//     DJo_uong_co_con, Gia_Vi_va_Che_Bien,
+//     Sua_va_cac_San_pham_tu_sua, Thuc_pham_DJong_hop_va_Kho,
+//     DJau_andamp_Hat_Cac_Loai
+// ]
+// const convertArrToObject = require("../ulits/convertArrToObject")
+// const { categories } = require("../ulits/const")
+// const autoCode = require("../ulits/autoCode")
+// const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82", "64611f4510487bbfc0707e7b"]
 
-const insertProductsData = async (req, res) => {
-    try {
-        const star = [3.5, 4, 4.5, 5]
-        let indexStar = 0
-        const response = await Promise.all(data.map(async (p, i) => {
-            const category_code = await autoCode(categories[i].category)
-            const category_name = categories[i].category
-            return p.map(async (item, i) => {
-                indexStar = Math.floor(Math.random() * 3)
-                await User.findByIdAndUpdate(user[i % 3], { $inc: { totalProduct: +1 } })
-                const images = item?.images && item?.images.map(i => i.split(",")[0]
-                    .replace("100x100", "750x750")).filter((e, i) => !e.includes('w100') && !e.includes("upload") && !e.includes("w1080"))
-                return await Product({
-                    image_url: item.image?.split(",")[0],
-                    images: Array.from(images).filter((e, i) => i != 0),
-                    title: item.title,
-                    brand: item.brand,
-                    brand_slug: slugify(item.brand),
-                    slug: slugify(item.title),
-                    star: star[indexStar], views: 10,
-                    sold: item.solid ? item.solid?.replace(".", "") : 0,
-                    old_price: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
-                    new_price: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
-                    in_stock: 1000,
-                    discount: item.discount ? item.discount : 15,
-                    category_code,
-                    category_name,
-                    infoProduct: convertArrToObject(item.detail),
-                    user: user[i % 3],
-                    description: item.description.join(", ")
-                }).save()
-            })
-        }))
-        res.json(response ? response : false)
+// const insertProductsData = async (req, res) => {
+//     try {
+//         const star = [3.5, 4, 4.5, 5]
+//         let indexStar = 0
+//         const response = await Promise.all(data.map(async (p, i) => {
+//             const category_code = await autoCode(categories[i].category)
+//             const category_name = categories[i].category
+//             return p.map(async (item, i) => {
+//                 indexStar = Math.floor(Math.random() * 3)
+//                 await User.findByIdAndUpdate(user[i % 3], { $inc: { totalProduct: +1 } })
+//                 const images = item?.images && item?.images.map(i => i.split(",")[0]
+//                     .replace("100x100", "750x750")).filter((e, i) => !e.includes('w100') && !e.includes("upload") && !e.includes("w1080"))
+//                 return await Product({
+//                     image_url: item.image?.split(",")[0],
+//                     images: Array.from(images).filter((e, i) => i != 0),
+//                     title: item.title,
+//                     brand: item.brand,
+//                     brand_slug: slugify(item.brand),
+//                     slug: slugify(item.title),
+//                     star: star[indexStar], views: 10,
+//                     sold: item.solid ? item.solid?.replace(".", "") : 0,
+//                     old_price: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
+//                     new_price: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
+//                     in_stock: 1000,
+//                     discount: item.discount ? item.discount : 15,
+//                     category_code,
+//                     category_name,
+//                     infoProduct: convertArrToObject(item.detail),
+//                     user: user[i % 3],
+//                     description: item.description.join(", ")
+//                 }).save()
+//             })
+//         }))
+//         res.json(response ? response : false)
 
-    } catch (error) {
-        res.json({
-            err: error.message
-        })
-    }
-}
+//     } catch (error) {
+//         res.json({
+//             err: error.message
+//         })
+//     }
+// }
 
 
 module.exports = {
