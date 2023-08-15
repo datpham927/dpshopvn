@@ -355,6 +355,6 @@ module.exports = {
     getAllProductFollowing,
     updateRatingsProduct,
     getAllBrand,
-    insertProductsData,
+    // insertProductsData,
     getAllProductsUser
 }
