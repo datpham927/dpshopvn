@@ -1,20 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { UserInterface } from '../../../interfaces/interfaces';
+import { UserDetail } from '../../../interfaces/interfaces';
 // Define a type for the slice state
 
 // Define the initial state using that type
 
-const initialState: UserInterface = {
+const initialState: UserDetail = {
     _id: '',
     firstName: '',
     lastName: '',
     email: '',
     isAdmin: false,
     address: '',
-    mobile: '',
+    tablet: '',
     avatar_url: '',
+    createdAt: '',
     confirm: false,
     totalProduct: 0,
+    followings: [],
+    followers: [],
+    mobile:0
 };
 
 export const userSlice = createSlice({
@@ -23,10 +27,11 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setDetailUser: (state, action) => {
-            const { firstName, _id, lastName, email, isAdmin, address, mobile, avatar_url, confirm, totalProduct } =
+            const { firstName, _id, lastName, email, isAdmin,followings, address, createdAt,mobile, avatar_url, confirm, totalProduct } =
                 action.payload;
-            (state.firstName = firstName),
+                (state.firstName = firstName),
                 (state.lastName = lastName),
+                (state.createdAt = createdAt),
                 (state._id = _id),
                 (state.email = email),
                 (state.isAdmin = isAdmin),
@@ -35,6 +40,7 @@ export const userSlice = createSlice({
                 (state.avatar_url = avatar_url),
                 (state.confirm = confirm),
                 (state.totalProduct = totalProduct);
+                (state.followings = followings);
         },
     },
 });

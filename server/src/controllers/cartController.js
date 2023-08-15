@@ -1,27 +1,30 @@
 const Cart = require("../models/Cart")
-const Order = require("../models/Order")
-const Product = require("../models/Product")
+
 
 
 
 const addToCart = async (req, res) => {
     try {
+        if(!req.userId)return  res.status(404).json({
+            success: false,
+            message: "false"
+        })
         const cart = await Cart.findOne({ productId: req.body.productId })
+        const option = "-userBought -description -infoProduct -star -images"
         if (cart) {
-            cart.quantity = req.body.quantity
-            cart.price == req.body.price
-            cart.save()
+            const cart = await Cart.findOneAndUpdate({ productId: req.body.productId }, { ...req.body }, { new: true }).populate("productId", option)
             return res.status(200).json({
                 success: cart ? true : false,
                 message: cart ? "success" : 'failed',
-                cart
+                data: cart ? cart : null
             })
         }
-        const newCart = await Cart.create({ userId: req.userId, ...req.body })
+        const newCart = await Cart.create({ user: req.userId, ...req.body })
+        const populatedCart = await newCart.populate("productId",option)
         res.status(200).json({
-            success: newCart ? true : false,
-            message: newCart ? "success" : 'failed',
-            cart: newCart
+            success: populatedCart ? true : false,
+            message: populatedCart ? "success" : 'failed',
+            data: populatedCart ? populatedCart : null
         })
     } catch (error) {
         res.status(500).json({
@@ -31,7 +34,7 @@ const addToCart = async (req, res) => {
     }
 }
 
-const updateCart = async (req, res) => {
+const removeProductInCart = async (req, res) => {
     try {
         const cart = await Cart.findOneAndDelete(req.params.pid)
         res.status(200).json({
@@ -48,7 +51,7 @@ const updateCart = async (req, res) => {
 const getProductCart = async (req, res) => {
     try {
         const option = "-userBought -description"
-        const product = await Cart.find({ userId: req.userId }).populate("productId", option)
+        const product = await Cart.find({ user: req.userId }).populate("productId", option)
         res.status(200).json({
             success: product ? true : false,
             products: product ? product : null
@@ -60,4 +63,4 @@ const getProductCart = async (req, res) => {
         })
     }
 }
-module.exports = { addToCart, updateCart, getProductCart }
+module.exports = { addToCart, getProductCart, removeProductInCart }

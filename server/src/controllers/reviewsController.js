@@ -1,16 +1,15 @@
 const Reviews = require("../models/Reviews")
 
 
-const createComment = async (req, res) => {
+const createReview = async (req, res) => {
     try {
         const { pid } = req.params
-        console.log(pid)
-        if (!pid || Object.keys(req.body).length === 0) return res.status(401).json({ success: false, message: "Input required!" })
-        const comment = await Reviews.create({ userId: req.userId, productId: pid, ...req.body })
+        if (!pid || Object.keys(req.body)?.length === 0) return res.status(401).json({ success: false, message: "Input required!" })
+        const comment = await Reviews.create({ user: req.userId, productId: pid, ...req.body })
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Created success" : "Created failed",
-            comment: comment ? comment : null
+            data: comment ? comment : null
         })
     } catch (error) {
         return res.status(500).json({
@@ -19,11 +18,11 @@ const createComment = async (req, res) => {
         })
     }
 }
-const deleteComment = async (req, res) => {
+const deleteReview = async (req, res) => {
     try {
-        const { cId } = req.params
-        if (!cId) return res.status(401).json({ success: false, message: "cId required!" })
-        const comment = await Reviews.findByIdAndDelete(cId)
+        const { cid } = req.params
+        if (!cid) return res.status(401).json({ success: false, message: "cid required!" })
+        const comment = await Reviews.findByIdAndDelete(cid)
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Delete success" : "Delete failed",
@@ -35,15 +34,32 @@ const deleteComment = async (req, res) => {
         })
     }
 }
-const getComment = async (req, res) => {
+const getAllReviews = async (req, res) => {
     try {
         const { pid } = req.params
         if (!pid) return res.status(401).json({ success: false, message: "productId required!" })
+        const newQuery = {
+            productId: pid
+        };
+        if (req.query.rating) {
+            newQuery.rating = req.query.rating
+        }
+
         const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        const comment = await Reviews.find({ productId: pid }).populate("userId", option)
+        let allReviews = Reviews.find(newQuery).populate("user", option).sort("-createdAt")
+
+        const limit = req.query.limit
+        const page = req.query.page * 1 || 0
+        const skip = page * limit
+        allReviews = allReviews.limit(limit).skip(skip)
+        const totalReviews = await Reviews.countDocuments(newQuery)
+        const newAllReviews = await allReviews
         return res.status(201).json({
-            success: comment ? true : false,
-            data: comment ? comment : null
+            success: newAllReviews ? true : false,
+            totalPage: limit ? Math.ceil(totalReviews / limit) - 1 : 0,
+            currentPage: page,
+            total_reviews: totalReviews,
+            data: newAllReviews ? newAllReviews : null,
         })
     } catch (error) {
         return res.status(500).json({
@@ -56,9 +72,9 @@ const getComment = async (req, res) => {
 
 const editComment = async (req, res) => {
     try {
-        const { id } = req.params
-        if (Object.keys(req.body).length === 0) return res.status(401).json({ success: false, message: "Input required!" })
-        const comment = await Reviews.findByIdAndUpdate(id, req.body, { new: true })
+        const { cid } = req.params
+        if (Object.keys(req.body)?.length === 0) return res.status(401).json({ success: false, message: "Input required!" })
+        const comment = await Reviews.findByIdAndUpdate(cid, req.body, { new: true })
         return res.status(201).json({
             success: comment ? true : false,
             message: comment ? "Update successfully" : "Update failed",
@@ -74,7 +90,7 @@ const editComment = async (req, res) => {
 
 const likeComment = async (req, res) => {
     try {
-        const comment = await Reviews.findById(req.params.id)
+        const comment = await Reviews.findById(req.params.cid)
         comment.likes.push(req.userId)
         comment.save()
         res.status(200).json({
@@ -90,8 +106,7 @@ const likeComment = async (req, res) => {
 }
 const unlikeComment = async (req, res) => {
     try {
-        const comment = await Reviews.findByIdAndUpdate(req.params.id, { $pull: { likes: req.userId } })
-        console.log(comment)
+        const comment = await Reviews.findByIdAndUpdate(req.params.cid, { $pull: { likes: req.userId } })
         res.status(200).json({
             success: true,
             message: "Comment has been unlike",
@@ -103,4 +118,24 @@ const unlikeComment = async (req, res) => {
         })
     }
 }
-module.exports = { createComment, getComment, editComment, likeComment, unlikeComment,deleteComment }
+
+const getRatingsProduct = async (req, res) => {
+    try {
+        const ratings = await Reviews.find({ productId: req.params.pid }).select("rating _id")
+        res.status(200).json({
+            success: ratings ? true : false,
+            data: ratings ? ratings : null,
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+
+
+
+
+
+module.exports = { createReview, getAllReviews, editComment, likeComment, unlikeComment, deleteReview, getRatingsProduct }

@@ -5,6 +5,7 @@ const productSchema = mongoose.Schema({
     images: { type: Array, default: [], require: true },
     title: { type: String, require: true },
     brand: { type: String, require: true },
+    brand_slug: { type: String, require: true },
     slug: {
         type: String, require: true,
         lowercase: true
@@ -12,18 +13,19 @@ const productSchema = mongoose.Schema({
     star: { type: Number, default: 0 },
     sold: { type: Number, default: 0 },
     userBought: { type: Array, default: [] },
-    oldPrice: { type: Number, default: 0 },
-    newPrice: { type: Number, default: 0 },
-    inStock: { type: Number, default: 0 },
+    old_price: { type: Number, default: 0 },
+    new_price: { type: Number, default: 0 },
+    in_stock: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
-    categoryCode: { type: String, default: "", require: true },
+    category_code: { type: String, default: "", require: true },
+    category_name: { type: String, default: "", require: true },
     infoProduct: [{
         name: String,
         value: String
     }],
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    views: { type: Array, default: [] },// số lượng người truy cập
-    description: { type: Array, default: [] },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    views: { type: Number, default: 0 },// số lượng người truy cập
+    description: { type: String, default: "" },
 }, {
     timestamps: true
 })

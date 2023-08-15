@@ -4,13 +4,13 @@ const User = require("../models/User")
 const updateUser = async (req, res) => {
     try {
         const userId = req.userId
-        if (!userId || Object.keys(req.body).length === 0) {
+        if (!userId || Object.keys(req.body)?.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: "Missing inputs"
             })
         }
-        const user = await User.findByIdAndUpdate({ _id: userId }, req.body)
+        const user = await User.findByIdAndUpdate({ _id: userId }, req.body, { new: true })
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -20,6 +20,8 @@ const updateUser = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Update successful",
+            data: user
+
         })
     } catch (error) {
         return res.status(500).json({
@@ -54,8 +56,8 @@ const currentUserDetail = async (req, res) => {
 
 const adminUserDetail = async (req, res) => {
     try {
-        const { id } = req.params
-        if (!id) return res.status(401).json({
+        const { cid } = req.params
+        if (!cid) return res.status(401).json({
             success: false,
             message: "id not found"
         })
@@ -77,27 +79,57 @@ const adminUserDetail = async (req, res) => {
         })
     }
 }
+const detailShop = async (req, res) => {
+    try {
+        const { sid } = req.params
+        const shop = await User.findById(sid).select("-password -verificationEmailToken -passwordTokenExpires -confirm")
+        if (!shop) return res.status(401).json({
+            success: false,
+            message: "User not found"
+        })
+        return res.status(200).json({
+            success: true,
+            message: "successful",
+            data: shop
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
 
 //following
 const following = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
         const currentUser = await User.findById(req.userId)
-        if (currentUser.followings.includes(req.params.id)) {
-            await user.updateOne({ $pull: { followers: req.userId } })
-            await currentUser.updateOne({ $pull: { followings: req.params.id } });
-            res.status(200).json({
-                success: true,
-                message: "user has been unfollowed",
-            })
-        } else {
-            await user.updateOne({ $push: { followers: req.userId } })
-            await currentUser.updateOne({ $push: { followings: req.params.id } });
-            res.status(200).json({
-                success: true,
-                message: "user has been followed",
-            })
-        }
+        await user.updateOne({ $push: { followers: req.userId } })
+        await currentUser.updateOne({ $push: { followings: req.params.id } });
+        res.status(200).json({
+            success: true,
+            message: "user has been followed",
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+//unfollowing
+const unFollowing = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        const currentUser = await User.findById(req.userId)
+        await user.updateOne({ $pull: { followers: req.userId } })
+        await currentUser.updateOne({ $pull: { followings: req.params.id } });
+        res.status(200).json({
+            success: true,
+            message: "user has been unfollowed",
+        })
+
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -109,7 +141,7 @@ const following = async (req, res) => {
 const updateUserByAdmin = async (req, res) => {
     try {
         const { userId } = req.body
-        if (!userId || Object.keys(req.body).length === 0) {
+        if (!userId || Object.keys(req.body)?.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: "Missing inputs"
@@ -175,5 +207,7 @@ const deleteUser = async (req, res) => {
 }
 
 
-module.exports = { updateUser, updateUserByAdmin, currentUserDetail,
-    adminUserDetail, deleteUser, following, getAllUsers }
+module.exports = {
+    updateUser, updateUserByAdmin, currentUserDetail,
+    adminUserDetail, deleteUser, following, unFollowing, getAllUsers, detailShop
+}

@@ -1,4 +1,4 @@
-import { axiosJWT } from '../utils/httpRequest';
+import { axiosJWT, httpRequest } from '../utils/httpRequest';
 
 const apiSendEmail = async (email: string) => {
     try {
@@ -47,9 +47,9 @@ const apiLogin = async (email: string, password: string) => {
         };
     }
 };
-const sendMailForgot = async () => {
+const sendMailForgot = async (body: object) => {
     try {
-        const res = await axiosJWT.put('auth/send_email');
+        const res = await httpRequest.put('auth/send_email', body);
         return res.data;
     } catch (error) {
         return {

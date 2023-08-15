@@ -1,8 +1,10 @@
-import { axiosJWT, httpRequest } from '../utils/httpRequest';
+import { axiosJWT, httpRequest } from "../utils/httpRequest";
 
-const getAllReviewsById = async (pid: string) => {
+const getAllReviewsById = async (pid: string, queries:object) => {
     try {
-        const res = await httpRequest.get(`/reviews/get/${pid}`);
+        const res = await httpRequest.get(`/reviews/get/${pid}`,{
+            params:queries
+        });
         return res.data;
     } catch (error) {
         return {
@@ -36,9 +38,9 @@ const apiLikeProduct = async (commentId: string) => {
     }
 };
 
-const apiPostComment= async (data:object,pid:string) => {
+const apiPostComment = async (data: object, pid: string) => {
     try {
-        const res = await axiosJWT.post(`/reviews/${pid}`,data);
+        const res = await axiosJWT.post(`/reviews/${pid}`, data);
         return res.data;
     } catch (error) {
         return {
@@ -47,9 +49,9 @@ const apiPostComment= async (data:object,pid:string) => {
         };
     }
 };
-const apiDeleteComment= async (cId:string) => {
+const apiDeleteComment = async (cid: string) => {
     try {
-        const res = await axiosJWT.delete(`/reviews/${cId}/delete_comment`);
+        const res = await axiosJWT.delete(`/reviews/${cid}/delete_comment`);
         return res.data;
     } catch (error) {
         return {
@@ -58,4 +60,28 @@ const apiDeleteComment= async (cId:string) => {
         };
     }
 };
-export { getAllReviewsById, apiUnlikeComment, apiLikeProduct ,apiPostComment,apiDeleteComment};
+
+const apiEditComment = async (data: any, cid: any) => {
+    try {
+        const res = await axiosJWT.put(`/reviews/${cid}/edit_comment`, data);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+const apiRatingsProduct = async (pid: any) => {
+    try {
+        const res = await httpRequest.get(`reviews/${pid}/ratings_product`);
+        return res.data;
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
+
+export { getAllReviewsById, apiUnlikeComment, apiLikeProduct, apiPostComment, apiDeleteComment, apiEditComment ,apiRatingsProduct};

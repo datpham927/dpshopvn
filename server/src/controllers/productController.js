@@ -5,13 +5,13 @@ const Product = require("../models/Product")
 
 const createProduct = async (req, res) => {
     try {
-        if (Object.keys(req.body).length == 0) {
+        if (Object.keys(req.body)?.length == 0) {
             return res.status(400).json({
                 success: false,
                 message: "Input required!"
             })
         }
-        const newProducts = await Product.create({ userId: req.userId, slug: slugify(req.body.title), ...req.body })
+        const newProducts = await Product.create({ user: req.userId, slug: slugify(req.body.title), ...req.body })
         if (newProducts) {
             const user = await User.findById(req.userId)
             user.totalProduct++
@@ -20,7 +20,7 @@ const createProduct = async (req, res) => {
         return res.status(201).json({
             success: newProducts ? true : false,
             message: newProducts ? "Create success!" : 'Cannot create new product',
-            createdProduct: newProducts ? newProducts : null
+            data: newProducts ? newProducts : null
         })
     } catch (error) {
         return res.status(500).json({
@@ -31,7 +31,7 @@ const createProduct = async (req, res) => {
 }
 const updateProduct = async (req, res) => {
     try {
-        if (!req.params.pid || Object.keys(req.body).length == 0) {
+        if (!req.params.pid || Object.keys(req.body)?.length == 0) {
             return res.status(400).json({
                 success: false,
                 message: "Input required!"
@@ -41,7 +41,7 @@ const updateProduct = async (req, res) => {
         return res.status(201).json({
             success: newProducts ? true : false,
             message: newProducts ? "Update success!" : 'Cannot update product',
-            createdProduct: newProducts ? newProducts : null
+            data: newProducts ? newProducts : null
         })
     } catch (error) {
         return res.status(500).json({
@@ -61,9 +61,7 @@ const deleteProduct = async (req, res) => {
         }
         const product = await Product.findByIdAndDelete(req.params.pid)
         if (product) {
-            const user = await User.findById(product.userId)
-            user.totalProduct--
-            user.save()
+            await User.findByIdAndUpdate(product.userId, { $inc: { totalProduct: - 1 } })
         }
         return res.status(201).json({
             success: product ? true : false,
@@ -85,13 +83,12 @@ const detailProduct = async (req, res) => {
                 message: "Id required!"
             })
         }
-        const option="_id firstName lastName followers avatar_url userId email"
-        const product = await Product.findById(req.params.pid).populate("userId",option)
+        const option = "_id firstName lastName followers avatar_url userId email"
+        const product = await Product.findById(req.params.pid).populate("user", option)
         //cập nhật số lượng người truy cập
-        if (req?.userId) {
-            if (product && !product.views.includes(req?.userId)) {
-                product.views.push(req.userId)
-            }
+        if (product) {
+            product.views += 1
+            product.save()
         }
         return res.status(201).json({
             success: product ? true : false,
@@ -109,27 +106,36 @@ const getAllProducts = async (req, res) => {
     try {
         const queries = { ...req.query }
         const excludeFields = ["limit", "sort", "page"]
-        excludeFields.forEach(field => delete queries[field])
+        excludeFields?.forEach(field => delete queries[field])
         let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
         let newQueryString = JSON.parse(queriesString)
         if (req.query.title) {
-            newQueryString.title = { $regex: req.query.title, $options: "i" }
+            newQueryString.title = { $regex: req.query.title, $options: 'i' }
         }
-        if (req.query.category) {
-            newQueryString.category = { category }
+        if (req.query.category_code) {
+            newQueryString.category_code = req.query.category_code
         }
-        let products = Product.find(newQueryString).select("-categoryCode -details -description -views -userId -userBought -size -infoProduct")
+        let products = Product.find(newQueryString).select("-category_code  -description -views -userId -userBought  -infoProduct")
         if (req.query.sort) {
             const sortBy = req.query.sort.toString().replace(",", " ")
             products = products.sort(sortBy)
         } else {
             products = products.sort('-createdAt')
         }
+        const totalProducts = await Product.countDocuments(newQueryString)
+        if (totalProducts.length === 0) {
+            return res.status(201).json({
+                success: false,
+                totalPage: 0,
+                currentPage: 0,
+                total_products: 0,
+                products: null,
+            })
+        }
         const limit = req.query.limit
         const page = req.query.page * 1 || 0
         const skip = page * limit
         products = products.limit(limit).skip(skip)
-        const totalProducts = await Product.countDocuments(newQueryString)
         const newProducts = await products
 
         return res.status(201).json({
@@ -146,21 +152,92 @@ const getAllProducts = async (req, res) => {
         })
     }
 }
+
+
+const getAllProductsUser = async (req, res) => {
+    try {
+        const queries = { ...req.query }
+        const excludeFields = ["limit", "sort", "page"]
+        excludeFields?.forEach(field => delete queries[field])
+        let queriesString = JSON.stringify(queries).replace(/\b(gte|gt|lte|lt)\b/g, el => `$${el}`)
+        let newQueryString = JSON.parse(queriesString)
+        if (req.userId) {
+            newQueryString.user = req.userId
+        }
+        if (req.query.title) {
+            newQueryString.title = { $regex: req.query.title, $options: 'i' }
+        }
+        if (req.query.createdAt) {
+            const searchDate = new Date(req.query.createdAt);
+            newQueryString.createdAt = {
+                $gte: searchDate,
+                $lt: new Date(searchDate.getTime() + 24 * 60 * 60 * 1000),
+            };
+        }
+        if (req.query.category_code) {
+            newQueryString.category_code = req.query.category_code
+        }
+        let products = Product.find(newQueryString).select("-views -userId -userBought  -infoProduct")
+        if (req.query.sort) {
+            const sortBy = req.query.sort.toString().replace(",", " ")
+            products = products.sort(sortBy)
+        } else {
+            products = products.sort('-createdAt')
+        }
+        const totalProducts = await Product.countDocuments(newQueryString)
+        if (totalProducts.length === 0) {
+            return res.status(201).json({
+                success: false,
+                totalPage: 0,
+                currentPage: 0,
+                total_products: 0,
+                products: null,
+            })
+        }
+        const limit = req.query.limit
+        const page = req.query.page * 1 || 0
+        const skip = page * limit
+        products = products.limit(limit).skip(skip)
+        const newProducts = await products
+        return res.status(201).json({
+            success: newProducts ? true : false,
+            totalPage: limit ? Math.ceil(totalProducts / limit) - 1 : 0,
+            currentPage: page,
+            total_products: totalProducts,
+            products: newProducts ? newProducts : null,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
+
+
 // get product all ready following
 const getAllProductFollowing = async (req, res) => {
     try {
+        // Sử dụng projection để chỉ lấy ra những trường cần thiết
         const currentUser = await User.findById(req.userId)
-        const option = "-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart"
-        const allProduct = await Promise.all(
-            currentUser.followings.map(e => {
-                return Product.findOne({ userId: e }).populate("userId", option)
-            })
-        )
+            .select("-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart")
+
+        // Sử dụng Promise.all để thực hiện truy vấn song song và sử dụng populate để nạp các tài khoản user liên quan
+        const option = "_id firstName lastName followers avatar_url userId email"
+        const followings = currentUser.followings;
+        const productPromises = followings.map(e => {
+            return Product.find({ user: e }).populate("user", option)
+        });
+
+        const allProduct = await Promise.all(productPromises);
+
         res.status(200).json({
             success: allProduct ? true : false,
             message: allProduct ? "Success" : "Failed",
-            products: allProduct ? allProduct : null
-        })
+            products: allProduct ? allProduct.flat() : null
+        });
 
     } catch (error) {
         return res.status(500).json({
@@ -169,10 +246,45 @@ const getAllProductFollowing = async (req, res) => {
         })
     }
 }
-// // // insert products data    
+// update  product ratings
+
+const updateRatingsProduct = async (req, res) => {
+    try {
+        if (!req.body.rating && !req.params.pid) res.status(401).json({
+            success: false
+        })
+        const response = await Product.findByIdAndUpdate(req.params.pid, { star: Number(req.body.rating) })
+        res.status(201).json({
+            success: response ? true : false
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+const getAllBrand = async (req, res) => {
+    try {
+        const brand = await Product.distinct("brand", req.query)
+        res.status(201).json({
+            success: brand ? true : false,
+            data: brand
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+
+}
+
+// insert products data    
 const Bo_qua_tang = require("../../dataInsert/Bo-qua-tang.json")
 const Cham_soc_thu_cung = require("../../dataInsert/Cham-soc-thu-cung.json")
 const DJo_An_Vat = require("../../dataInsert/DJo-An-Vat.json")
+const DJau_andamp_Hat_Cac_Loai = require("../../dataInsert/DJau-andamp-Hat-Cac-Loai.json")
 const DJo_Uong_Khong_Con = require("../../dataInsert/DJo-Uong-Khong-Con.json")
 const DJo_uong_Pha_che_dang_bot = require("../../dataInsert/DJo-uong-Pha-che-dang-bot.json")
 const DJo_uong_co_con = require("../../dataInsert/DJo-uong-co-con.json")
@@ -184,37 +296,43 @@ const data = [Bo_qua_tang,
     DJo_Uong_Khong_Con, DJo_uong_Pha_che_dang_bot,
     DJo_uong_co_con, Gia_Vi_va_Che_Bien,
     Sua_va_cac_San_pham_tu_sua, Thuc_pham_DJong_hop_va_Kho,
+    DJau_andamp_Hat_Cac_Loai
 ]
 const convertArrToObject = require("../ulits/convertArrToObject")
 const { categories } = require("../ulits/const")
 const autoCode = require("../ulits/autoCode")
-const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82"]
+const user = ["6450d1fb1d1397a25959dc17", "64611f6f10487bbfc0707e82", "64611f4510487bbfc0707e7b"]
+
 const insertProductsData = async (req, res) => {
     try {
         const star = [3.5, 4, 4.5, 5]
         let indexStar = 0
         const response = await Promise.all(data.map(async (p, i) => {
-            const categoryCode = await autoCode(categories[i].category)
+            const category_code = await autoCode(categories[i].category)
+            const category_name = categories[i].category
             return p.map(async (item, i) => {
                 indexStar = Math.floor(Math.random() * 3)
-                const images=item?.images&&item?.images.map(i=> i.split(",")[0]
-                .replace("100x100","750x750")).filter((e,i)=> !e.includes('w100')&&!e.includes("upload")&&!e.includes("w1080"))
+                await User.findByIdAndUpdate(user[i % 3], { $inc: { totalProduct: +1 } })
+                const images = item?.images && item?.images.map(i => i.split(",")[0]
+                    .replace("100x100", "750x750")).filter((e, i) => !e.includes('w100') && !e.includes("upload") && !e.includes("w1080"))
                 return await Product({
-                    image_url:item.image?.split(",")[0],
-                    images:Array.from(images).filter((e,i)=> i!=0),
+                    image_url: item.image?.split(",")[0],
+                    images: Array.from(images).filter((e, i) => i != 0),
                     title: item.title,
                     brand: item.brand,
+                    brand_slug: slugify(item.brand),
                     slug: slugify(item.title),
-                    star: star[indexStar],
-                    sold: item.solid?item.solid?.replace(".", ""):0,
-                    oldPrice: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
-                    newPrice: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
-                    inStock: 1000,
+                    star: star[indexStar], views: 10,
+                    sold: item.solid ? item.solid?.replace(".", "") : 0,
+                    old_price: item.oldPrice ? item.oldPrice?.replace(".", "") : 150000,
+                    new_price: item.newPrice ? item.newPrice?.replace(".", "") : 200000,
+                    in_stock: 1000,
                     discount: item.discount ? item.discount : 15,
-                    categoryCode: categoryCode,
+                    category_code,
+                    category_name,
                     infoProduct: convertArrToObject(item.detail),
-                    userId: user[i % 2],
-                    description: item.description
+                    user: user[i % 3],
+                    description: item.description.join(", ")
                 }).save()
             })
         }))
@@ -235,5 +353,8 @@ module.exports = {
     detailProduct,
     getAllProducts,
     getAllProductFollowing,
-    insertProductsData
+    updateRatingsProduct,
+    getAllBrand,
+    insertProductsData,
+    getAllProductsUser
 }

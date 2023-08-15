@@ -7,5 +7,6 @@ router.post("/add", [verifyAccessToken], searchController.addHistory)
 router.get("/all_histories", [verifyAccessToken], searchController.searchHistory)
 router.delete("/:tid/update", [verifyAccessToken], searchController.deleteHistory)
 router.get("/suggest", searchController.suggestResult)
+router.get("/search_result", searchController.searchResults)
 
 module.exports = router

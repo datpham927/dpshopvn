@@ -2,15 +2,19 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 // Define a type for the slice state
 
-
-interface  AuthInitialState  {
-    email:string,
-    isLoginSuccess:boolean
+interface AuthInitialState {
+    email: string;
+    isLoginSuccess: boolean;
+    userOnline: Array<{
+        userId: string;
+        socketId: string;
+    }>;
 }
 
-const initialState :AuthInitialState= {
-        email: '',
-        isLoginSuccess:false
+const initialState: AuthInitialState = {
+    email: '',
+    isLoginSuccess: JSON.parse(localStorage.getItem('isLoginSuccess') || 'false'),
+    userOnline: [],
 };
 
 export const authSlice = createSlice({
@@ -21,12 +25,16 @@ export const authSlice = createSlice({
         setEmail: (state, action: PayloadAction<string>) => {
             state.email = action.payload;
         },
-        setIsLoginSuccess:(state, action: PayloadAction<boolean>) => {
+        setIsLoginSuccess: (state, action: PayloadAction<boolean>) => {
             state.isLoginSuccess = action.payload;
+            localStorage.setItem('isLoginSuccess', JSON.stringify(state.isLoginSuccess));
+        },
+        setUserOnline: (state, action) => {
+            state.userOnline = action.payload;
         },
     },
 });
 
-export const { setEmail,setIsLoginSuccess} = authSlice.actions;
+export const { setEmail, setIsLoginSuccess, setUserOnline } = authSlice.actions;
 
 export default authSlice.reducer;

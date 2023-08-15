@@ -4,8 +4,10 @@ const { verifyAccessToken, verifyAdmin } = require("../middlewares/verifyToken")
 
 
 router.put("/update", [verifyAccessToken], userController.updateUser)
-router.put("/:id/follow", [verifyAccessToken], userController.following)
+router.post("/:id/follow", [verifyAccessToken], userController.following)
+router.put("/:id/unfollow", [verifyAccessToken], userController.unFollowing)
 router.get("/user_detail", [verifyAccessToken], userController.currentUserDetail)
+router.get("/:sid/shop_detail", userController.detailShop)
 
 //------------------
 // admin
