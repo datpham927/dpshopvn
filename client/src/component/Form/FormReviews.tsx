@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { SetStateAction, useEffect , useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import StarRateIcon from '@mui/icons-material/StarRate';

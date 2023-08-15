@@ -1,12 +1,13 @@
-import React, { memo, useRef } from 'react';
+import React, { memo } from 'react';
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getCategories } from '../../services/apiCategory';
 import { setCategories } from '../../redux/features/category/categorySlice';
+ 
+import { setUserOnline } from '../../redux/features/auth/authSlice';
 import HeaderTop from './headerTop';
 import HeaderBottom from './headerBottom';
-import { setUserOnline } from '../../redux/features/auth/authSlice';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Header: React.FC = () => {
