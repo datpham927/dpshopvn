@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect , useState } from 'react';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { Link } from 'react-router-dom';

@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo,   useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { ButtonOutline, DeliveryAddress, FormEditAddress, showNotification } from '../../../component';
+import { ButtonOutline, DeliveryAddress, showNotification } from '../../../component';
 import { formatMoney } from '../../../utils/formatMoney';
 import { formatUserName } from '../../../utils/formatUserName';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { path } from '../../../utils/const';
 import { imgFreeShip } from '../../../assets';
 import { setCreateOrder } from '../../../services/apiOrder';
