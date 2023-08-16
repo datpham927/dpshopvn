@@ -1,4 +1,4 @@
-export { default as Header } from './header';
+export { default as Header } from './Header';
 export { default as Overlay } from './common/Overlay';
 export { default as CartShockDiscount } from './item/CardShockDiscount';
 export { default as CategoryItem } from './item/CategoryItem';
