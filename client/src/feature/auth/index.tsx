@@ -1,7 +1,7 @@
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import { setFeatureAuth, setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import Login from './left/Login';
 import Right from './Right/Right';
 import Register from './left/Register';
@@ -15,6 +15,7 @@ const Auth: React.FC = () => {
     const handleClose = (e: { stopPropagation: () => void }) => {
         e.stopPropagation();
         dispatch(setOpenFeatureAuth(false));
+        dispatch(setFeatureAuth(0))
     };
     const handleOpen = (e: { stopPropagation: () => void }) => {
         e.stopPropagation();

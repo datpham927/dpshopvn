@@ -87,7 +87,12 @@ const Login: React.FC = () => {
                     </p>
                     <p className="flex gap-2 items-center text-secondary text-sm">
                         Chưa có tài khoản?
-                        <span className="text-sm text-primary cursor-pointer">Tạo tài khoản</span>
+                        <span
+                            className="text-sm text-primary cursor-pointer"
+                            onClick={() => dispatch(setFeatureAuth(0))}
+                        >
+                            Tạo tài khoản
+                        </span>
                     </p>
                 </div>
             </div>

@@ -5,7 +5,7 @@ import EastIcon from '@mui/icons-material/East';
 import WestIcon from '@mui/icons-material/West';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setConversations, setIsOpenChat, setLoadDataConversation } from '../../redux/features/action/actionSlice';
+import { setConversations, setIsOpenChat, setLoadDataConversation, setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { Conversation } from '../../interfaces/interfaces';
 import { getAllConversation } from '../../services/apiConversation';
 import ChatModal from './chatModal';
@@ -14,8 +14,8 @@ const Chat: React.FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [unseenConversations, setUnseenConversations] = useState<number>(0);
     const dispatch = useAppDispatch();
-    const { isOpenChat } = useAppSelector((state) => state.action);
-    const { conversations, loadDataConversation } = useAppSelector((state) => state.action);
+    const {  isLoginSuccess} = useAppSelector((state) => state.auth);
+    const { conversations, loadDataConversation,isOpenChat} = useAppSelector((state) => state.action);
     const currentUser = useAppSelector((state) => state.user);
     const { socketRef } = useAppSelector((state) => state.action);
 
@@ -52,12 +52,18 @@ const Chat: React.FC = () => {
         fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loadDataConversation]);
-    
+
     return (
         <div className="tablet:hidden fixed bottom-1 right-5 z-[1000] ">
             <div
                 className="relative p-3 bg-primary rounded-full text-white cursor-pointer"
-                onClick={() => dispatch(setIsOpenChat(true))}
+                onClick={() => {
+                    if (!isLoginSuccess) {
+                        dispatch(setOpenFeatureAuth(true));
+                        return;
+                    }
+                    dispatch(setIsOpenChat(true));
+                }}
             >
                 <MessageIcon fontSize="large" />
                 {unseenConversations > 0 && (

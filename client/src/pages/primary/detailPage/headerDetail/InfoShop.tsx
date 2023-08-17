@@ -50,6 +50,10 @@ const InfoShop: React.FC<{ shop: InfoShop }> = ({ shop }) => {
     };
 
     const handleCLickChat = async () => {
+        if (!isLoginSuccess) {
+            dispatch(setOpenFeatureAuth(true));
+            return;
+        }
         if (shop?._id === currentUser._id) {
             showNotification('Không thể chat!', false);
             return;
