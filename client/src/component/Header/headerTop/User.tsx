@@ -10,12 +10,12 @@ import { path } from '../../../utils/const';
 import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 import { noUser } from '../../../assets';
 import { setAddProductInCartFromApi, setSelectedProductsAll } from '../../../redux/features/order/orderSlice';
+import { formatUserName } from '../../../utils/formatUserName';
 const User: React.FC = () => {
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const { avatar_url, firstName, lastName, email } = useAppSelector((state) => state.user);
-    const name = lastName ? `${lastName} ${firstName}` : email?.split('@')[0];
 
     const handleLogOut = async () => {
         if (confirm('Bạn có muốn đăng xuất')) {
@@ -42,7 +42,7 @@ const User: React.FC = () => {
                         <img className="w-6 h-6 object-cover rounded-full" src={avatar_url ? avatar_url : noUser} />
                     </span>
                     <div className="tablet:hidden text-sm font-normal text-white cursor-pointer ml-2 mr-4">
-                        <span>{name}</span>
+                        <span>{formatUserName({ firstName, lastName, email })}</span>
                     </div>
                     {/* menu */}
                     {isOpenMenu && (

@@ -103,10 +103,10 @@ const sendMail: React.FC<ModeRegister> = (props) => {
                     {/* <img className="w-[50px]" src={logoFb} /> */}
                     {/* <img className="w-[50px]" src={logoGoogle} /> */}
                     <GoogleOAuthProvider 
-                    clientId={import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID}>
+                    clientId={import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID}
+                    >
                         <GoogleLogin onSuccess={responseGoogle} />
                     </GoogleOAuthProvider>
-                    ;
                 </div>
             </div>
         </div>

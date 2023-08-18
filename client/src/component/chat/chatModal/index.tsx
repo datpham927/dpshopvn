@@ -40,7 +40,7 @@ const ChatModal = () => {
     return (
         <div
             className={`tablet:fixed tablet:top-0 table:right-0 tablet:left-0 table:w-full  tablet:h-full absolute bottom-0 right-0 w-auto h-[460px] bg-white shadow-search rounded-md  duration-1000 origin-bottom-right z-[1000]  ${
-                isOpenChat ? 'animate-active-openChat' : 'animate-active-openChatOff'
+                isOpenChat ? 'laptop:animate-active-openChat' : 'laptop:animate-active-openChatOff'
             }`}
         >
             <div className="flex justify-between px-4 py-1 border-solid border-b-[1px] border-b-gray-200">

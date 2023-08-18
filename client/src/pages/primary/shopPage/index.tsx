@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import DoneIcon from '@mui/icons-material/Done';
@@ -30,7 +30,10 @@ const ShopPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector((state) => state.user);
     const { isLoginSuccess, userOnline } = useAppSelector((state) => state.auth);
+    const { mobile_ui} = useAppSelector((state) => state.action);
     const [followers, setFollowers] = useState<Array<string>>([]);
+    const navigate = useNavigate();
+
     const { sid } = useParams<{ sid: string }>();
     useEffect(() => {
         const fetchDetailShop = async () => {
@@ -71,12 +74,15 @@ const ShopPage: React.FC = () => {
         await createConversation(shop?._id);
         dispatch(setIsOpenChat(true));
         dispatch(setLoadDataConversation());
+        if (mobile_ui) {
+            navigate('/message');
+        }
     };
     return (
         <div className="flex flex-col w-full h-full p-3 gap-6">
-            <div className="flex w-full h-full mt-6 gap-6 ">
+            <div className="flex tablet:flex-col w-full h-full mt-6 gap-6 ">
                 <div
-                    className="flex flex-col h-full w-1/3 gap-3  py-2 px-6   justify-center rounded-lg"
+                    className="flex flex-col h-full tablet:w-full w-1/3 gap-3  py-2 px-6   justify-center rounded-lg"
                     style={{
                         backgroundImage: `url(${bgHeaderShop})`,
                         backgroundRepeat: 'no-repeat',
@@ -119,7 +125,7 @@ const ShopPage: React.FC = () => {
                         </ButtonOutline>
                     </div>
                 </div>
-                <div className="w-2/3 px-6 text-zinc-700 grid grid-cols-2 items-center ">
+                <div className="tablet:w-full w-2/3 px-6 text-zinc-700 grid grid-cols-2 items-center ">
                     <div className="flex items-center text-sm gap-2 py-2 h-fit">
                         <CardGiftcardIcon fontSize="small" />
                         Sản Phẩm: <span className="text-primary font-semibold">{shop?.totalProduct}</span>

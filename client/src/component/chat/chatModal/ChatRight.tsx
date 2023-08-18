@@ -83,7 +83,7 @@ const ChatRight: React.FC<{ conversation: Conversation; isOpen: boolean }> = ({ 
                         conversation ? (
                             <div className="h-full w-full ">
                                 <div className="p-3 tablet:h-[calc(100%-120px)] h-[calc(100%-150px)] justify-end w-full overflow-y-scroll ">
-                                    <div className="flex flex-col gap-3 h-auto justify-end w-full ">
+                                    <div className="flex flex-col gap-4 h-auto justify-end w-full ">
                                         {messages?.length > 0 ? (
                                             messages?.map((message) => (
                                                 <div ref={scroll}>

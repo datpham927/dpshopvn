@@ -243,7 +243,7 @@ const Search: React.FC = () => {
                     </button>
                 </div>
                 <ListCategories />
-                {openSearchResults && <Overlay onClick={() => setOpenSearchResults(false)} className="z-10" />}
+                {openSearchResults && <Overlay onClick={() => setOpenSearchResults(false)} className="z-20" />}
             </div>
         </div>
     );

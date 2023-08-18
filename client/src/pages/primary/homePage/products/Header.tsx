@@ -15,7 +15,7 @@ interface PropsInterface {
 
 const Header: React.FC<PropsInterface> = ({ setOptionTab, optionTab, isLoading = false }) => {
     return (
-        <div className="flex flex-col  sticky top-0 right-0 gap-1 w-full h-full mt-[-15px] z-10 bg-background_primary pt-4 pb-1  z-100">
+        <div className="flex flex-col  sticky top-0 right-0 gap-1 w-full h-full mt-[-15px] z-10 bg-background_primary pt-4 pb-1 ">
             {!isLoading ? (
                 <div className="px-4 py-2 rounded-sm text-xl font-normal bg-white">Gợi ý hôm nay</div>
                 ) : (

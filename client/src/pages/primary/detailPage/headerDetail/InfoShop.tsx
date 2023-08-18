@@ -11,7 +11,7 @@ import {
     setOpenFeatureAuth,
 } from '../../../../redux/features/action/actionSlice';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ButtonOutline, showNotification } from '../../../../component';
 import { formatUserName } from '../../../../utils/formatUserName';
 import { createConversation } from '../../../../services/apiConversation';
@@ -29,8 +29,9 @@ const InfoShop: React.FC<{ shop: InfoShop }> = ({ shop }) => {
     const dispatch = useDispatch();
     const currentUser = useAppSelector((state) => state.user);
     const { isLoginSuccess, userOnline } = useAppSelector((state) => state.auth);
+    const { mobile_ui } = useAppSelector((state) => state.action);
     const [currentFollowers, setCurrentFollowers] = useState<Array<string>>(shop?.followers);
-
+    const navigate = useNavigate();
     const handelFollowing = async () => {
         if (!isLoginSuccess) {
             dispatch(setOpenFeatureAuth(true));
@@ -61,6 +62,9 @@ const InfoShop: React.FC<{ shop: InfoShop }> = ({ shop }) => {
         await createConversation(shop._id);
         dispatch(setIsOpenChat(true));
         dispatch(setLoadDataConversation());
+        if (mobile_ui) {
+            navigate('/message');
+        }
     };
     return (
         <div className="tablet:w-full w-[240px] h-auto border-[1px] border-solid py-3 border-slate-200 rounded-sm px-3">
@@ -112,7 +116,7 @@ const InfoShop: React.FC<{ shop: InfoShop }> = ({ shop }) => {
             </div>
             <ButtonOutline
                 className="w-full border-red_custom mt-4  justify-center text-red_custom"
-                onClick={   handleCLickChat }
+                onClick={handleCLickChat}
             >
                 <MessageIcon fontSize="small" />
                 Chat ngay
