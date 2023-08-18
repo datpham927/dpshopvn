@@ -4,7 +4,8 @@ import { useAppDispatch } from '../../../../redux/hooks';
 import { setEmail, setIsLoginSuccess } from '../../../../redux/features/auth/authSlice';
 import { apiLoginWithGoogle, apiSendEmail } from '../../../../services/apiAuth';
 import { setFeatureAuth, setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { gapi } from 'gapi-script';
 import { showNotification } from '../../../../component';
 interface ModeRegister {
@@ -41,20 +42,14 @@ const sendMail: React.FC<ModeRegister> = (props) => {
         setModeRegister(1);
         dispatch(setEmail(emailValue));
     };
-    // fix bug  error :  "popup_closed_by_user"
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-        gapi.load('client:auth2', () => {
-            gapi.auth2.init({ clientId: import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID });
-        });
-    }, []);
+  
     const responseGoogle = async (response: any) => {
-        const { tokenId } = response;
-        if (!tokenId) {
+        const { credential } = response;
+        if (!credential) {
             showNotification('Đăng nhập không thành công!', false);
             return;
         }
-        const res = await apiLoginWithGoogle(tokenId);
+        const res = await apiLoginWithGoogle(credential);
         if (res.success) {
             localStorage.setItem('access_token', JSON.stringify(res.access_token));
             showNotification('Đăng nhập thành công!', true);
@@ -107,16 +102,16 @@ const sendMail: React.FC<ModeRegister> = (props) => {
                 <div className="flex gap-3 justify-center items-center">
                     {/* <img className="w-[50px]" src={logoFb} /> */}
                     {/* <img className="w-[50px]" src={logoGoogle} /> */}
-                    <GoogleLogin
-                        clientId={import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID}
-                        buttonText="Login with Google"
-                        onSuccess={responseGoogle}
-                        cookiePolicy={'single_host_origin'}
-                    />
+                    <GoogleOAuthProvider 
+                    clientId={import.meta.env.VITE_REACT_GOOGLE_CLIENT_ID}>
+                        <GoogleLogin onSuccess={responseGoogle} />
+                    </GoogleOAuthProvider>
+                    ;
                 </div>
             </div>
         </div>
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default memo(sendMail);
