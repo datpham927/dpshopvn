@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect , useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { Link } from 'react-router-dom';
@@ -13,9 +13,9 @@ import NotExit from '../../common/NotExit';
 
 const Notification: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
-    const { socketRef } = useAppSelector((state) => state.action);
+    const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
-    const { notifications, unreadNotification } = useAppSelector((state) => state.action);
+    const { notifications, unreadNotification, socketRef } = useAppSelector((state) => state.action);
 
     useEffect(() => {
         if (!socketRef) return;
@@ -33,7 +33,7 @@ const Notification: React.FC = () => {
             res.success && dispatch(setNotifications(res.data));
             dispatch(setUnreadNotifications());
         };
-        fetchApi();
+        isLoginSuccess && fetchApi();
     }, []);
 
     return (
@@ -51,7 +51,7 @@ const Notification: React.FC = () => {
             <NotificationsNoneIcon fontSize="small" />
             <span className="tablet:hidden text-sm">Thông báo</span>
             <div className="absolute text-[13px] px-[5px]  rounded-[50%] bottom-1 left-2 h-fit bg-[#A769FD]">
-                {unreadNotification.length}
+                {unreadNotification?.length}
             </div>
 
             {open && (
@@ -62,7 +62,7 @@ const Notification: React.FC = () => {
                     <div className=" w-full h-full overflow-hidden ">
                         <div className="flex justify-center text-secondary py-2 ">Thông báo mới nhận</div>
                         <div className="mobile:w-[300px] mobile:h-[300px] w-[400px] h-[400px] overflow-y-scroll">
-                            {notifications.length > 0 ? (
+                            {notifications?.length > 0 ? (
                                 notifications?.map((n) => (
                                     <Link
                                         onClick={() => setOpen(false)}

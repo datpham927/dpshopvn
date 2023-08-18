@@ -43,7 +43,7 @@ const ChatLeft: React.FC<ChatLeft> = ({ setConversation, conversation, setIsOpen
                     handleOnchange={(e) => setValue(e.target.value)}
                 />
             </div>
-            {conversationsNew.length > 0 ? (
+            {conversationsNew?.length > 0 ? (
                 <div className="w-full h-full">
                     {conversationsNew?.map((c) => (
                         <ConversationItem

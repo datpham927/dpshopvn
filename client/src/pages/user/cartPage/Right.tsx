@@ -23,7 +23,7 @@ const Right: React.FC = () => {
 
     const handleBuyProducts = () => {
         if (currentUser.address && currentUser.mobile) {
-            if (selectedProducts.length === 0) {
+            if (selectedProducts?.length === 0) {
                 showNotification('Vui lòng chọn sản phẩm!');
                 return;
             }

@@ -21,7 +21,7 @@ const ProductFollowings: React.FC = () => {
 
     return (
         <>
-            {products.length > 0 && (
+            {products?.length > 0 && (
                 <div
                     id="sock-discount"
                     className="flex flex-col w-full h-auto py-3  px-4 bg-white rounded-md overflow-hidden gap-4"

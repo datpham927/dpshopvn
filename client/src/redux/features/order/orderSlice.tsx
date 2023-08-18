@@ -42,7 +42,7 @@ export const orderSlice = createSlice({
             localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
         },
         setSelectedProductsAll: (state, action) => {
-            if (state.selectedProducts.length === action.payload.length) {
+            if (state.selectedProducts?.length === action.payload?.length) {
                 state.selectedProducts = [];
             } else {
                 state.selectedProducts = action.payload;

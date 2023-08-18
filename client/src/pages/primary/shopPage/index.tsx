@@ -11,7 +11,7 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { UserDetail } from '../../../interfaces/interfaces';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { apiFollowingUser, apiGetDetailShop, apiUnFollowingUser } from '../../../services/apiUser';
-import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
+import { setIsOpenChat, setLoadDataConversation, setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 import {
     RenderListProducts,
     SearchByBrand,
@@ -23,12 +23,13 @@ import {
 import { bgHeaderShop, noUser } from '../../../assets';
 import ButtonOutline from '../../../component/buttonOutline';
 import { formatUserName } from '../../../utils/formatUserName';
+import { createConversation } from '../../../services/apiConversation';
 
 const ShopPage: React.FC = () => {
-    const [shop, setShop] = useState<UserDetail>();
+    const [shop, setShop] = useState<UserDetail>({} as UserDetail);
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector((state) => state.user);
-    const { isLoginSuccess ,userOnline} = useAppSelector((state) => state.auth);
+    const { isLoginSuccess, userOnline } = useAppSelector((state) => state.auth);
     const [followers, setFollowers] = useState<Array<string>>([]);
     const { sid } = useParams<{ sid: string }>();
     useEffect(() => {
@@ -57,6 +58,20 @@ const ShopPage: React.FC = () => {
             await apiFollowingUser(shop?._id);
         }
     };
+
+    const handleCLickChat = async () => {
+        if (!isLoginSuccess) {
+            dispatch(setOpenFeatureAuth(true));
+            return;
+        }
+        if (shop?._id === currentUser._id) {
+            showNotification('Không thể chat!', false);
+            return;
+        }
+        await createConversation(shop?._id);
+        dispatch(setIsOpenChat(true));
+        dispatch(setLoadDataConversation());
+    };
     return (
         <div className="flex flex-col w-full h-full p-3 gap-6">
             <div className="flex w-full h-full mt-6 gap-6 ">
@@ -75,14 +90,16 @@ const ShopPage: React.FC = () => {
                         <div className="flex flex-col gap-2">
                             <h3 className="text-base font-semibold text-white">{formatUserName(shop)}</h3>
                             <span className="text-xs text-slate-50 ">
-                                Hoạt động {moment(shop?.createdAt).fromNow()}
+                                {!userOnline.includes(shop?._id)
+                                    ? ` Hoạt động ${moment(shop?.createdAt).fromNow()}`
+                                    : 'Đang hoạt động'}
                             </span>
                         </div>
                     </div>
 
                     <div className="flex gap-3 ">
                         <ButtonOutline className="border-white text-sm  py-1 text-white ">
-                            <span className="flex justify-center items-center gap-2">
+                            <span className="flex justify-center items-center gap-2" onClick={handleCLickChat}>
                                 <CardGiftcardIcon fontSize="small" />
                                 chat
                             </span>
@@ -109,11 +126,11 @@ const ShopPage: React.FC = () => {
                     </div>
                     <div className="flex items-center text-sm gap-2 py-2 h-fit font-semibold">
                         <PersonIcon fontSize="small" />
-                        Người Theo Dõi: <span className="text-primary ">{followers.length}</span>
+                        Người Theo Dõi: <span className="text-primary ">{followers?.length}</span>
                     </div>
                     <div className="flex items-center text-sm gap-2 py-2 h-fit font-semibold">
                         <PersonIcon fontSize="small" />
-                        Đang Theo: <span className="text-primary ">{shop?.followings.length}</span>
+                        Đang Theo: <span className="text-primary ">{shop?.followings?.length}</span>
                     </div>
                     <div className="flex items-center text-sm gap-2 py-2 h-fit font-semibold">
                         <QueryBuilderIcon fontSize="small" />

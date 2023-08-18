@@ -32,7 +32,7 @@ const Banner: React.FC = () => {
     return (
         <div className="flex tablet:col  w-full h-full gap-1 mt-4">
             <div className="flex tablet:w-full w-[74%]  h-full  rounded-md overflow-hidden">
-                {products.length > 0 ? (
+                {products?.length > 0 ? (
                     <Swiper
                         centeredSlides={true}
                     
@@ -75,7 +75,7 @@ const Banner: React.FC = () => {
                 )}
             </div>
             <div className=" tablet:hidden w-[26%] h-full  pl-4">
-                {products.length>0 ? (
+                {products?.length>0 ? (
                     <Swiper
                         autoplay={{
                             delay: 6000,

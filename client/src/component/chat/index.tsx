@@ -5,7 +5,12 @@ import EastIcon from '@mui/icons-material/East';
 import WestIcon from '@mui/icons-material/West';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setConversations, setIsOpenChat, setLoadDataConversation, setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
+import {
+    setConversations,
+    setIsOpenChat,
+    setLoadDataConversation,
+    setOpenFeatureAuth,
+} from '../../redux/features/action/actionSlice';
 import { Conversation } from '../../interfaces/interfaces';
 import { getAllConversation } from '../../services/apiConversation';
 import ChatModal from './chatModal';
@@ -14,8 +19,8 @@ const Chat: React.FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [unseenConversations, setUnseenConversations] = useState<number>(0);
     const dispatch = useAppDispatch();
-    const {  isLoginSuccess} = useAppSelector((state) => state.auth);
-    const { conversations, loadDataConversation,isOpenChat} = useAppSelector((state) => state.action);
+    const { isLoginSuccess } = useAppSelector((state) => state.auth);
+    const { conversations, loadDataConversation, isOpenChat } = useAppSelector((state) => state.action);
     const currentUser = useAppSelector((state) => state.user);
     const { socketRef } = useAppSelector((state) => state.action);
 
@@ -29,10 +34,9 @@ const Chat: React.FC = () => {
         const unseenConversations = conversations.filter(
             (c) => c.members.find((m) => m.user?._id === currentUser._id)?.isWatched === false,
         );
-        setUnseenConversations(unseenConversations.length);
+        setUnseenConversations(unseenConversations?.length);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [conversations]);
-    console.log(conversations);
 
     useEffect(() => {
         if (isOpenChat) {
@@ -49,7 +53,7 @@ const Chat: React.FC = () => {
             const res = await getAllConversation();
             res.success && dispatch(setConversations(res.data));
         };
-        fetchApi();
+        isLoginSuccess && fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loadDataConversation]);
 

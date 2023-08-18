@@ -16,7 +16,7 @@ const Cart: React.FC = () => {
         const fetchApi = async () => {
             const res = await apiGetProductInCart();
             if (!res.success) return;
-            if (res.products.length > 0) {
+            if (res.products?.length > 0) {
                 dispatch(setAddProductInCartFromApi(res.products));
             }
         };

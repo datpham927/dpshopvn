@@ -21,7 +21,7 @@ const Categories: React.FC = () => {
     }, []);
     return (
         <div className="flex w-full h-full bg-white py-3 rounded-md overflow-hidden ">
-            {categories.length > 0 ? (
+            {categories?.length > 0 ? (
                 <Swiper
                 className='w-full'
                     allowTouchMove={false}

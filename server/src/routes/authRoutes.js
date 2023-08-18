@@ -10,6 +10,7 @@ router.put("/register", authController.register)
 router.post("/login", authController.login)
 router.post("/refresh_token", authController.refreshToken)
 router.post("/logout", [verifyAccessToken], authController.logOut)
+router.post("/login_google", authController.loginWithGoogle)
 
 //----- Forgot password
 router.put("/send_email", authController.sendGmailForgetPassword)

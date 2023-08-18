@@ -102,7 +102,7 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                     <div className="bg-white px-3 py-2 rounded-md overflow-hidden">
                         <div className="flex flex-col border-solid border-b-[1px] gap-1 border-neutral-200 py-3">
                             <div className="flex justify-between items-center  ">
-                                <span className="text-secondary text-base">Đơn hàng ({selectedProducts.length})</span>
+                                <span className="text-secondary text-base">Đơn hàng ({selectedProducts?.length})</span>
                                 <span
                                     className="text-primary text-base cursor-pointer"
                                     onClick={() => navigate(path.PAGE_CART)}

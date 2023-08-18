@@ -22,32 +22,32 @@ const PurchaseManage: React.FC = () => {
         {
             tab: 1,
             title: 'Tất cả',
-            quantity: allOrdersBought.length,
+            quantity: allOrdersBought?.length,
         },
         {
             tab: 2,
             title: 'Chờ xác nhận',
-            quantity: allOrdersBought_isConfirm.length,
+            quantity: allOrdersBought_isConfirm?.length,
         },
         {
             tab: 3,
             title: 'Vận Chuyển',
-            quantity: allOrdersBought_delivery.length,
+            quantity: allOrdersBought_delivery?.length,
         },
         {
             tab: 4,
             title: 'Đang giao',
-            quantity: allOrdersBought_isDelivering.length,
+            quantity: allOrdersBought_isDelivering?.length,
         },
         {
             tab: 5,
             title: 'Hoàn thành',
-            quantity: allOrdersBought_isSuccess.length,
+            quantity: allOrdersBought_isSuccess?.length,
         },
         {
             tab: 6,
             title: 'Đã hủy',
-            quantity: allOrdersBought_isCanceled.length,
+            quantity: allOrdersBought_isCanceled?.length,
         },
     ];
     const [displayTab, setDisplayTab] = useState<number>(1);

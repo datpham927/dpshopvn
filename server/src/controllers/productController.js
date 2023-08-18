@@ -123,7 +123,7 @@ const getAllProducts = async (req, res) => {
             products = products.sort('-createdAt')
         }
         const totalProducts = await Product.countDocuments(newQueryString)
-        if (totalProducts.length === 0) {
+        if (totalProducts?.length === 0) {
             return res.status(201).json({
                 success: false,
                 totalPage: 0,
@@ -185,7 +185,7 @@ const getAllProductsUser = async (req, res) => {
             products = products.sort('-createdAt')
         }
         const totalProducts = await Product.countDocuments(newQueryString)
-        if (totalProducts.length === 0) {
+        if (totalProducts?.length === 0) {
             return res.status(201).json({
                 success: false,
                 totalPage: 0,

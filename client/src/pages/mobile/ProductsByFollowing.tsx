@@ -23,7 +23,7 @@ const ProductsByFollowing = () => {
     return (
         <div className={`${!isLoading ? 'grid mobile:grid-cols-2 tablet:grid-cols-4' : 'w-full h-full'} bg-white py-5 `}>
             {!isLoading ? (
-                products.length > 0 ? (
+                products?.length > 0 ? (
                     products.map((p) => <ProductItem key={p?._id} props={p} />)
                 ) : (
                     <NotExit />

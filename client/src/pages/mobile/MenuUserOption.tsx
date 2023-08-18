@@ -3,7 +3,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Sidebar } from '../user/userPage/Sidebar';
 import { ButtonOutline, showNotification } from '../../component';
 import Cart from '../../component/cart';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { apiLogout } from '../../services/apiAuth';
 import { setDetailUser } from '../../redux/features/user/userSlice';
@@ -12,6 +12,7 @@ import { setAddProductInCartFromApi, setSelectedProductsAll } from '../../redux/
 
 const MenuUserOption: React.FC = () => {
     const dispatch=useAppDispatch()
+    const navigate=useNavigate()
     const handleLogOut = async () => {
         if (confirm('Bạn có muốn đăng xuất')) {
             const res = await apiLogout();
@@ -22,6 +23,7 @@ const MenuUserOption: React.FC = () => {
             dispatch(setSelectedProductsAll([]));
             dispatch(setAddProductInCartFromApi([]));
             showNotification('Đăng xuất thành công', true);
+            navigate('/');
         }
     };
     return (
