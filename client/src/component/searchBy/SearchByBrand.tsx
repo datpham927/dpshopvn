@@ -44,12 +44,12 @@ const SearchByBrand: React.FC = () => {
 
     return (
         <>
-            {brands.length > 0 && (
+            {brands?.length > 0 && (
                 <div className="flex flex-col gap-3 border-b-[1px] border-solid border-b-slate-200 py-6">
                     <h3 className="text-sm font-medium">Nhãn hàng</h3>
                     <div
                         className={`flex flex-col gap-2 ${
-                            brands.length > 50 && quantityDisplayBrand !== 5 ? 'overflow-scroll h-[800px]' : ''
+                            brands?.length > 50 && quantityDisplayBrand !== 5 ? 'overflow-scroll h-[800px]' : ''
                         }`}
                     >
                         {brands.map(
@@ -75,7 +75,7 @@ const SearchByBrand: React.FC = () => {
                                 ),
                         )}
                     </div>
-                    {brands.length >= 5 && (
+                    {brands?.length >= 5 && (
                         <button
                             className="text-sm text-primary"
                             onClick={() => {

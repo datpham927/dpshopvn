@@ -27,32 +27,32 @@ const SellManage: React.FC = () => {
         {
             tab: 1,
             title: 'Tất cả',
-            quantity: allOrdersSold.length,
+            quantity: allOrdersSold?.length,
         },
         {
             tab: 2,
             title: 'Chờ xác nhận',
-            quantity: allOrdersSold_isConfirm.length,
+            quantity: allOrdersSold_isConfirm?.length,
         },
         {
             tab: 3,
             title: 'Vận Chuyển',
-            quantity: allOrdersSold_delivery.length,
+            quantity: allOrdersSold_delivery?.length,
         },
         {
             tab: 4,
             title: 'Đã giao hàng',
-            quantity: allOrdersSold_isDelivering.length,
+            quantity: allOrdersSold_isDelivering?.length,
         },
         {
             tab: 5,
             title: 'Thành công',
-            quantity: allOrdersSold_isSuccess.length,
+            quantity: allOrdersSold_isSuccess?.length,
         },
         {
             tab: 6,
             title: 'Đã hủy',
-            quantity: allOrdersSold_isCanceled.length,
+            quantity: allOrdersSold_isCanceled?.length,
         },
     ];
     const [orders, setOrders] = useState<IOrderItem[]>([]);
@@ -144,7 +144,7 @@ const SellManage: React.FC = () => {
             </div>
             <div className="flex flex-col gap-5 w-full">
                 <RenderUi orders={orders} tab={displayTab} />
-                {orders.length > 0 && (
+                {orders?.length > 0 && (
                     <ButtonOutline onClick={handleExportFile} className="mx-auto">
                         Xuất đơn hàng
                     </ButtonOutline>

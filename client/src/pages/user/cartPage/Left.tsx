@@ -58,7 +58,7 @@ const Left: React.FC = () => {
                         <input
                             className="cursor-pointer"
                             type="checkbox"
-                            checked={selectedProducts.length === productInCart.length}
+                            checked={selectedProducts?.length === productInCart?.length}
                             onChange={() => {
                                 dispatch(setSelectedProductsAll(productInCart));
                                 dispatch(setProductsByShopId());

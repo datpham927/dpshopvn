@@ -111,7 +111,7 @@ const TableProducts: React.FC<ITableProducts> = ({ products, setProducts }) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {products.length == 0 && <NotExit label="Không có sản phẩm nào" />}
+                {products?.length == 0 && <NotExit label="Không có sản phẩm nào" />}
             </div>
             {openForm && <FormProduct setIsOpen={setOpenForm} setProducts={setProducts} productEdit={productEdit} />}
         </>

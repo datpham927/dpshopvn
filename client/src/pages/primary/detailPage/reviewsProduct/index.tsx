@@ -164,7 +164,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
             </ButtonOutline>
 
             {/* ------------------- */}
-            {reviews.length > 0 ? (
+            {reviews?.length > 0 ? (
                 <div className="flex flex-col w-full gap-6 rounded-sm">
                     {reviews?.map((e) => {
                         return (

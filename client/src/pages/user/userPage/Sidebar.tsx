@@ -1,12 +1,24 @@
-import React from 'react';
-import { NavLink, useLocation, useParams } from 'react-router-dom';
-import { useAppSelector } from '../../../redux/hooks';
+import React, { useEffect } from 'react';
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { noUser } from '../../../assets';
-import { SIDEBAR_USER } from '../../../utils/const';
+import { SIDEBAR_USER, path } from '../../../utils/const';
+import { setOpenFeatureAuth } from '../../../redux/features/action/actionSlice';
 
 export const Sidebar: React.FC = () => {
     const currentUser = useAppSelector((state) => state.user);
+    const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const location = useLocation();
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (location.pathname === path.PAGE_USER && !isLoginSuccess) {
+            navigate('/');
+            dispatch(setOpenFeatureAuth(true));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location.pathname]);
     return (
         <div className="flex flex-col w-full gap-6 bg-white py-3 rounded-md overflow-hidden">
             <div className="flex gap-2 items-center ml-2">

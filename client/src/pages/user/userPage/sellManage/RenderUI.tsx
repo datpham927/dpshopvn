@@ -63,7 +63,7 @@ const RenderUi: React.FC<{ orders: IOrderItem[]; tab: number }> = ({ orders, tab
 
     return (
         <div className="flex flex-col w-full h-full pt-5 gap-6">
-            {orders.length > 0 ? (
+            {orders?.length > 0 ? (
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

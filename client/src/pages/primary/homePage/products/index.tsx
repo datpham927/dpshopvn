@@ -45,7 +45,7 @@ const Products: React.FC = () => {
             {isLoading ? (
                 <SkeletonProducts index={12} />
             ) : (
-                products.length > 0 && (
+                products?.length > 0 && (
                     <ListProducts hiddenButton={hiddenButton} products={products} setPage={setPage} />
                 )
             )}

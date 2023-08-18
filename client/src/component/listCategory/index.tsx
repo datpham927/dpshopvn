@@ -14,7 +14,7 @@ const ListCategory: React.FC = () => {
             <ul className="flex flex-col gap-2">
                 {categories.map(
                     (c, index) =>
-                        index>= categories.length-5 && (
+                        index>= categories?.length-5 && (
                             <Link
                                 to={`/danh-muc/${c?.category_slug}/${c?.category_code}`}
                                 key={uuidv4()}

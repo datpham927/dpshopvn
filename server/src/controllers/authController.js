@@ -4,6 +4,7 @@ const User = require("../models/User")
 const sendMail = require("../ulits/sendMail")
 const bcrypt = require("bcrypt") //mã hóa
 const crypto = require("crypto") //random
+const { OAuth2Client } = require("google-auth-library") //random
 require("dotenv").config()
 
 //gửi email xác nhận mật khẩu,và thêm tokenConfirm vào database
@@ -247,8 +248,6 @@ const resetPassword = async (req, res) => {
 
     }
 }
-
-
 const logOut = (req, res) => {
     try {
         res.clearCookie("refresh_token");
@@ -264,8 +263,72 @@ const logOut = (req, res) => {
     }
 };
 
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+const verifyGoogleToken = async token => {
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: GOOGLE_CLIENT_ID,
+        });
+        return { payload: ticket.getPayload() };
+    } catch (error) {
+        return false;
+    }
+}
+const loginWithGoogle = async (req, res) => {
+    try {
+        if (!req.body.token) {
+            return res.status(401).json({
+                success: false,
+                message: "required token ",
+            });
+        }
+        const response = await verifyGoogleToken(req.body.token)
+        if (!response) {
+            return res.status(401).json({
+                success: false,
+                message: "Verify google token failed!",
+            });
+        }
+
+        const { email, given_name, family_name, picture } = response.payload
+        const users = await User.findOne({ email })
+        let user = null
+        if (!users) {
+            user = await User.create({ email, firstName: given_name, lastName: family_name, avatar_url: picture })
+        } else {
+            user = await User.findOneAndUpdate({ email }, { firstName: given_name, lastName: family_name, avatar_url: picture }, { new: true })
+        }
+        if (!user) {
+            res.status(200).json({
+                success: false,
+            })
+        }
+        const access_token = generateAccessToken(user._id, user.isAdmin)
+        const refresh_token = generateRefreshToken(user._id)
+        res.cookie("refresh_token", `Bearer ${refresh_token}`, {
+            httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        })
+        res.status(200).json({
+            success: true,
+            message: "Login successfully!",
+            access_token: `Bearer ${access_token}`
+        })
+
+
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
     sendVerificationEmail, confirmVerificationEmail,
     deleteUnconfirmedUser, register, login, refreshToken,
-    sendGmailForgetPassword, resetPassword, logOut
+    sendGmailForgetPassword, resetPassword, logOut, loginWithGoogle
 }

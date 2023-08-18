@@ -26,7 +26,7 @@ const ShockDiscount: React.FC = () => {
             className="flex flex-col w-full h-auto py-3  px-4 bg-white rounded-md overflow-hidden gap-4"
         >
             <div className="w-full h-full flex justify-between ">
-                {products.length > 0 ? (
+                {products?.length > 0 ? (
                     <div className="flex  h-auto gap-3 items-center">
                         <p className="text-2xl h-full font-medium text-[rgb(255,125,29)] italic ">Giảm giá sốc</p>
                         <img className="w-[20px] h-[20] animate-active-flash mt-1 " src={dealFlashIcon} />
@@ -36,7 +36,7 @@ const ShockDiscount: React.FC = () => {
                 )}
             </div>
             <div className="relative">
-                {products.length > 0 ? (
+                {products?.length > 0 ? (
                     <Swiper
                         loop={false}
                         allowTouchMove={false}

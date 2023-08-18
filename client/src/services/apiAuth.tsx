@@ -94,6 +94,18 @@ const apiRefreshToken = async () => {
         };
     }
 };
+const apiLoginWithGoogle = async (token:any) => {
+    try {
+        const res = await httpRequest.post('auth/login_google', { token });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        return {
+            success: false,
+            message: error,
+        };
+    }
+};
 
 export {
     apiSendEmail,
@@ -103,5 +115,6 @@ export {
     apiLogin,
     sendMailForgot,
     resetPassword,
-    apiLogout,
+    apiLogout,apiLoginWithGoogle
+    
 };
