@@ -8,8 +8,8 @@ import { formatStar } from '../../../../utils/formatStar';
 import { ButtonOutline, FormReviews, NotFound, ReviewItem, showNotification } from '../../../../component';
 import { apiUpdateRatingProduct } from '../../../../services/apiProduct';
 import Pagination from '../../../../component/pagination';
-import { useAppDispatch } from '../../../../redux/hooks';
-import { setSocketRef } from '../../../../redux/features/action/actionSlice';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { setOpenFeatureAuth, setSocketRef } from '../../../../redux/features/action/actionSlice';
 
 const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array<string> | any }> = ({
     productDetail,
@@ -31,6 +31,7 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
     // addNotification
     const [reviewEdit, setReviewEdit] = useState<Review | any>();
     const dispatch = useAppDispatch();
+    const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const socketRef = useRef<Socket | null>(null);
     useEffect(() => {
         //ws <=> http
@@ -138,7 +139,9 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
                         </button>
                         {starsByType?.map((i) => (
                             <button
-                                className={`option-rating-review shrink-0 ${i.type === optionRating ? 'border-primary' : ''}`}
+                                className={`option-rating-review shrink-0 ${
+                                    i.type === optionRating ? 'border-primary' : ''
+                                }`}
                                 onClick={() => {
                                     setOptionRating(i.type);
                                     setCurrentPage(0);
@@ -155,6 +158,10 @@ const ReviewsProduct: React.FC<{ productDetail: ProductDetail; userBought: Array
             <ButtonOutline
                 className="w-4/12 mx-auto"
                 onClick={() => {
+                    if (!isLoginSuccess) {
+                        dispatch(setOpenFeatureAuth(true));
+                        return;
+                    }
                     setOpenFormReview(true);
                     setIsEdit(false);
                     setReviewEdit([]);
