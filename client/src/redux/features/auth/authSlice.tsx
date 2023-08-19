@@ -13,7 +13,7 @@ interface AuthInitialState {
 
 const initialState: AuthInitialState = {
     email: '',
-    isLoginSuccess: JSON.parse(localStorage.getItem('isLoginSuccess') || 'false'),
+    isLoginSuccess: false,
     userOnline: [],
 };
 
@@ -27,7 +27,7 @@ export const authSlice = createSlice({
         },
         setIsLoginSuccess: (state, action: PayloadAction<boolean>) => {
             state.isLoginSuccess = action.payload;
-            localStorage.setItem('isLoginSuccess', JSON.stringify(state.isLoginSuccess));
+        
         },
         setUserOnline: (state, action) => {
             state.userOnline = action.payload;
