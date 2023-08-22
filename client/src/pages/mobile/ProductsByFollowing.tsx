@@ -20,18 +20,18 @@ const ProductsByFollowing = () => {
         isLoginSuccess && fetchProducts();
     }, [isLoginSuccess]);
 
-    return (
-        <div className={`${!isLoading ? 'grid mobile:grid-cols-2 tablet:grid-cols-4' : 'w-full h-full'} bg-white py-5 `}>
-            {!isLoading ? (
-                products?.length > 0 ? (
-                    products.map((p) => <ProductItem key={p?._id} props={p} />)
-                ) : (
-                    <NotExit />
-                )
+    return products?.length > 0 ? (
+        <div
+            className={`${!isLoading ? 'grid mobile:grid-cols-2 tablet:grid-cols-4' : 'w-full h-full'} bg-white py-5 `}
+        >
+            {!isLoading? (
+                products.map((p) => <ProductItem key={p?._id} props={p} />)
             ) : (
                 <SkeletonProducts index={12} />
             )}
         </div>
+    ) : (
+        <NotExit />
     );
 };
 

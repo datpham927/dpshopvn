@@ -52,7 +52,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         <>
             <div className="flex flex-col w-screen h-full mx-auto  bg-background_primary">
                 {!location.pathname.includes(path.PAGE_PAYMENT) && <Header />}
-                <main className="flex flex-col tablet:pb-20 bg-background_primary  h-full w-full max-w-[1280px] tablet:px-0 px-5  mx-auto  ">
+                <main className="flex flex-col tablet:pb-20 tablet:bg-white  bg-background_primary  h-full w-full max-w-[1280px] tablet:px-0 px-5  mx-auto  ">
                     {children}
                 </main>
                 {!mobile_ui && <Footer />}

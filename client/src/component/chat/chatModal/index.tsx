@@ -13,6 +13,7 @@ import ChatRight from './ChatRight';
 const ChatModal = () => {
     const [conversation, setConversation] = useState<Conversation | any>({} as Conversation);
     const [isOpenBoxChat, setIsOpenBoxChat] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { isOpenChat } = useAppSelector((state) => state.action);
     const { loadDataConversation } = useAppSelector((state) => state.action);
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
@@ -30,8 +31,10 @@ const ChatModal = () => {
 
     useEffect(() => {
         const fetchApi = async () => {
+            setIsLoading(true);
             const res = await getAllConversation();
             res.success && dispatch(setConversations(res.data));
+            setIsLoading(false);
         };
         fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,6 +73,7 @@ const ChatModal = () => {
                     conversation={conversation}
                     setIsOpenBoxChat={setIsOpenBoxChat}
                     isOpenBoxChat={isOpenBoxChat}
+                    isLoading={isLoading}
                 />
                 <ChatRight conversation={conversation} isOpen={isOpenBoxChat} />
             </div>

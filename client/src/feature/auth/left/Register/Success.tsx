@@ -8,7 +8,6 @@ import { setIsLoginSuccess } from '../../../../redux/features/auth/authSlice';
 import { showNotification } from '../../../../component';
 import { setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 
-
 interface ModeRegister {
     setModeRegister: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -30,8 +29,8 @@ const Success: React.FC<ModeRegister> = (props) => {
         } else {
             const res = await apiRegister(email, password);
             if (res?.success) {
-                dispatch(setIsLoginSuccess(true))
-                showNotification('Đăng ký tài khoản thành công!',true);
+                dispatch(setIsLoginSuccess(true));
+                showNotification('Đăng ký tài khoản thành công!', true);
                 localStorage.setItem('access_token', JSON.stringify(res.access_token));
                 window.location.reload();
                 // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,7 +42,7 @@ const Success: React.FC<ModeRegister> = (props) => {
     };
 
     return (
-        <div className="flex flex-col gap-4 w-4/6 p-10  ">
+        <>
             <div onClick={() => setModeRegister(1)} className="cursor-pointer">
                 <ArrowBackIosIcon />
             </div>
@@ -82,7 +81,7 @@ const Success: React.FC<ModeRegister> = (props) => {
                     Tạo tài khoản
                 </button>
             </form>
-        </div>
+        </>
     );
 };
 

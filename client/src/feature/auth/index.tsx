@@ -15,7 +15,7 @@ const Auth: React.FC = () => {
     const handleClose = (e: { stopPropagation: () => void }) => {
         e.stopPropagation();
         dispatch(setOpenFeatureAuth(false));
-        dispatch(setFeatureAuth(0))
+        dispatch(setFeatureAuth(0));
     };
     const handleOpen = (e: { stopPropagation: () => void }) => {
         e.stopPropagation();
@@ -27,7 +27,9 @@ const Auth: React.FC = () => {
                 <Overlay className="z-[1000]" onClick={handleClose}>
                     <div onClick={handleOpen} className="relative w-[800px] h-auto ">
                         <div className="flex w-full h-full bg-white m-auto rounded-lg items-center overflow-hidden">
-                            {featureAuth == 0 ? <Register /> : featureAuth == 1 ? <Login /> : <Forgot />}
+                            <div className="flex flex-col gap-2 mobile:w-full w-4/6 p-10 ">
+                                {featureAuth == 0 ? <Register /> : featureAuth == 1 ? <Login /> : <Forgot />}
+                            </div>
                             <Right />
                         </div>
                         {/* -------------- */}

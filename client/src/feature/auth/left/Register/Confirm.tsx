@@ -52,7 +52,7 @@ const Confirm: React.FC<ModeRegister> = (props) => {
         //chuyển sang mode  tiếp theo
         setModeRegister(2);
     };
-    return <div className="flex flex-col gap-4 w-4/6 p-10  ">
+    return <>
                 <div onClick={() => setModeRegister(0)} className="cursor-pointer">
                     <ArrowBackIosIcon />
                 </div>
@@ -95,7 +95,7 @@ const Confirm: React.FC<ModeRegister> = (props) => {
                         </p>
                     </div>
                 )}
-            </div>
+            </>
       
 };
 

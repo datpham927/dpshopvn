@@ -18,7 +18,7 @@ const Forgot: React.FC = () => {
         showNotification('Vui lòng kiểm tra gmail!', true);
     };
     return (
-        <div className="flex flex-col gap-2 w-4/6 p-10 ">
+        < >
             <div className="flex flex-col gap-1">
                 <h1 className="text-2xl font-semibold">Quên mật khẩu</h1>
                 <p className="text-base">Vui lòng nhập địa chỉ gmail</p>
@@ -44,7 +44,7 @@ const Forgot: React.FC = () => {
                     </button>
                 </div>
             </form>
-        </div>
+        </>
     );
 };
 

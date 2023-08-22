@@ -63,7 +63,7 @@ const sendMail: React.FC<ModeRegister> = (props) => {
     };
 
     return (
-        <div className="flex flex-col gap-2 w-4/6 p-10 ">
+        <>
             <div className="flex flex-col gap-1">
                 <h1 className="text-2xl font-semibold">Tạo tại khoản </h1>
                 <p className="text-base">Vui lòng nhập địa chỉ gmail</p>
@@ -109,7 +109,7 @@ const sendMail: React.FC<ModeRegister> = (props) => {
                     </GoogleOAuthProvider>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

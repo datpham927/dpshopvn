@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
+import ReactLoading from 'react-loading';
 import { InputForm } from '../..';
 import { Conversation } from '../../../interfaces/interfaces';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
@@ -12,10 +13,17 @@ interface ChatLeft {
     setConversation: React.Dispatch<React.SetStateAction<Conversation>>;
     setIsOpenBoxChat: React.Dispatch<React.SetStateAction<boolean>>;
     conversation: Conversation;
-    isOpenBoxChat:boolean
+    isOpenBoxChat: boolean;
+    isLoading: boolean;
 }
 
-const ChatLeft: React.FC<ChatLeft> = ({ setConversation, conversation, setIsOpenBoxChat ,isOpenBoxChat}) => {
+const ChatLeft: React.FC<ChatLeft> = ({
+    setConversation,
+    conversation,
+    setIsOpenBoxChat,
+    isOpenBoxChat,
+    isLoading,
+}) => {
     const [value, setValue] = useState<string>('');
     const [conversationsNew, setConversationsNew] = useState<Conversation[]>([]);
     const dispatch = useAppDispatch();
@@ -24,7 +32,7 @@ const ChatLeft: React.FC<ChatLeft> = ({ setConversation, conversation, setIsOpen
     useEffect(() => {
         setConversationsNew(conversations);
     }, [conversations]);
-  // tìm kiếm 
+    // tìm kiếm
     useEffect(() => {
         const filterConversations = conversations.filter((c) => {
             return formatUserName(c.members.find((m) => m.user._id !== currentUser._id)?.user).includes(value);
@@ -32,9 +40,12 @@ const ChatLeft: React.FC<ChatLeft> = ({ setConversation, conversation, setIsOpen
         setConversationsNew(filterConversations);
     }, [value]);
 
-
     return (
-        <div className={`${isOpenBoxChat?"tablet:hidden":""} tablet:w-full w-[300px] h-full border-solid border-r-[1px] border-r-gray-200`}>
+        <div
+            className={`${
+                isOpenBoxChat ? 'tablet:hidden' : ''
+            } tablet:w-full w-[300px] h-full border-solid border-r-[1px] border-r-gray-200`}
+        >
             <div className="p-2">
                 <InputForm
                     name_id="search"
@@ -43,29 +54,35 @@ const ChatLeft: React.FC<ChatLeft> = ({ setConversation, conversation, setIsOpen
                     handleOnchange={(e) => setValue(e.target.value)}
                 />
             </div>
-            {conversationsNew?.length > 0 ? (
-                <div className="w-full h-full">
-                    {conversationsNew?.map((c) => (
-                        <ConversationItem
-                            isActive={c._id === conversation?._id}
-                            conversation={c}
-                            userId={currentUser._id}
-                            onClick={() => {
-                                setConversation(c);
-                                dispatch(
-                                    setIsWatchedConversations({
-                                        conversationId: c._id,
-                                        userId: currentUser._id,
-                                        isWatched: true,
-                                    }),
-                                );
-                                setIsOpenBoxChat(true);
-                            }}
-                        />
-                    ))}
-                </div>
+            {!isLoading ? (
+                conversationsNew?.length > 0 ? (
+                    <div className="w-full h-full">
+                        {conversationsNew?.map((c) => (
+                            <ConversationItem
+                                isActive={c._id === conversation?._id}
+                                conversation={c}
+                                userId={currentUser._id}
+                                onClick={() => {
+                                    setConversation(c);
+                                    dispatch(
+                                        setIsWatchedConversations({
+                                            conversationId: c._id,
+                                            userId: currentUser._id,
+                                            isWatched: true,
+                                        }),
+                                    );
+                                    setIsOpenBoxChat(true);
+                                }}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <NotExit label="Không có tin nhắn nào" />
+                )
             ) : (
-                <NotExit label="Không có tin nhắn nào" />
+                <div className="w-full flex justify-center h-full items-center">
+                <ReactLoading type="cylon" color="rgb(0, 136, 72)" />
+            </div>
             )}
         </div>
     );
