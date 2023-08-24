@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     isAdmin: { type: Boolean, default: false },
     address: { type: String },
     address_detail: { type: String },
-    tablet: { type: String },
+    mobile: { type: String },
     avatar_url: { type: String },
     passwordChangedAt: { type: String },
     confirm: { type: Boolean, default: false },
