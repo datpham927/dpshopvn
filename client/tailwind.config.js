@@ -30,7 +30,7 @@ export default {
       },
       boxShadow: {
         search: "rgba(0, 0, 0, 0.28) 0px 6px 12px 0px",
-        cart: "rgba(0, 0, 0, 0.1) 0px 0px 20px"
+        cart: "rgb(210,223,230) 0px 0px 20px"
       },
       keyframes: {
         flash: {
