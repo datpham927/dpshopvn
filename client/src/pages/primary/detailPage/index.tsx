@@ -8,6 +8,7 @@ import Breadcrumbs from './breadcrumbs';
 import { ProductDetail } from '../../../interfaces/interfaces';
 import { apiProductDetail } from '../../../services/apiProduct';
 import { SkeLetonDetailPage } from '../../../component';
+import Seo from '../../../component/seo';
 
 const DetailPage: React.FC = () => {
     const [productDetail, setProductDetail] = useState<ProductDetail>();
@@ -32,6 +33,7 @@ const DetailPage: React.FC = () => {
 
     return productDetail ? (
         <>
+          <Seo description={productDetail.title} title={productDetail.title}  key={2} />
             <Breadcrumbs
                 category_name={productDetail?.category_name}
                 category_code={productDetail?.category_code}

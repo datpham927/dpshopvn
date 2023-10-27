@@ -6,12 +6,14 @@ import { imgCartEmpty } from '../../../assets';
 import ButtonOutline from '../../../component/buttonOutline';
 import { path } from '../../../utils/const';
 import { useNavigate } from 'react-router-dom';
+import Seo from '../../../component/seo';
 
 const CartPage: React.FC = () => {
     const { productInCart } = useAppSelector((state) => state.order);
     const navigate = useNavigate();
     return (
         <div className="w-full h-full">
+            <Seo description='Shop bách hóa' title='DPSHOPVN' key={2} />
             <h1 className="py-4 text-2xl">Giỏ hàng</h1>
             {productInCart?.length > 0 ? (
                 <div className="flex tablet:flex-col pb-8 gap-2">
