@@ -13,9 +13,9 @@ import NotExit from '../../common/NotExit';
 
 const Notification: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
-    const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const { notifications, unreadNotification, socketRef } = useAppSelector((state) => state.action);
+    const { isLoginSuccess } = useAppSelector((state) => state.auth);
 
     useEffect(() => {
         if (!socketRef) return;
@@ -30,11 +30,12 @@ const Notification: React.FC = () => {
     useEffect(() => {
         const fetchApi = async () => {
             const res = await apiGetNotification();
+            console.log("res",res)
             res.success && dispatch(setNotifications(res.data));
             dispatch(setUnreadNotifications());
-        };
+        }; 
         isLoginSuccess && fetchApi();
-    }, []);
+    }, [isLoginSuccess]);
 
     return (
         <div

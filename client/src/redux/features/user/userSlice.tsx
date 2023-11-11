@@ -11,7 +11,6 @@ const initialState: UserDetail = {
     email: '',
     isAdmin: false,
     address: '',
-    tablet: '',
     avatar_url: '',
     createdAt: '',
     confirm: false,

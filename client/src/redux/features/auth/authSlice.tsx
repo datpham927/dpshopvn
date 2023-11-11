@@ -13,7 +13,7 @@ interface AuthInitialState {
 
 const initialState: AuthInitialState = {
     email: '',
-    isLoginSuccess: false,
+    isLoginSuccess :false,
     userOnline: [],
 };
 
@@ -25,7 +25,7 @@ export const authSlice = createSlice({
         setEmail: (state, action: PayloadAction<string>) => {
             state.email = action.payload;
         },
-        setIsLoginSuccess: (state, action: PayloadAction<boolean>) => {
+        setIsLoginSuccess: (state, action) => {
             state.isLoginSuccess = action.payload;
         
         },
