@@ -7,16 +7,18 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import MoodIcon from '@mui/icons-material/Mood';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { v4 as uuidv4 } from 'uuid';
-import { Review } from  '../../interfaces/interfaces';
-import { formatStar } from  '../../utils/formatStar';
-import { noUser } from  '../../assets';
+import { INotification, Review } from '../../interfaces/interfaces';
+import { formatStar } from '../../utils/formatStar';
+import { noUser } from '../../assets';
 
-import { useAppDispatch, useAppSelector } from  '../../redux/hooks';
-import { apiLikeProduct, apiUnlikeComment } from  '../../services/apiReviews';
-import { setOpenFeatureAuth } from  '../../redux/features/action/actionSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { apiLikeProduct, apiUnlikeComment } from '../../services/apiReviews';
+import { setOpenFeatureAuth } from '../../redux/features/action/actionSlice';
 import { ButtonOutline } from '..';
 import { RATING_REVIEW } from '../../utils/const';
 import { formatUserName } from '../../utils/formatUserName';
+import { apiCreateNotification } from '../../services/apiNotification';
+import { useLocation } from 'react-router-dom';
 
 interface ReviewsProps {
     review: Review;
@@ -34,7 +36,9 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
     const dispatch = useAppDispatch();
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const { isAdmin } = useAppSelector((state) => state.user);
-
+    const { socketRef } = useAppSelector((state) => state.action);
+    const location = useLocation();
+    console.log( location.pathname + location.search)
     const handleLike = async () => {
         if (!isLoginSuccess) {
             dispatch(setOpenFeatureAuth(true));
@@ -45,6 +49,17 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
             await apiUnlikeComment(_id);
         } else {
             setLikesReviews((e) => [...e, currentUser._id]);
+            const notification: INotification = {
+                image_url: currentUser.avatar_url,
+                shopId: user._id,
+                title: 'Lượt like mới',
+                userId: currentUser._id,
+                user_name: formatUserName(currentUser),
+                subtitle: `đã like bình luận của bạn`,
+                link: location.pathname,
+            };
+            const response = await apiCreateNotification(notification);
+            response.success && socketRef?.emit('sendNotification', response.data);
             await apiLikeProduct(_id);
         }
     };
@@ -61,9 +76,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                     </div>
                     <div className="flex flex-col justify-center gap-1">
                         <div className="flex gap-3 items-center">
-                            <h3 className="text-base font-medium">
-                            {formatUserName(user)}:
-                            </h3>
+                            <h3 className="text-base font-medium">{formatUserName(user)}:</h3>
                             {isAdmin && currentUser._id === user?._id && (
                                 <span className="text-[10px] items-center  py-[1px] px-1 rounded-sm  border-[1px] border-solid border-red_custom text-red_custom">
                                     admin
@@ -82,7 +95,9 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                         {isBought && (
                             <div className="flex w-full h-full  gap-2 items-center">
                                 <div className="flex ">{formatStar(rating, '20px')}</div>
-                                <span className="text-sm font-semibold">{RATING_REVIEW?.find((r) => r.start === rating)?.text}</span>
+                                <span className="text-sm font-semibold">
+                                    {RATING_REVIEW?.find((r) => r.start === rating)?.text}
+                                </span>
                             </div>
                         )}
 
@@ -103,7 +118,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                         </div>
                     </div>
                     <div className="flex flex-col w-full h-full  gap-1">
-                   <span className="text-sm text-capitalize">{comment} </span>
+                        <span className="text-sm text-capitalize">{comment} </span>
                         <ul className="w-full h-full">
                             <Swiper
                                 loop={false}
@@ -123,7 +138,7 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                                         slidesPerGroup: 2,
                                     },
                                     1024: {
-                                        slidesPerView:4,
+                                        slidesPerView: 4,
                                         slidesPerGroup: 3,
                                     },
                                 }}
@@ -141,7 +156,9 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
                     </div>
                     <div className="flex w-full gap-6 mt-3">
                         <ButtonOutline
-                            className={`${likesReviews?.includes(currentUser._id) && 'bg-bgSecondary border-transparent'}`}
+                            className={`${
+                                likesReviews?.includes(currentUser._id) && 'bg-bgSecondary border-transparent'
+                            }`}
                             onClick={handleLike}
                         >
                             {likesReviews?.includes(currentUser._id) ? (
