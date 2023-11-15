@@ -49,17 +49,20 @@ const ReviewItem: React.FC<ReviewsProps> = ({ review, isBought, handleDelete, ha
             await apiUnlikeComment(_id);
         } else {
             setLikesReviews((e) => [...e, currentUser._id]);
-            const notification: INotification = {
-                image_url: currentUser.avatar_url,
-                shopId: user._id,
-                title: 'Lượt like mới',
-                userId: currentUser._id,
-                user_name: formatUserName(currentUser),
-                subtitle: `đã like bình luận của bạn`,
-                link: location.pathname,
-            };
-            const response = await apiCreateNotification(notification);
-            response.success && socketRef?.emit('sendNotification', response.data);
+            
+            if(user._id!=currentUser._id){
+                const notification: INotification = {
+                    image_url: currentUser.avatar_url,
+                    shopId: user._id,
+                    title: 'Lượt like mới',
+                    userId: currentUser._id,
+                    user_name: formatUserName(currentUser),
+                    subtitle: `đã like bình luận của bạn`,
+                    link: location.pathname,
+                };
+                const response = await apiCreateNotification(notification);
+                response.success && socketRef?.emit('sendNotification', response.data);
+            }
             await apiLikeProduct(_id);
         }
     };
