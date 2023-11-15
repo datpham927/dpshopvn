@@ -8,10 +8,9 @@ import { path } from '../../../utils/const';
 import { imgFreeShip } from '../../../assets';
 import { setCreateOrder } from '../../../services/apiOrder';
 import { setRemoveProductInCart, setSelectedProductsEmpty } from '../../../redux/features/order/orderSlice';
-import { setIsLoading, setNotifications, setSocketRef } from '../../../redux/features/action/actionSlice';
+import { setIsLoading } from '../../../redux/features/action/actionSlice';
 import { INotification } from '../../../interfaces/interfaces';
 import { apiCreateNotification } from '../../../services/apiNotification';
-import { Socket, io } from 'socket.io-client';
 
 interface RightProps {
     methods: {
@@ -81,7 +80,7 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                     userId: currentUser._id,
                     user_name: formatUserName(currentUser),
                     subtitle: `đã mua sản phẩm của bạn`,
-                    link: `http://localhost:5173/user/account/sell`,
+                    link: `${import.meta.env.VITE_REACT_API_URL_CLIENT}/user/account/sell`,
                 };
                 const response = await apiCreateNotification(notification);
                 response.success && socketRef?.emit('sendNotification', response.data);
