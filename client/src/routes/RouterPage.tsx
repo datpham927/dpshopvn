@@ -3,7 +3,7 @@ import { CartPage, DetailPage, FilterPage, HomePage, SearchPage, ShopPage } from
 import { path } from '../utils/const';
 import UserProfile from '../pages/user/userPage/userProfile';
 import PurchaseManage from '../pages/user/userPage/PurchaseManage';
-import { PaymentPage, UserPage } from '../pages/user';
+import { PaymentPage, PaypalPage, UserPage } from '../pages/user';
 import SellManage from '../pages/user/userPage/sellManage';
 import ViewOrder from '../pages/user/userPage/viewOrder';
 import ProductManage from '../pages/user/userPage/productManage';
@@ -13,7 +13,6 @@ import MenuUserOption from '../pages/mobile/MenuUserOption';
 import CategoriesListPage from '../pages/mobile/CategoriesListPage';
 import ProductsByFollowing from '../pages/mobile/ProductsByFollowing';
 import ChatModal from '../component/chat/chatModal';
-import PaypalPage from '../pages/user/PaypalPage/PaypalPage';
 
 const RouterPage = () => {
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
