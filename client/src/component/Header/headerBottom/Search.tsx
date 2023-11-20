@@ -182,7 +182,7 @@ const Search: React.FC = () => {
                 )}
                 <div className="flex flex-col gap-3 ">
                     <h1 className="font-medium text-base px-[20px]">Sản phẩm nổi bật</h1>
-                    <ul className="grid mobile:gap-2 grid-cols-4 gap-1">
+                    <ul className="grid mobile:grid-cols-2 grid-cols-4 gap-1">
                         {productSuggest?.map((s) => {
                             return (
                                 <Link

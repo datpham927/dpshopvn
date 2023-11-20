@@ -51,7 +51,7 @@ const ProductManage: React.FC = () => {
         });
     }, [currentPage]);
     return (
-        <div className="fixed-mobile w-full h-full bg-white px-4 pb-6">
+        <div className="fixed-mobile w-full h-full bg-white  tablet:overflow-y-scroll px-4 pb-6">
               <Link to={`${path.PAGE_USER}`} className=" absolute top-2 left-4 text-secondary laptop:hidden ">
                 <ChevronLeftIcon fontSize="large" />
             </Link>

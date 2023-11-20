@@ -99,7 +99,7 @@ const PurchaseManage: React.FC = () => {
     }, []);
 
     return (
-        <div className="fixed-mobile w-full h-full bg-background_primary">
+        <div className="fixed-mobile w-full h-full bg-background_primary  tablet:overflow-y-scroll">
             <Link to={`${path.PAGE_USER}`} className=" absolute top-2 left-4 text-secondary laptop:hidden ">
                 <ChevronLeftIcon fontSize="large" />
             </Link>

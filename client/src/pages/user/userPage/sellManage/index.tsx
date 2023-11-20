@@ -125,12 +125,12 @@ const SellManage: React.FC = () => {
         showNotification('Không có đơn hàng nào!', true);
     };
     return (
-        <div className="fixed-mobile w-full h-full bg-white">
+        <div className="fixed-mobile w-full h-full bg-white overflow-y-scroll  tablet:overflow-y-scroll">
             <Link to={`${path.PAGE_USER}`} className=" absolute top-2 left-4 text-secondary laptop:hidden ">
                 <ChevronLeftIcon fontSize="large" />
             </Link>
             <h1 className=" my-3 text-center  text-1xl text-primary laptop:hidden ">Quản lý bán hàng</h1>
-            <div className="tablet:flex tablet:overflow-x-auto tablet:bg-white  laptop:w-full sticky top-0 grid grid-cols-6 bg-white rounded-sm overflow-hidden">
+            <div className="tablet:flex   tablet:bg-white  laptop:w-full sticky top-0 grid grid-cols-6 bg-white rounded-sm overflow-hidden">
                 {SELL_TAB.map((e) => (
                     <div
                         className={`flex tablet:w-4/12 tablet:shrink-0  sticky top-0 laptop:w-full justify-center text-sm py-3 items-center py-2 border-b-[2px] border-solid cursor-pointer ${

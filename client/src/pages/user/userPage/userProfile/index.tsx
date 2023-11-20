@@ -34,7 +34,7 @@ const UserProfile: React.FC = () => {
         showNotification('Cập nhật thành công', true);
     };
     return (
-        <div className="tablet:fixed tablet:top-0 tablet:right-0 tablet:z-[1000] w-full h-full bg-white overflow-hidden p-4 laptop:rounded-lg ">
+        <div className="tablet:fixed tablet:top-0 tablet:right-0 tablet:z-[1000] w-full h-full bg-white overflow-hidden p-4 laptop:rounded-lg  tablet:overflow-y-scroll ">
             <Link to={`${path.PAGE_USER}`} className='text-secondary laptop:hidden '>
                 <ChevronLeftIcon fontSize="large" />
             </Link>
