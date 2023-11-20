@@ -15,8 +15,8 @@ const PaypalPage: React.FC = () => {
         }
     }, []);
     return (
-        <div className="w-full h-screen flex bg-white p-5">
-            <div className="flex  w-6/12 justify-center items-center ">
+        <div className="flex mobile:flex-col w-full h-screen bg-white p-5">
+            <div className="flex mobile:w-full w-6/12 justify-center items-center ">
                 <div className="w-[400px]">
                     <video
                         className="object-cover"
@@ -26,7 +26,7 @@ const PaypalPage: React.FC = () => {
                     />
                 </div>
             </div>
-            <div className="flex flex-col w-6/12 justify-center items-center ">
+            <div className="flex flex-col mobile:w-full w-6/12 justify-center items-center ">
                 <Paypal amount={convertCurrencyUsd(orderInfo?.totalPriceMemo)} data={orderInfo} />
             </div>
         </div>

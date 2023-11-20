@@ -61,7 +61,7 @@ const Notification: React.FC = () => {
                     after:top-[-18px]  after:right-5 after:absolute after:z-[1000]"
                 >
                     <div className=" w-full h-full overflow-hidden ">
-                        <div className="flex justify-center text-secondary py-2 ">Thông báo mới nhận</div>
+                        <div className="flex justify-center text-secondary py-2  ">Thông báo mới nhận</div>
                         <div className="mobile:w-[300px] mobile:h-[300px] w-[400px] h-[400px] overflow-y-scroll">
                             {notifications?.length > 0 ? (
                                 notifications?.map((n) => (
@@ -80,10 +80,10 @@ const Notification: React.FC = () => {
                                                 {n?.title}
                                             </h3>
                                             <div className="flex gap-1 items-center">
-                                                <span className="text-sm text-primary font-semibold">
+                                                <span className="text-sm text-primary font-semibold shrink-0">
                                                     {n.user_name}
                                                 </span>
-                                                <span className="text-xs text-secondary">{n?.subtitle}</span>
+                                                <span className="text-xs text-secondary shrink-0">{n?.subtitle}</span>
                                             </div>
                                         </div>
                                     </Link>
