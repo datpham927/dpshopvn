@@ -4,7 +4,7 @@ import { ProductInCartItem } from '../../../component';
 import {  useAppSelector } from '../../../redux/hooks';
 import moment from 'moment';
 import { DELIVERY_METHOD, PAYMENT_METHOD } from '../../../utils/const';
-import PayPal from '../PaypalPage/PaypalPage';
+import PayPal from '../paypalPage';
 
 interface LeftProps {
     methods: {
