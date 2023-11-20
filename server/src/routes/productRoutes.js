@@ -3,7 +3,7 @@ const productController = require("../controllers/productController")
 const { verifyAdmin, verifyAccessToken } = require("../middlewares/verifyToken")
 
 
-router.post("/add_to_product", [verifyAccessToken], productController.createProduct)
+router.post("/add_product", [verifyAccessToken], productController.createProduct)
 router.put("/:pid/update", [verifyAccessToken], productController.updateProduct)
 router.delete("/:pid/delete", [verifyAccessToken], productController.deleteProduct)
 router.get("/:pid/detail", productController.detailProduct)

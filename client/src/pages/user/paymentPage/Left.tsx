@@ -1,9 +1,10 @@
 import React from 'react';
 import BackpackIcon from '@mui/icons-material/Backpack';
 import { ProductInCartItem } from '../../../component';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import {  useAppSelector } from '../../../redux/hooks';
 import moment from 'moment';
 import { DELIVERY_METHOD, PAYMENT_METHOD } from '../../../utils/const';
+import PayPal from '../PaypalPage/PaypalPage';
 
 interface LeftProps {
     methods: {
@@ -22,7 +23,9 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
     const { productsByShopId } = useAppSelector((state) => state?.order);
 
     return (
-        <div className="tablet:w-full w-4/6 relative py-3">
+      <>
+      
+      <div className="tablet:w-full w-4/6 relative py-3">
             <div className="flex flex-col bg-white rounded-md gap-10 p-6 mb-2">
                 <div>
                     <h1 className="text-lg mb-3 font-medium">{DELIVERY_METHOD.title}</h1>
@@ -73,14 +76,17 @@ const Left: React.FC<LeftProps> = ({ methods, setMethods }) => {
                                 onClick={() => setMethods((prev) => ({ ...prev, paymentMethod: e?.code }))}
                             >
                                 <input type="radio" checked={methods.paymentMethod === e?.code} />
-                                <img className="w-8 h-8" src={e?.img} />
-                                <span className="text-sm">{e?.code}</span>
+                                <img className={` ${e.code=="PAYPAL" ?"w-20":"w-8 h-8"} `} src={e?.img} />
+                               { e.code!=="PAYPAL" &&<span className="text-sm">{e?.code}</span>}
                             </label>
                         ))}
                     </div>
                 </div>
             </div>
         </div>
+               
+      </>
+
     );
 };
 

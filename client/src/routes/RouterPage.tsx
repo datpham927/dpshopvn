@@ -13,6 +13,7 @@ import MenuUserOption from '../pages/mobile/MenuUserOption';
 import CategoriesListPage from '../pages/mobile/CategoriesListPage';
 import ProductsByFollowing from '../pages/mobile/ProductsByFollowing';
 import ChatModal from '../component/chat/chatModal';
+import PaypalPage from '../pages/user/PaypalPage/PaypalPage';
 
 const RouterPage = () => {
     const { isLoginSuccess } = useAppSelector((state) => state.auth);
@@ -40,7 +41,7 @@ const RouterPage = () => {
                 </Route>
             ) : (
                 <>
-                //mobile
+                    //mobile
                     <Route path={path.PAGE_USER} element={<MenuUserOption />} />
                     <Route path={`${path.PAGE_USER}/profile`} element={<UserProfile />} />
                     <Route path={`${path.PAGE_USER}/purchase`} element={<PurchaseManage />} />
@@ -52,8 +53,9 @@ const RouterPage = () => {
                     <Route path={`${path.MESSAGE}`} element={<ChatModal />} />
                 </>
             )}
-            <Route path={path.PAGE_CART} element={isLoginSuccess ? <CartPage /> : <Navigate to="/" />}></Route>
-            <Route path={path.PAGE_PAYMENT} element={<PaymentPage />}></Route>
+            <Route path={path.PAGE_CART} element={ <CartPage />}></Route>
+            <Route path={path.PAGE_PAYMENT} element={<PaymentPage />}> </Route>
+            <Route path={path.PAGE_PAYPAL} element={<PaypalPage />} />
             <Route path={path.FORGET_PASSWORD} element={<ForgotPassword />}></Route>
         </Routes>
     );

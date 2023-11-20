@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Left from './Left';
 import Right from './Right';
 import { useAppSelector } from '../../../redux/hooks';
@@ -11,9 +11,14 @@ import Seo from '../../../component/seo';
 const CartPage: React.FC = () => {
     const { productInCart } = useAppSelector((state) => state.order);
     const navigate = useNavigate();
+    useEffect(() => {
+        if (productInCart.length === 0) {
+            navigate('/');
+        }
+    }, []);
     return (
         <div className="w-full h-full">
-            <Seo description='Shop bách hóa' title='DPSHOPVN' key={2} />
+            <Seo description="Shop bách hóa" title="DPSHOPVN" key={2} />
             <h1 className="py-4 text-2xl">Giỏ hàng</h1>
             {productInCart?.length > 0 ? (
                 <div className="flex tablet:flex-col pb-8 gap-2">

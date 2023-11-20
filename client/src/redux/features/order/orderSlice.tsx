@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { ProductByShop, ProductInCart } from '../../../interfaces/interfaces';
 
 interface CartInterface {
+    orderInfo:any;
     selectedProducts: Array<ProductInCart>;
     productInCart: Array<ProductInCart>;
     productsByShopId: Array<ProductByShop>;
@@ -9,8 +10,9 @@ interface CartInterface {
 
 const initialState: CartInterface = {
     selectedProducts: JSON.parse(localStorage.getItem('selectedProducts') || '[]'),
-    productInCart: [],
+    productInCart: JSON.parse(localStorage.getItem('productInCart') || '[]'),
     productsByShopId: [],
+    orderInfo:null
 };
 
 export const orderSlice = createSlice({
@@ -21,6 +23,7 @@ export const orderSlice = createSlice({
             if (action.payload?.length >= 0) {
                 state.productInCart = action.payload;
             }
+            localStorage.setItem('productInCart', JSON.stringify(state.productInCart));
         },
         setAddProductInCart: (state, action) => {
             const payloadProductId = action.payload?._id;
@@ -30,6 +33,7 @@ export const orderSlice = createSlice({
             } else {
                 state.productInCart.push(action.payload);
             }
+            localStorage.setItem('productInCart', JSON.stringify(state.productInCart));
         },
 
         setSelectedProducts: (state, action) => {
@@ -39,7 +43,6 @@ export const orderSlice = createSlice({
             } else {
                 state.selectedProducts.push(action.payload);
             }
-            localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
         },
         setSelectedProductsAll: (state, action) => {
             if (state.selectedProducts?.length === action.payload?.length) {
@@ -66,6 +69,8 @@ export const orderSlice = createSlice({
                 selectedProducts.quantity += 1;
                 selectedProducts.totalPrice += selectedProducts.productId.new_price;
             }
+            localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
+            localStorage.setItem('productInCart', JSON.stringify(state.productInCart));
         },
         setDecreaseProduct: (state, action) => {
             const { _id } = action.payload;
@@ -95,9 +100,11 @@ export const orderSlice = createSlice({
             state.selectedProducts = state.selectedProducts?.filter((item) => item?._id !== _id);
             state.productInCart = state.productInCart?.filter((item) => item?._id !== _id);
             localStorage.setItem('selectedProducts', JSON.stringify(state.selectedProducts));
+            localStorage.setItem('productInCart', JSON.stringify(state.productInCart));
         },
         //phân chia đơn hàng theo shop
         setProductsByShopId: (state) => {
+           
             state.selectedProducts.forEach((e) => {
                 const shop = state.productsByShopId.find((s) => s?.shopId == e?.shopId);
                 if (shop) {
@@ -128,6 +135,9 @@ export const orderSlice = createSlice({
                 }
             });
         },
+        setOrderInfo:(state,action)=>{
+            state.orderInfo=action.payload
+        }
     },
 });
 
@@ -141,6 +151,7 @@ export const {
     setRemoveProductInCart,
     setProductsByShopId,
     setSelectedProductsEmpty,
+    setOrderInfo
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

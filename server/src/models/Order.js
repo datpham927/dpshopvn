@@ -7,6 +7,7 @@ const orderSchema = mongoose.Schema({
         id: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
         quantity: { type: Number }
       }],
+    is_pay: { type: Boolean, require: true, default: false },
     totalPrice: { type: Number, require: true, default: 0 },
     paymentMethod: { type: String, require: true },
     is_confirm: { type: Boolean, default: false },

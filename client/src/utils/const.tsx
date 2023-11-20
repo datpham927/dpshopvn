@@ -11,6 +11,7 @@ export const path = {
     PAGE_USER: '/user/account',
     PAGE_CART: '/cart',
     PAGE_PAYMENT: '/payment',
+    PAGE_PAYPAL: '/payment/paypal',
     FORGET_PASSWORD: '/reset_password/:token',
     FOLLOWING: 'follow',
     MESSAGE: 'message',
@@ -93,7 +94,7 @@ export const SORT_BAR = [
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import SellIcon from '@mui/icons-material/Sell';
-import { bachhoa, danhchoban, dealsieuhot, hangmoi, imgPayInCash, imgPayInVnpay, revodoi } from '../assets';
+import { bachhoa, danhchoban, dealsieuhot, hangmoi, imgPayInCash,  paypal, revodoi } from '../assets';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 
 export const SIDEBAR_USER = [
@@ -128,9 +129,9 @@ export const PAYMENT_METHOD = {
             img: imgPayInCash,
         },
         {
-            code: 'VNPAY',
-            label: 'Thanh toán bằng VNPAY',
-            img: imgPayInVnpay,
+            code: 'PAYPAL',
+            label: 'Thanh toán bằng PAYPAL',
+            img: paypal,
         },
     ],
 };

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Right from './Right';
 import Left from './Left';
 import Header from './Header';
-import { setProductsByShopId } from '../../../redux/features/order/orderSlice';
-import { useAppDispatch } from '../../../redux/hooks';
+import {  useAppSelector } from '../../../redux/hooks';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentPage: React.FC = () => {
+    const navigate = useNavigate();
+
     const [methods, setMethods] = useState<{
         deliveryMethod: string;
         paymentMethod: string;
@@ -13,10 +15,11 @@ const PaymentPage: React.FC = () => {
         deliveryMethod: 'FAST',
         paymentMethod: 'CASH',
     });
-
-    const dispatch = useAppDispatch();
+    const { selectedProducts } = useAppSelector((state) => state.order);
     useEffect(() => {
-        dispatch(setProductsByShopId());
+        if (selectedProducts.length === 0) {
+            navigate("/cart");
+        }
     }, []);
     return (
         <div>

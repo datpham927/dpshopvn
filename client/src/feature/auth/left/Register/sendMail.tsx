@@ -6,7 +6,6 @@ import { apiLoginWithGoogle, apiSendEmail } from '../../../../services/apiAuth';
 import { setFeatureAuth, setOpenFeatureAuth } from '../../../../redux/features/action/actionSlice';
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { gapi } from 'gapi-script';
 import { showNotification } from '../../../../component';
 interface ModeRegister {
     setModeRegister: React.Dispatch<React.SetStateAction<number>>;
@@ -15,7 +14,6 @@ const sendMail: React.FC<ModeRegister> = (props) => {
     const { setModeRegister } = props;
     const [emailValue, setEmailValue] = useState<string>('');
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [isLoginGoogle, setIsLoginGoogle] = useState<boolean>(false);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [error, setError] = useState<string>('');
 

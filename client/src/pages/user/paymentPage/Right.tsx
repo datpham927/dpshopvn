@@ -1,13 +1,17 @@
-import React, { useEffect, useMemo,   useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { ButtonOutline, DeliveryAddress, showNotification } from '../../../component';
 import { formatMoney } from '../../../utils/formatMoney';
 import { formatUserName } from '../../../utils/formatUserName';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { path } from '../../../utils/const';
 import { imgFreeShip } from '../../../assets';
 import { setCreateOrder } from '../../../services/apiOrder';
-import { setRemoveProductInCart, setSelectedProductsEmpty } from '../../../redux/features/order/orderSlice';
+import {
+    setOrderInfo,
+    setRemoveProductInCart,
+    setSelectedProductsEmpty,
+} from '../../../redux/features/order/orderSlice';
 import { setIsLoading } from '../../../redux/features/action/actionSlice';
 import { INotification } from '../../../interfaces/interfaces';
 import { apiCreateNotification } from '../../../services/apiNotification';
@@ -23,10 +27,9 @@ const Right: React.FC<RightProps> = ({ methods }) => {
     const [priceShip, setPriceShip] = useState<number>(0);
     const [priceFreeShip, setPriceFreeShip] = useState<number>(0);
     const currentUser = useAppSelector((state) => state.user);
-    const {socketRef} = useAppSelector((state) => state.action);
+    const { socketRef } = useAppSelector((state) => state.action);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    
     const priceMemo = useMemo(() => {
         const result = selectedProducts.reduce((total, e) => {
             return total + e.totalPrice;
@@ -45,59 +48,60 @@ const Right: React.FC<RightProps> = ({ methods }) => {
     }, [priceFreeShip, priceMemo, priceShip]);
 
     const handleOrderProduct = async () => {
-        if (methods.paymentMethod === 'CASH') {
-            if (confirm('Bạn có muốn đặt hàng không?')) {
-                dispatch(setIsLoading(true));
-                const res = await setCreateOrder({
-                    products: selectedProducts,
-                    paymentMethod: methods.paymentMethod,
-                    shippingAddress: {
-                        fullName: formatUserName(currentUser),
-                        detailAddress: currentUser.address,
-                        village: currentUser.address.split(',')[0],
-                        district: currentUser.address.split(',')[1],
-                        city: currentUser.address.split(',')[2],
-                        phone: currentUser?.mobile,
-                    },
-                    shippingPrice: priceShip > priceFreeShip ? priceShip - priceFreeShip : 0,
-                });
-                dispatch(setIsLoading(false));
-
-                if (!res.success) {
-                    showNotification('Đặt hàng không thành công!', false);
-                    return;
-                }
-                showNotification('Đặt hàng thành công! vui lòng kiểm tra trong gmail', true);
-                selectedProducts.forEach((e) => {
-                    dispatch(setRemoveProductInCart(e));
-                });
-
-                // ---------------  socket  ---------------
-                const notification: INotification = {
-                    image_url: selectedProducts[0].productId.image_url,
-                    shopId: selectedProducts[0].shopId ? selectedProducts[0].shopId : '',
-                    title: 'Bạn có đơn đặt hàng mới',
-                    userId: currentUser._id,
-                    user_name: formatUserName(currentUser),
-                    subtitle: `đã mua sản phẩm của bạn`,
-                    link: `${import.meta.env.VITE_REACT_API_URL_CLIENT}/user/account/sell`,
-                };
-                const response = await apiCreateNotification(notification);
-                response.success && socketRef?.emit('sendNotification', response.data);
-                // ---------------------------------------------
-                navigate(`${path.PAGE_USER}/purchase`);
-                dispatch(setSelectedProductsEmpty());
+        const orderInfo = {
+            products: selectedProducts,
+            paymentMethod: methods.paymentMethod,
+            shippingAddress: {
+                fullName: formatUserName(currentUser),
+                detailAddress: currentUser.address,
+                village: currentUser.address.split(',')[0],
+                district: currentUser.address.split(',')[1],
+                city: currentUser.address.split(',')[2],
+                phone: currentUser?.mobile,
+            },
+            shippingPrice: priceShip > priceFreeShip ? priceShip - priceFreeShip : 0,
+        };
+        if (methods.paymentMethod === 'PAYPAL') {
+            dispatch(setOrderInfo({ ...orderInfo, is_pay: true,totalPriceMemo }));
+            navigate(path.PAGE_PAYPAL);
+            return;
+        }
+        if (confirm('Bạn có muốn đặt hàng không?')) {
+            dispatch(setIsLoading(true));
+            const res = await setCreateOrder(orderInfo);
+            dispatch(setIsLoading(false));
+            if (!res.success) {
+                showNotification('Đặt hàng không thành công!', false);
+                return;
             }
+            showNotification('Đặt hàng thành công! vui lòng kiểm tra trong gmail', true);
+            selectedProducts.forEach((e) => {
+                dispatch(setRemoveProductInCart(e));
+            });
+
+            // ---------------  socket  ---------------
+            const notification: INotification = {
+                image_url: selectedProducts[0].productId.image_url,
+                shopId: selectedProducts[0].shopId ? selectedProducts[0].shopId : '',
+                title: 'Bạn có đơn đặt hàng mới',
+                userId: currentUser._id,
+                user_name: formatUserName(currentUser),
+                subtitle: `đã mua sản phẩm của bạn`,
+                link: `${import.meta.env.VITE_REACT_API_URL_CLIENT}/user/account/sell`,
+            };
+            const response = await apiCreateNotification(notification);
+            response.success && socketRef?.emit('sendNotification', response.data);
+            // ---------------------------------------------
+            navigate(`${path.PAGE_USER}/purchase`);
+            dispatch(setSelectedProductsEmpty());
         }
     };
-
     return (
         <>
             <div className="tablet:w-full  w-2/6 ">
                 <div className="flex w-full flex-col gap-3 bg-background_primary py-3 px-5 sticky top-0 left-0">
                     <DeliveryAddress />
                     {/* ----------------------- */}
-
                     <div className="bg-white px-3 py-2 rounded-md overflow-hidden">
                         <div className="flex flex-col border-solid border-b-[1px] gap-1 border-neutral-200 py-3">
                             <div className="flex justify-between items-center  ">
@@ -142,11 +146,7 @@ const Right: React.FC<RightProps> = ({ methods }) => {
                         className="py-3 bg-red_custom border-none  text-white mt-2 "
                         onClick={handleOrderProduct}
                     >
-                        {methods.paymentMethod === 'VNPAY' ? (
-                            <a href="https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"> Thanh toán</a>
-                        ) : (
-                            'Thanh toán'
-                        )}
+                        Thanh toán
                     </ButtonOutline>
                 </div>
             </div>

@@ -55,7 +55,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 <main className="flex flex-col tablet:pb-20 tablet:bg-white  bg-background_primary  h-full w-full max-w-[1280px] tablet:px-0 px-5  mx-auto  ">
                     {children}
                 </main>
-                {!mobile_ui && <Footer />}
+                {!mobile_ui ||!location.pathname.includes(path.PAGE_PAYPAL) &&<Footer />}
                 <Auth />
                 <Loading />
                 <Chat />

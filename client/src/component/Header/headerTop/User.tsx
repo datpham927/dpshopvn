@@ -21,12 +21,13 @@ const User: React.FC = () => {
         if (confirm('Bạn có muốn đăng xuất')) {
             const res = await apiLogout();
             if (!res.success) return;
-            localStorage.removeItem('access_token');
+            localStorage.clear();
             setIsOpenMenu(false);
             dispatch(setDetailUser({}));
             dispatch(setIsLoginSuccess(false));
             dispatch(setSelectedProductsAll([]));
             dispatch(setAddProductInCartFromApi([]));
+            window.location.reload();
             showNotification('Đăng xuất thành công', true);
         }
     };

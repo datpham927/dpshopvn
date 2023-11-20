@@ -80,7 +80,7 @@ const apiGetAllBrandByCategory = async (params?: object) => {
 
 const apiCreateProduct = async (data?: object) => {
     try {
-        const res = await axiosJWT.post(`product/add_to_product`, data);
+        const res = await axiosJWT.post(`product/add_product`, data);
         return res.data;
     } catch (error) {
         return {

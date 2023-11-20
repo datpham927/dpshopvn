@@ -20,6 +20,7 @@ const createOrderProduct = async (req, res) => {
         //kiểm tra product có đủ in_stock không và chia order sản phẩm theo shop
         const checkProduct = await Promise.all(products?.map(async c => {
             //kiểm tra shopId đã có trong mảng hay chưa
+            await Cart.findOneAndDelete({ productId: c?.productId._id });
             if (productByShop.some(p => p?.shopId === c?.shopId)) {
                 //nếu có thì lấy ra và cập nhật lại product[] và price
                 let pCart = productByShop.filter(p => p?.shopId === c?.shopId)[0]
@@ -55,18 +56,16 @@ const createOrderProduct = async (req, res) => {
 
 
         const orderProduct = await Promise.all(productByShop.map(async e => {
-            // xóa product trong cart
-            await Cart.findOneAndDelete({ shopId: e?.shopId })
-
+            // Delete product from cart
             return Order.create({
                 user: req.userId,
                 ...e,
                 ...infoUser,
                 totalPrice: e.totalPrice + Number(req.body.shippingPrice),
                 dateShipping: Date.now() + 60 * 60 * ((Math.random() * 10) + 3) * 24 * 1000
-            })
-        }
-        ))
+            });
+        }));
+
         const currentUser = await User.findOne({ _id: req.userId })
 
         orderProduct.forEach((order, i) => {
@@ -209,7 +208,7 @@ const isBuyOrder = async (req, res) => {
 
 const getAllOrdersBought = async (req, res) => {
     try {
-        const orders = await Order.find({ user: req.userId })
+        const orders = await Order.find({ user: req.userId }).sort({ createdAt: -1 });
         const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
         const newOrder = await Promise.all(orders.map(async (order) => {
             const user = await User.findById(order?.shopId).select(("user", "_id", "email lastName firstName"))
@@ -244,7 +243,7 @@ const getAllOrdersBought = async (req, res) => {
 
 const getAllOrdersBeenBought = async (req, res) => {
     try {
-        const orders = await Order.find({ shopId: req.userId })
+        const orders = await Order.find({ shopId: req.userId }).sort({ createdAt: -1 });
         const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
         const newOrder = await Promise.all(orders.map(async (order) => {
             const user = await User.findById(order?.shopId).select(("user", "_id", "email lastName firstName"))

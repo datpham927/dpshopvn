@@ -62,7 +62,9 @@ const ProductInCartItem: React.FC<{ product: ProductInCart; isSelector?: boolean
                         type="checkbox"
                         checked={selectedProducts?.some((i) => i?._id === product?._id)}
                         onChange={() => {
+                            dispatch(setProductsByShopId());
                             dispatch(setSelectedProducts(product));
+                          
                         }}
                     />
                 )}
