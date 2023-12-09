@@ -16,7 +16,6 @@ interface IProductItem {
     old_price: number;
     new_price: number;
     _id: string;
-    category_name: string;
     quantity?: number;
     brand?: string;
 }
@@ -25,7 +24,8 @@ interface ProductDetail extends IProductItem {
     description: string;
     brand_slug: string;
     category_code: string;
-    userBought: Array<string>;
+    category_name: string;
+    userBought: Array<string> ;
     views: number;
     infoProduct: [
         {

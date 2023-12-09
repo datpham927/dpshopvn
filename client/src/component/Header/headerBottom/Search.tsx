@@ -26,7 +26,7 @@ interface resultSuggest {
     slug: string;
 }
 interface ProductSuggest extends resultSuggest {
-    images: string[];
+    image_url: string ;
     slug: string;
 }
 const Search: React.FC = () => {
@@ -191,7 +191,7 @@ const Search: React.FC = () => {
                                     onClick={() => setOpenSearchResults(false)}
                                     className="flex flex-col w-full hover:shadow-search items-center py-1 px-3 cursor-pointer gap-2 "
                                 >
-                                    <img className="w-1/2 rounded-md" src={s?.images[0]} />
+                                    <img className="w-1/2 rounded-md" src={s?.image_url} />
                                     <span className="w-full text-xs  truncate ">{s?.title}</span>
                                 </Link>
                             );
