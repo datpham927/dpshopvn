@@ -225,14 +225,7 @@ const getAllProductFollowing = async (req, res) => {
             .select("-verificationEmailToken -passwordTokenExpires -updatedAt -password -cart")
 
         // Sử dụng Promise.all để thực hiện truy vấn song song và sử dụng populate để nạp các tài khoản user liên quan
-        const option = "_id firstName lastName followers avatar_url userId email"
-        const followings = currentUser.followings;
-        const productPromises = followings.map(e => {
-            return Product.find({ user: e }).populate("user", option)
-        });
-
-        const allProduct = await Promise.all(productPromises);
-
+        const allProduct = await Product.find({ user: { $in: currentUser.followings } }).select("_id image_url title slug star sold old_price new_price discount")
         res.status(200).json({
             success: allProduct ? true : false,
             message: allProduct ? "Success" : "Failed",

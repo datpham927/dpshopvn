@@ -247,14 +247,8 @@ const getAllOrdersBeenBought = async (req, res) => {
         const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
         const newOrder = await Promise.all(orders.map(async (order) => {
             const user = await User.findById(order?.shopId).select(("user", "_id", "email lastName firstName"))
-            const products = await Promise.all(order.products.map(async (p) => {
-                const product = await Product.findById(p._id).select(options);
-                return {
-                    ...product.toObject(),
-                    quantity: p.quantity
-                };
-            })
-            );
+            const products = await Product.find({_id:{$in:order.products}}).select(options)
+             
             return {
                 ...order.toObject(),
                 shop: user,
@@ -283,7 +277,13 @@ const getDetailOrder = async (req, res) => {
             });
         } const options = "-category_code -details -description -views -userId -images -userBought -infoProduct";
         const orders = await Order.findById(req.params.oid)
-        const products = await Promise.all(orders.products.map(async (p) => {
+        if(!orders){
+            res.status(400).json({
+                success: false,
+                message: "Not found id!"
+            });
+        }
+        const products = await Promise.all(orders?.products.map(async (p) => {
             const product = await Product.findById(p._id).select(options)
             return {
                 ...product.toObject(),
