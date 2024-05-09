@@ -43,7 +43,7 @@ const sendVerificationEmail = async (req, res) => {
             email, html: `<div >
             <p > Mã xác minh đăng ký tài khoản của bạn là
               <span style="color:blue;font-size:20px" >${token}</span> 
-              hiệu lực trong vào 5 phút, không chia sẽ mã này với người khác. Xin cảm ơn! </p>
+              hiệu lực trong vòng 5 phút, không chia sẽ mã này với người khác. Xin cảm ơn! </p>
             </div>`, fullName: email?.split("@")[0]
         })
         res.status(200).json({
