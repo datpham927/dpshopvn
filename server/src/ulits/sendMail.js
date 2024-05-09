@@ -1,4 +1,4 @@
-require("dotenv").config()
+require("dotenv").config();
 const nodemailer = require('nodemailer');
 
 const sendMail = async ({ email, html, fullName }) => {
@@ -17,17 +17,17 @@ const sendMail = async ({ email, html, fullName }) => {
         subject: `Xin chào ${fullName}`,
         html,
     };
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log('Error occurred while sending email');
-            console.log(error.message);
-        } else {
-            console.log('Email sent successfully!');
-            console.log('Server responded with "%s"', info.response);
-        }
+    
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully!');
+        console.log('Server responded with "%s"', info.response);
+    } catch (error) {
+        console.log('Error occurred while sending email');
+        console.log(error.message);
+    } finally {
         transporter.close();
-    });
-
+    }
 }
 
-module.exports = sendMail
+module.exports = sendMail;
