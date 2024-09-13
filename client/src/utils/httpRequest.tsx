@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { apiRefreshToken } from '../services/apiAuth';
 
 export const httpRequest = axios.create({
     baseURL: import.meta.env.VITE_REACT_API_URL_BACKEND || 'http://localhost:4000/api/',
 });
 export const axiosJWT = axios.create({
+    withCredentials: true,// không có cái này thì tình duyệt sẽ không nhận được cookie
     baseURL: import.meta.env.VITE_REACT_API_URL_BACKEND || 'http://localhost:4000/api/',
 });
 

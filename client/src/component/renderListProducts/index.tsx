@@ -19,6 +19,7 @@ const RenderListProducts: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('hihi');
         const { pricefrom, priceto, ...rest } = queries;
         const fetchProducts = async () => {
             setIsLoading(true);
