@@ -11,7 +11,6 @@ import {
     setLoadDataConversation,
     setOpenFeatureAuth,
 } from '../../redux/features/action/actionSlice';
-import { Conversation } from '../../interfaces/interfaces';
 import { getAllConversation } from '../../services/apiConversation';
 import ChatModal from './chatModal';
 

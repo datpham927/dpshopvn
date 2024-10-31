@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { apiRefreshToken } from '../services/apiAuth';
 
 export const httpRequest = axios.create({
     baseURL: import.meta.env.VITE_REACT_API_URL_BACKEND || 'http://localhost:4000/api/',
@@ -23,7 +24,7 @@ axiosJWT.interceptors.request.use(
     },
 ); 
 
-// Add a request interceptor
+// // Add a request interceptor
 // axiosJWT.interceptors.request.use(
 //     async (config) => {
 //       const access_token = localStorage.getItem('access_token');

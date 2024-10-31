@@ -13,10 +13,9 @@ const app = express()
 
 //init middlewares
 app.use(cors({
-    origin: ["http://localhost:5173", "http://192.168.1.13:5173", "http://localhost:3000", process.env.URL_CLIENT],
+    origin: ["http://localhost:3000","http://localhost:5173", "http://192.168.1.13:5173",process.env.URL_CLIENT],
     credentials: true,
 }));
-
 app.use(cookieParser()) //để có thể truyền được cookie
 app.use(compression()) // để giảm size của tệp tin hoặc dữ liệu trước khi chuyển gửi qua mạng. Tối ưu hóa tốc độ truyền dữ liệu và giảm băng thông mạng cần thiết.
 app.use(helmet()) // bảo vệ ứng dụng khỏi các cuộc tấn công bảo mật thông qua việc thiết lập các HTTP headers liên quan đến bảo mật.
