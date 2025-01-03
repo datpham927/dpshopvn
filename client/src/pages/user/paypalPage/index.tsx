@@ -8,7 +8,6 @@ import { path } from '../../../utils/const';
 const PaypalPage: React.FC = () => {
     const { orderInfo } = useAppSelector((state) => state.order);
     const navigate = useNavigate();
-    console.log("orderInfo",orderInfo)
     useEffect(() => {
         if (!orderInfo) {
             navigate(path.PAGE_PAYMENT);

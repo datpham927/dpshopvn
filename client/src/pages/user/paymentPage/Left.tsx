@@ -3,8 +3,7 @@ import BackpackIcon from '@mui/icons-material/Backpack';
 import { ProductInCartItem } from '../../../component';
 import {  useAppSelector } from '../../../redux/hooks';
 import moment from 'moment';
-import { DELIVERY_METHOD, PAYMENT_METHOD } from '../../../utils/const';
-import PayPal from '../paypalPage';
+import { DELIVERY_METHOD, PAYMENT_METHOD } from '../../../utils/const'; 
 
 interface LeftProps {
     methods: {

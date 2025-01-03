@@ -1,69 +1,72 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import PaginationItem from './PaginationItem';
+
 interface PaginationProps {
-    totalPage: number;
-    currentPage: number;
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  totalPage: number;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurrentPage }) => {
-    const pageDisplay = () => {
-        const newArray = [];
-        for (let i = 1; i <= totalPage - 1; i++) {
-            newArray.push(i);
-        }
-        const pages= [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2];
-        return newArray.filter((p) => pages.includes(p));
-    };
+  const pageDisplay = useMemo(() => {
+    if (totalPage <= 1) return [];
+    const visiblePages = [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2];
+    return Array.from({ length: totalPage - 1 }, (_, i) => i + 1).filter((p) => visiblePages.includes(p));
+  }, [currentPage, totalPage]);
 
-    return (
-        <div className="flex w-4/12 mx-auto gap-4 justify-center">
-            {/* ------------ left ------------- */}
-            <PaginationItem
-                HandleOnClick={() => currentPage !== 0 && setCurrentPage(currentPage - 1)}
-                currentPage={currentPage}
-            >
-                <KeyboardArrowLeftIcon  style={{ opacity: `${currentPage === 0 ? '0.4' : '1'}` }} />
-            </PaginationItem>
-            {/* ------------------------ */}
-            <PaginationItem HandleOnClick={() => setCurrentPage(0)} currentPage={currentPage}>
-                {Number(0)}
-            </PaginationItem>
-            {/* --------------------------- */}
-            {currentPage >= 3 && (
-                <div className="flex items-center">
-                    <MoreHorizIcon fontSize="small" style={{ opacity: '0.3' }} />
-                </div>
-            )}
-            {pageDisplay().map((p) => (
-                <PaginationItem HandleOnClick={() => setCurrentPage(p)} currentPage={currentPage}>
-                    {p}
-                </PaginationItem>
-            ))}
-            {currentPage < totalPage - 2 && (
-                <div className="flex items-center">
-                    <MoreHorizIcon fontSize="small" style={{ opacity: '0.3' }} />
-                </div>
-            )}
+  const handleSetPage = (page: number) => {
+    if (page >= 0 && page <= totalPage && page !== currentPage) {
+      setCurrentPage(page);
+    }
+  };
 
-            {/* ------------ right ------------- */}
-            <PaginationItem HandleOnClick={() => setCurrentPage(totalPage)} currentPage={currentPage}>
-                {Number(totalPage)}
-            </PaginationItem>
+  return (
+    <div className="flex w-4/12 mx-auto gap-4 justify-center">
+      {/* Left navigation */}
+      <PaginationItem HandleOnClick={() => handleSetPage(currentPage - 1)} currentPage={currentPage} disabled={currentPage === 0}>
+        <KeyboardArrowLeftIcon />
+      </PaginationItem>
 
-            <PaginationItem
-                HandleOnClick={() => currentPage !== totalPage && setCurrentPage(currentPage + 1)}
-                currentPage={currentPage}
-            >
-                <ChevronRightIcon style={{ opacity: `${currentPage === totalPage ? '0.4' : '1'}` }} />
-            </PaginationItem>
+      {/* First page */}
+      <PaginationItem HandleOnClick={() => handleSetPage(0)} currentPage={currentPage}>
+        {0}
+      </PaginationItem>
+
+      {/* Ellipsis before */}
+      {currentPage >= 3 && (
+        <div className="flex items-center">
+          <MoreHorizIcon fontSize="small" style={{ opacity: '0.3' }} />
         </div>
-    );
+      )}
+
+      {/* Visible pages */}
+      {pageDisplay.map((p) => (
+        <PaginationItem key={p} HandleOnClick={() => handleSetPage(p)} currentPage={currentPage}>
+          {p}
+        </PaginationItem>
+      ))}
+
+      {/* Ellipsis after */}
+      {currentPage < totalPage - 3 && (
+        <div className="flex items-center">
+          <MoreHorizIcon fontSize="small" style={{ opacity: '0.3' }} />
+        </div>
+      )}
+
+      {/* Last page */}
+      <PaginationItem HandleOnClick={() => handleSetPage(totalPage)} currentPage={currentPage}>
+        {totalPage}
+      </PaginationItem>
+
+      {/* Right navigation */}
+      <PaginationItem HandleOnClick={() => handleSetPage(currentPage + 1)} currentPage={currentPage} disabled={currentPage === totalPage}>
+        <ChevronRightIcon />
+      </PaginationItem>
+    </div>
+  );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export default memo(Pagination);

@@ -8,7 +8,7 @@ const UserPage: React.FC = () => {
             <div className="tablet:hidden flex w-[20%] shrink-0">
                 <Sidebar />
             </div>
-            <div className="flex flex-col motion-safe:w-full w-[80%]">
+            <div className="flex flex-col  w-full w-[80%]">
                 <Outlet />
             </div>
         </div>
