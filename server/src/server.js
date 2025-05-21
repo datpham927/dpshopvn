@@ -24,9 +24,6 @@ app.use(bodyParser.json());//để có thể truyền được chuỗi json
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }))
 // init router 
 routes(app) 
-setInterval(async () => { 
-        console.error('Run' ); 
-}, 2 * 60 * 1000); // 5 phút
 // init database
 require("./dbs/init.mongodb")
 //------------ socket ---------------
