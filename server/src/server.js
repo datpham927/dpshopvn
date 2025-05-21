@@ -24,7 +24,10 @@ app.use(bodyParser.json());//để có thể truyền được chuỗi json
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }))
 // init router 
 routes(app)
-
+// Ping Redis mỗi 5 phút
+setInterval( () => {
+        console.error("");
+}, 2 * 60 * 1000); // 5 phút
 // init database
 require("./dbs/init.mongodb")
 //------------ socket ---------------
